@@ -1,9 +1,11 @@
 #include "ush.h"
 
 char *mx_ush_read_line(void) {
-  char *line = NULL;
-  size_t bufsize = 1;
+    size_t bufsize = 1;
+    char *tmp = NULL;
+    char *stdin_line = NULL;
 
-  getline(&line, &bufsize, stdin);	
-  return line;
+    getline(&tmp, &bufsize, stdin);
+    stdin_line = mx_del_extra_spaces(tmp);
+    return stdin_line;
 }

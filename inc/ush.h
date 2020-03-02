@@ -131,6 +131,54 @@ typedef struct flag_and_function {
 	char **cmd_flag;
 } t_cmd;
 
+
+typedef enum e_del_args_struct { // Tokens struct
+	DONT_UNDERSTAND, // will be changed
+	WORD,
+	PIPE,
+	NEWLINE,
+	GREAT,
+	LESS,
+	GREATGREAT,
+	GREATAMPERSAND,
+	AMPERSAND
+}            t_del_args_struct;
+
+typedef struct s_SimpleCommand {
+	int _numOfAvailableArgs;
+	int _numOfArgs;
+	char *command;
+	char **_arguments;
+
+
+	void (*insertingArg)(char *arg);
+}              t_SimpleCommand;
+
+typedef struct s_command {
+	int _numOfAvailableSCommands;
+	int _numOfSCommands;
+	t_SimpleCommand **_simpleCommand;
+	char *_outFile;
+	char *_inputFile;
+	char *_errFile;
+	int _background;
+
+	void (*insertingSimpleCommand)(t_SimpleCommand *simpleCommand);
+}              t_command;
+
+
+
+t_command *mx_parser(char *stdin_line);
+int mx_isWord(char *data);
+int mx_isPipe(char *data);
+int mx_isNewLine(char *data);
+int mx_isGreat(char *data);
+int mx_isLess(char *data);
+int mx_isGreatGreat(char *data);
+int mx_isGreatAmpersand(char *data);
+int mx_isAmpersand(char *data);
+
+
 void         mx_ush_loop (void); // базовый цикл
 char         *mx_ush_read_line(void); // парсинг вводимых данных
 char         **mx_split_argv(char *line); //сплит линии на аргументы
