@@ -15,7 +15,7 @@ static int check_flag(t_command *command) {
 	return 0;
 }
 
-static void pwd_error(char *str, char *argv) {
+static void pwd_error(char *str, char *argv, t_command *command) {
 	write(2, str, mx_strlen(str));
 	if (argv != NULL) {
 		write(2, argv, mx_strlen(argv));
@@ -32,7 +32,7 @@ int mx_print_pwd(t_command *command) {
 		printf("%s\n", getenv("PWD"));
 	}
 	else if (check_flag(command) == 0)
-		pwd_error("pwd: too many arguments", NULL);
+		pwd_error("pwd: too many arguments", NULL, command);
 	else if (check_flag(command) == 1)
 		printf("%s\n", getenv("PWD"));
 	else if (check_flag(command) == 2)
@@ -42,6 +42,6 @@ int mx_print_pwd(t_command *command) {
 	else if (check_flag(command) == 4)
 		printf("%s\n", getcwd(s, 1000));
 	else if (check_flag(command) == 0)
-		pwd_error("pwd: bad option:", command->arguments[0]);
+		pwd_error("pwd: bad option:", command->arguments[0], command);
 	return 0;
 }
