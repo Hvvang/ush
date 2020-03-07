@@ -153,6 +153,7 @@ typedef enum e_literals { // Literal struct
 typedef struct s_command {
 	char *command;
 	char **arguments;
+	int exit;
 	struct s_command *next;
 }              t_command;
 
@@ -169,10 +170,10 @@ t_list *mx_split_commands(char *commands, char delim);
 void         mx_ush_loop (void); // базовый цикл
 char         *mx_ush_read_line(void); // парсинг вводимых данных
 int          mx_launch_process(char **argv); // запуск дочернего процеса
-int          mx_print_pwd(cmd_bl *cmd); //выводит текущее местополжение
+int          mx_print_pwd(t_command *command); //выводит текущее местополжение
 int          mx_get_array_size(char **arr);
-void         mx_builtin_func(char *line);
-void         mx_change_dir(cmd_bl *cmd);
+void         mx_builtin_func(t_command *commands);
+void         mx_change_dir(t_command *command);
 void         mx_chage_dir_and_pwd(char *str); // изменить каталог и pwd
 void         mx_chage_link_dir_pwd(char *str); // перейти по линку и поменять pwd
 
