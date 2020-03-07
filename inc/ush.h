@@ -132,52 +132,41 @@ typedef struct flag_and_function {
 } t_cmd;
 
 
-typedef enum e_del_args_struct { // Tokens struct
-	DONT_UNDERSTAND, // will be changed
-	WORD,
-	PIPE,
-	NEWLINE,
-	GREAT,
-	LESS,
-	GREATGREAT,
-	GREATAMPERSAND,
-	AMPERSAND
-}            t_del_args_struct;
+#define MX_SHELL_NAME "ush"
+#define MX_SHELL_PROMPT "u$h> "
+#define MX_COMMAND_DELIM ';'
+#define MX_ARGS_DELIM ' '
 
-typedef struct s_SimpleCommand {
-	int _numOfAvailableArgs;
-	int _numOfArgs;
-	char *command;
-	char **_arguments;
+typedef enum e_literals { // Literal struct
+	QUOTE, // `
+	SQUOTE, // '
+	DQUOTE, // "
+	BRACKET, // (
+	QBRACKET, // {
+	CBRACKET, // )
+	CQBRACKET, // }
+	SLASH, // "\"
+	DOLLAR, // $
+}            t_literals;
 
-
-	void (*insertingArg)(char *arg);
-}              t_SimpleCommand;
 
 typedef struct s_command {
-	int _numOfAvailableSCommands;
-	int _numOfSCommands;
-	t_SimpleCommand **_simpleCommand;
-	char *_outFile;
-	char *_inputFile;
-	char *_errFile;
-	int _background;
-
-	void (*insertingSimpleCommand)(t_SimpleCommand *simpleCommand);
+	char *command;
+	char **arguments;
+	struct s_command *next;
 }              t_command;
 
 
 
-t_command *mx_parser(char *stdin_line);
-int mx_isWord(char *data);
-int mx_isPipe(char *data);
-int mx_isNewLine(char *data);
-int mx_isGreat(char *data);
-int mx_isLess(char *data);
-int mx_isGreatGreat(char *data);
-int mx_isGreatAmpersand(char *data);
-int mx_isAmpersand(char *data);
-
+char mx_set_literal(const int literal);
+int mx_get_literal(const char c);
+int mx_str_arr_size(char **arr);
+char **mx_get_commands(const char *stdin_line);
+int mx_check_input(char *stdin_line, int *index);
+int mx_skip_literal(char *str, int *index, int literal);
+t_command *mx_split_to_struct(char *stdin_line);
+char **mx_list_to_arr(t_list *list);
+t_list *mx_split_commands(char *commands, char delim);
 
 void         mx_ush_loop (void); // базовый цикл
 char         *mx_ush_read_line(void); // парсинг вводимых данных

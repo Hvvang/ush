@@ -6,6 +6,6 @@ char *mx_ush_read_line(void) {
     char *stdin_line = NULL;
 
     getline(&tmp, &bufsize, stdin);
-    stdin_line = mx_del_extra_spaces(tmp);
+    stdin_line = mx_strtrim(tmp);
     return stdin_line;
 }

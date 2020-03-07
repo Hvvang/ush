@@ -19,17 +19,27 @@ mx_print_pwd.c \
 mx_change_dir.c \
 mx_get_array_size.c \
 mx_builtin_func.c \
-mx_parser.c \
 \
-mx_isWord.c \
-mx_isPipe.c \
-mx_isNewLine.c \
-mx_isGreat.c \
-mx_isLess.c \
-mx_isGreatGreat.c \
-mx_isGreatAmpersand.c \
-mx_isAmpersand.c \
-
+mx_str_arr_size.c \
+mx_get_commands.c \
+mx_check_input.c \
+mx_set_literal.c \
+mx_get_literal.c \
+mx_skip_literal.c \
+mx_split_to_struct.c \
+mx_list_to_arr.c \
+mx_split_commands.c \
+# mx_isWord.c
+# mx_isPipe.c
+# mx_isNewLine.c
+# mx_isGreat.c
+# mx_isLess.c
+# mx_isGreatGreat.c
+# mx_isGreatAmpersand.c
+# mx_isAmpersand.c
+# mx_parser.c
+# mx_skip_quotes.c
+# mx_validation.c
 
 SRCS = $(addprefix src/, $(SRC))
 
@@ -51,6 +61,15 @@ install:
 uninstall: clean
 	@make uninstall -C $(LIBMXF)
 	@rm -rf $(NAME)
+
+app:
+	@cp $(SRCS) .
+	@cp $(INCI) .
+	@clang $(CFLAGS) -c $(SRC) -I $(INC)
+	@clang $(CFLAGS) $(INCLIB) $(OBJ) -o $(NAME)
+	@mkdir -p obj
+	@mv $(OBJ) ./obj
+	@make clean
 
 clean:
 	@make clean -C $(LIBMXF)

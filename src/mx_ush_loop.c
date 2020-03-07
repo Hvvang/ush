@@ -32,21 +32,37 @@ static int is_exit(char *line) {
 
 void mx_ush_loop (void) {
 	int status = 1;
-	char *line = NULL;
+	char *stdin_line = NULL;
 
 	while (status) {
 
-		printf("u$h> ");
-		line = mx_ush_read_line(); //чтение аргументов
+		printf(MX_SHELL_PROMPT);
+		stdin_line = mx_ush_read_line(); //чтение аргументов
 
-		printf("line = \"%s\"\n", line);
+		if (stdin_line[0] != '\0') {
+			t_command *commands = mx_split_to_struct(stdin_line);
 
-		mx_parser(line);
+			if (commands) {
+				t_command *temp = commands;
+				
+				while (temp) {
+					printf("command = %s\n", temp->command);
+					for (int i = 0; temp->arguments[i]; i++) {
+						printf("\targument[%i] = %s\n", i, temp->arguments[i]);
+					}
+					temp = temp->next;
+				}
+			}
 
-		if (is_exit(line)) {
-			free(line);
-			exit(0);
+			if (is_exit(stdin_line)) {
+				mx_strdel(&stdin_line);
+				exit(0);
+			}
+			mx_strdel(&stdin_line);
 		}
+		// printf("line = \"%s\"\n", line);
+
+
 		// если запуск с ./ush
 		// if (isatty(1))
 		// 	// если функции относяться к builtin
@@ -63,7 +79,6 @@ void mx_ush_loop (void) {
 
 		// system("leaks -q ush");
 
-		mx_strdel(&line);
 		mx_ush_loop();
 	}
 }

@@ -7,5 +7,6 @@ int main(int argc, char **argv) {
 	//Цыкл команды
 	mx_ush_loop();
 
+	// system("leaks ush");
 	//Очистка памяти
 }
