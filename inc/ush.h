@@ -108,28 +108,28 @@
 #include <malloc/malloc.h>
 
 #define USH_BUFSIZE 1024
-#define LINE_DELIM " \t\r\n\a"
+#define LINE_DELIM "\t\r\n\a"
 #define CD_FALG "sP-"
 #define ENV_FLAG "iPu"
 #define PWD_FLAG "LP"
 #define WHICH_FLAG "as"
 #define ECHO_FLAG "nEe"
+#define NO_F_OR_D "cd: no such file or directory: "
+#define NO_D "cd: not a directory: "
+#define STR_NO_PWD "cd: string not in pwd: "
+#define MANY_ARGV "cd: too many arguments"
 
 typedef struct builtin_arr { // структура отформатированого масива для билтов
 	char **arr;
 } bl_arr;
 
-typedef struct command_cd {
-	char **args; //линия разбитая по делиметру
-	char **argv; //аргументы
-	char **flags; //флаги
-} cmd_cd;
+typedef struct command_built {
+	char *cmd;
+	char **argv;
+	char **falg;
+	int exit;
+} cmd_bl;
 
-// Данные команд, ф-й на исполнение и флагов этих команд
-typedef struct flag_and_function {
-	char **cmd_str;
-	char **cmd_flag;
-} t_cmd;
 
 
 #define MX_SHELL_NAME "ush"
@@ -156,8 +156,6 @@ typedef struct s_command {
 	struct s_command *next;
 }              t_command;
 
-
-
 char mx_set_literal(const int literal);
 int mx_get_literal(const char c);
 int mx_str_arr_size(char **arr);
@@ -170,11 +168,12 @@ t_list *mx_split_commands(char *commands, char delim);
 
 void         mx_ush_loop (void); // базовый цикл
 char         *mx_ush_read_line(void); // парсинг вводимых данных
-char         **mx_split_argv(char *line); //сплит линии на аргументы
 int          mx_launch_process(char **argv); // запуск дочернего процеса
-int          mx_print_pwd(void); //выводит текущее местополжение
+int          mx_print_pwd(cmd_bl *cmd); //выводит текущее местополжение
 int          mx_get_array_size(char **arr);
 void         mx_builtin_func(char *line);
-
+void         mx_change_dir(cmd_bl *cmd);
+void         mx_chage_dir_and_pwd(char *str); // изменить каталог и pwd
+void         mx_chage_link_dir_pwd(char *str); // перейти по линку и поменять pwd
 
 #endif

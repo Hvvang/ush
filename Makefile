@@ -12,13 +12,13 @@ SRC = \
 main.c \
 mx_ush_loop.c \
 mx_ush_read_line.c \
-mx_split_argv.c \
 mx_launch_process.c \
-mx_check_flag.c \
 mx_print_pwd.c \
 mx_change_dir.c \
 mx_get_array_size.c \
 mx_builtin_func.c \
+mx_chage_dir_and_pwd.c \
+mx_chage_link_dir_pwd.c \
 \
 mx_str_arr_size.c \
 mx_get_commands.c \
@@ -29,17 +29,6 @@ mx_skip_literal.c \
 mx_split_to_struct.c \
 mx_list_to_arr.c \
 mx_split_commands.c \
-# mx_isWord.c
-# mx_isPipe.c
-# mx_isNewLine.c
-# mx_isGreat.c
-# mx_isLess.c
-# mx_isGreatGreat.c
-# mx_isGreatAmpersand.c
-# mx_isAmpersand.c
-# mx_parser.c
-# mx_skip_quotes.c
-# mx_validation.c
 
 SRCS = $(addprefix src/, $(SRC))
 
