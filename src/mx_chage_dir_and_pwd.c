@@ -10,26 +10,22 @@ static int is_link(char *str) { // clean mem
     return 0;
 }
 
-static void get_log(void) {
-	// char *pwd = getenv("PWD");
-	// char *dest = (char*)malloc(sizeof(char) * 100);
-	// int size = mx_strlen(pwd);
-	// int count = 0;
+static void get_log(char *str) {
+	char *lst = mx_strnew(200);
+	char *s = NULL;
 
-	// for (int i = 0; size > 0; size--) {
-	// 	if (pwd[size] != '/')
-	// }
-	// mx_strdel(&dest);
+	lst = getcwd(s, 1000);
+
+	mx_strdel(&s);
+	mx_strdel(&str);
+	mx_ush_loop();
 }
 
 void mx_chage_dir_and_pwd(char *str) {
 	char *s = NULL;
 
 	if (is_link(getenv("PWD"))) {
-		get_log();
-		setenv("OLDPWD", getenv("PWD"), 1);
-	    chdir(str);
-		setenv("PWD", getcwd(s, 1000), 1);
+		get_log(str);
 	}
 	else {
 		setenv("OLDPWD", getenv("PWD"), 1);
@@ -37,5 +33,4 @@ void mx_chage_dir_and_pwd(char *str) {
 		setenv("PWD", getcwd(s, 1000), 1);
 	}
 	free(s);
-	mx_ush_loop();
 }
