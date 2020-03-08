@@ -36,7 +36,6 @@ static void cd_error(char *str, char *file_name, t_command *command) {
 }
 
 static int got_to_lvl_up (t_command *command) {
-	char *srt = mx_strnew(200);
 	
 	if (strcmp(command->arguments[0], "..") == 0)
 		return 1;

@@ -10,16 +10,15 @@ static int is_link(char *str) { // clean mem
     return 0;
 }
 
-static void get_log(void) {
-	// char *pwd = getenv("PWD");
-	// char *dest = (char*)malloc(sizeof(char) * 100);
-	// int size = mx_strlen(pwd);
-	// int count = 0;
+static void get_log() {
+	char *str = mx_strnew(200);
+	char *s = NULL;
 
-	// for (int i = 0; size > 0; size--) {
-	// 	if (pwd[size] != '/')
-	// }
-	// mx_strdel(&dest);
+	str = getcwd(s, 1000);
+	printf("%s\n", str);
+
+	mx_strdel(&s);
+	mx_strdel(&str);
 }
 
 void mx_chage_dir_and_pwd(char *str) {
@@ -27,9 +26,6 @@ void mx_chage_dir_and_pwd(char *str) {
 
 	if (is_link(getenv("PWD"))) {
 		get_log();
-		setenv("OLDPWD", getenv("PWD"), 1);
-	    chdir(str);
-		setenv("PWD", getcwd(s, 1000), 1);
 	}
 	else {
 		setenv("OLDPWD", getenv("PWD"), 1);
