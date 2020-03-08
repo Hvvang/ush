@@ -1,14 +1,5 @@
 #include "ush.h"
 
-//
-// static int is_exit(char *line) {
-// 	char **args = mx_strsplit(line, ' ');
-// 	int sw = 0;
-//
-// 	if (mx_strncmp(args[0], "exit", 4) == 0)
-// 		sw = 1;
-// 	return sw;
-// }
 
 static int is_builtin(char *command) {
 	char *built_ins[11] = {"exit","fg","unset","export","cd",
@@ -50,14 +41,9 @@ void mx_ush_loop () {
 					t_command *temp = commands;
 
 					while (temp) {
-<<<<<<< HEAD
 						if (is_builtin(temp->command)) {
 							mx_builtin_func(temp);
 						}
-=======
-						if (is_builtin(temp->command))
-							mx_builtin_func(temp);
->>>>>>> fc9844dab0ba4ff53020527d03755d6729e482e5
 						else 													// если функции надо искать
 							fprintf(stderr, "u$h: command  not found: %s\n", temp->command);
 						temp = temp->next;
