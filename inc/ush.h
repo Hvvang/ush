@@ -168,6 +168,7 @@ t_command *mx_split_to_struct(char *stdin_line);
 char **mx_list_to_arr(t_list *list);
 t_list *mx_split_commands(char *commands, char delim);
 
+<<<<<<< HEAD
 void mx_ush_loop (void); // базовый цикл
 char *mx_ush_read_line(void); // парсинг вводимых данных
 int  mx_launch_process(char **argv); // запуск дочернего процеса
@@ -180,5 +181,52 @@ void mx_chage_link_dir_pwd(char *str); // перейти по линку и по
 void mx_env(t_command *commands);
 void mx_export(t_command *commands);
 void mx_unset(t_command *commands);
+=======
+
+#define MX_SHELL_NAME "ush"
+#define MX_SHELL_PROMPT "u$h> "
+#define MX_COMMAND_DELIM ';'
+#define MX_ARGS_DELIM ' '
+
+typedef enum e_literals { // Literal struct
+	QUOTE, // `
+	SQUOTE, // '
+	DQUOTE, // "
+	BRACKET, // (
+	QBRACKET, // {
+	CBRACKET, // )
+	CQBRACKET, // }
+	SLASH, // "\"
+	DOLLAR, // $
+}            t_literals;
+
+
+typedef struct s_command {
+	char *command;
+	char **arguments;
+	int exit;
+	struct s_command *next;
+}              t_command;
+
+char mx_set_literal(const int literal);
+int mx_get_literal(const char c);
+int mx_str_arr_size(char **arr);
+char **mx_get_commands(const char *stdin_line);
+int mx_check_input(char *stdin_line, int *index);
+int mx_skip_literal(char *str, int *index, int literal);
+t_command *mx_split_to_struct(char *stdin_line);
+char **mx_list_to_arr(t_list *list);
+t_list *mx_split_commands(char *commands, char delim);
+
+void         mx_ush_loop (void); // базовый цикл
+char         *mx_ush_read_line(void); // парсинг вводимых данных
+int          mx_launch_process(char **argv); // запуск дочернего процеса
+int          mx_print_pwd(t_command *command); //выводит текущее местополжение
+int          mx_get_array_size(char **arr);
+void         mx_builtin_func(t_command *commands);
+void         mx_change_dir(t_command *command);
+void         mx_chage_dir_and_pwd(char *str); // изменить каталог и pwd
+void         mx_chage_link_dir_pwd(char *str); // перейти по линку и поменять pwd
+>>>>>>> fc9844dab0ba4ff53020527d03755d6729e482e5
 
 #endif

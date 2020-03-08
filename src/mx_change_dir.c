@@ -1,5 +1,19 @@
 #include "ush.h"
 
+<<<<<<< HEAD
+=======
+// static int check_flag(t_command *command) {
+// 	int size = 0;
+
+// 	for (int i = 0; command->arguments[i]; i++) {
+// 		size = strlen(command->arguments[i]);
+// 		if ((command->arguments[i][0] == '-' && size > 1) && strcmp(command->arguments[0], "--"))
+// 			return 1;
+// 	}
+// 	return 0;
+// }
+
+>>>>>>> fc9844dab0ba4ff53020527d03755d6729e482e5
 static int is_dir(char *str) { // clean mem
 	struct stat st;
 

@@ -19,9 +19,12 @@ mx_get_array_size.c \
 mx_builtin_func.c \
 mx_chage_dir_and_pwd.c \
 mx_chage_link_dir_pwd.c \
+<<<<<<< HEAD
 mx_env.c \
 mx_export.c \
 mx_unset.c \
+=======
+>>>>>>> fc9844dab0ba4ff53020527d03755d6729e482e5
 \
 mx_str_arr_size.c \
 mx_get_commands.c \
