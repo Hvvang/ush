@@ -1,49 +1,5 @@
 #include "ush.h"
 
-// потом удалить
-// static char *what_it_cmd(char *line) {
-// 	char *str[10] = {"exit","fg","unset","export","cd",
-// 	                "pwd","echo","which","env",NULL};
-// 	char *ch_str = (char*)malloc(sizeof(char) * 20);
-// 	char *dest =  malloc(sizeof(char) * 20);
-//
-// 	int i = 0;
-// 	for (; line[i]; i++) {
-// 		if (line[i] != '\n') {
-// 			ch_str[i] = line[i];
-// 			ch_str[i + 1] = '\0';
-// 		}
-// 	}
-// 	for (i = 0; ch_str[i]; i++) {
-// 		if (ch_str[i] == ' ')
-// 			break;
-// 		dest[i] = ch_str[i];
-// 		dest[i + 1] = '\0';
-// 	}
-// 	for (int i = 0; str[i] != NULL; i++) {
-// 		if (mx_strcmp(dest, str[i]) == 0) {
-// 			return str[i];
-// 		}
-// 	}
-// 	return "error";
-// }
-
-// static void add_to_struct(cmd_bl *cmd, char *line) {
-// 	cmd->cmd = what_it_cmd(line);
-// 	char *str = malloc(sizeof(char) * mx_strlen(line) - mx_strlen(cmd->cmd)); // clear mem
-// 	int size = mx_strlen(cmd->cmd);
-// 	int j = 0;
-//
-// 	for(int i = size; line[i]; i++) {
-// 		if (line[i] == '\n')
-// 			break;
-// 		str[j] = line[i];
-// 		j++;
-// 	}
-//
-// 	cmd->argv = mx_strsplit(str, ' '); //clear mem
-// }
-
 // static int get_env_position (char **environ) { // найти HOME= позицию в масиве env
 // 	int pos = 0;
 

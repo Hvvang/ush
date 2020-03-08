@@ -116,7 +116,7 @@
 #define ECHO_FLAG "nEe"
 #define NO_F_OR_D "cd: no such file or directory: "
 #define NO_D "cd: not a directory: "
-#define STR_NO_PWD "cd: string not in pwd: "
+#define STR_NO_PWD "No such file or directory:"
 #define MANY_ARGV "cd: too many arguments"
 
 typedef struct builtin_arr { // структура отформатированого масива для билтов

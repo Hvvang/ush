@@ -13,6 +13,7 @@
 static int is_builtin(char *command) {
 	char *built_ins[11] = {"exit","fg","unset","export","cd",
 	                "pwd", "echo", "which", "env", NULL };
+	                
 	for (int i = 0; built_ins[i]; i++) {
 		if (!strcmp(command, built_ins[i]))
 			return 1;
@@ -32,17 +33,17 @@ void mx_ush_loop () {
 		if (stdin_line[0] != '\0') {
 			t_command *commands = mx_split_to_struct(stdin_line);
 
-			if (commands) {
-				t_command *temp = commands;
+		// 	if (commands) {
+		// 		t_command *temp = commands;
 
-				while (temp) {
-					printf("command = %s\n", temp->command);
-					for (int i = 0; temp->arguments[i]; i++) {
-						printf("\targument[%i] = %s\n", i, temp->arguments[i]);
-					}
-					temp = temp->next;
-				}
-			}
+		// 		while (temp) {
+		// 			printf("command = %s\n", temp->command);
+		// 			for (int i = 0; temp->arguments[i]; i++) {
+		// 				printf("\targument[%i] = %s\n", i, temp->arguments[i]);
+		// 			}
+		// 			temp = temp->next;
+		// 		}
+		// 	}
 											//чтение аргументов
 			if (isatty(0)){
 				if (commands) {
