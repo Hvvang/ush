@@ -15,7 +15,9 @@ static void get_log() {
 	char *s = NULL;
 
 	str = getcwd(s, 1000);
-	printf("%s\n", str);
+	str = mx_strjoin(str, "/../");
+	chdir("..");
+	printf("%s\n", getcwd(s, 1000));
 
 	mx_strdel(&s);
 	mx_strdel(&str);
