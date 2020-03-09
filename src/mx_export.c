@@ -2,33 +2,48 @@
 
 static int is_dublicate(char **arr, char *str) {
 	for (int i = 0; arr[i]; i++) {
-		if (mx_strcmp(arr[i], str) == 0)
+		if (strcmp(arr[i], str) == 0)
 			return 1;
 	}
 	return 0;
 }
 
-void mx_export(t_command *commands) {
+static char *normal(char *str) {
+	int len = strlen(str);
+	char *buff = malloc(sizeof(char) * len + 2); 
+	int sw = 0;
+
+	for (int i = 0; i < len; i++)
+		if (str[i] == '=')
+			sw = 1;
+	if (sw == 0) {
+		for (int i = 0; str[i]; i++)
+			buff[i] = str[i];
+		buff[len] = '=';
+	}
+	else
+		return str;
+	return buff;
+}
+
+void mx_export(t_command *commands, t_env *env) {
 
 	if(!commands->arguments[0]) {
 		printf("standart out\n" );
 	}
 	else {	
-		int len = mx_get_array_size(commands->env);
+		int len = mx_get_array_size(env->env);
 
 		for (int i = 0; commands->arguments[i]; i++) {
-			if (is_dublicate(commands->env, commands->arguments[i]))
-				break;
+			if (is_dublicate(env->env, commands->arguments[i]))
+				i++;
 			else {
-				commands->env[len] = malloc(sizeof(char) * mx_strlen(commands->arguments[i]));
-				commands->env[len] = commands->arguments[i];
+				env->env[len] = malloc(sizeof(char) * mx_strlen(commands->arguments[i]));
+				env->env[len] = normal(commands->arguments[i]);
 				len++;
 			}
-			commands->env[len] = NULL;
+			env->env[len] = NULL;
 		}
 		
 	}
-	for (int i = 0; commands->env[i]; i++)
-		printf("%s\n", commands->env[i]);
-	// mx_env(commands);
 }

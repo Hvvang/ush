@@ -107,17 +107,12 @@
 #include <wordexp.h>     // Word-expansion like the shell would perform
 #include <malloc/malloc.h>
 
-#define USH_BUFSIZE 1024
-#define LINE_DELIM "\t\r\n\a"
-#define CD_FALG "sP-"
-#define ENV_FLAG "iPu"
-#define PWD_FLAG "-LP"
-#define WHICH_FLAG "as"
-#define ECHO_FLAG "nEe"
 #define NO_F_OR_D "cd: no such file or directory: "
 #define NO_D "cd: not a directory: "
 #define STR_NO_PWD "No such file or directory:"
 #define MANY_ARGV "cd: too many arguments"
+
+#define FLAG "acEeiLnPSsu"
 
 typedef struct builtin_arr { // структура отформатированого масива для билтов
 	char **arr;
@@ -151,9 +146,7 @@ typedef enum e_literals { // Literal struct
 typedef struct s_command {
 	char *command;
 	char **arguments;
-	char **env; //переменные среды
-	char **exp; //данные команды export
-	int *fl;
+	int fl[11];
 	int exit;
 	struct s_command *next;
 }              t_command;
@@ -168,17 +161,19 @@ t_command *mx_split_to_struct(char *stdin_line);
 char **mx_list_to_arr(t_list *list);
 t_list *mx_split_commands(char *commands, char delim);
 
-void mx_ush_loop (void); // базовый цикл
+void mx_ush_loop (t_env *env); // базовый цикл
 char *mx_ush_read_line(void); // парсинг вводимых данных
 int  mx_launch_process(char **argv); // запуск дочернего процеса
 int  mx_print_pwd(t_command *command); //выводит текущее местополжение
 int  mx_get_array_size(char **arr);
-void mx_builtin_func(t_command *commands);
+void mx_builtin_func(t_command *commands, t_env *env);
 void mx_change_dir(t_command *command);
 void mx_chage_dir_and_pwd(char *str); // изменить каталог и pwd
 void mx_chage_link_dir_pwd(char *str); // перейти по линку и поменять pwd
-void mx_env(t_command *commands);
-void mx_export(t_command *commands);
-void mx_unset(t_command *commands);
+void mx_env(t_command *commands, t_env *env);
+void mx_export(t_command *commands, t_env *env);
+void mx_unset(t_command *commands, t_env *env);
+void mx_env_create(t_env *env);
+int mx_check_flag(char *str, t_command *commands);
 
 #endif

@@ -13,7 +13,7 @@ static int is_builtin(char *command) {
 }
 
 
-void mx_ush_loop () {
+void mx_ush_loop (t_env *env) {
 	int status = 1;
 	char *stdin_line = NULL;
 
@@ -42,20 +42,20 @@ void mx_ush_loop () {
 
 					while (temp) {
 						if (is_builtin(temp->command)) {
-							mx_builtin_func(temp);
+							mx_builtin_func(temp, env);
 						}
 						else 													// если функции надо искать
 							fprintf(stderr, "u$h: command  not found: %s\n", temp->command);
 						temp = temp->next;
 					}
-				}														// если запуск с ./ush
+				}
 			}
 		}
-		// else { 																	//  если запуск с echo "some text" | ./ush
+		// else { 																
 		// 	printf("asd\n");
 		// 	exit(0);
 		// }
 		mx_strdel(&stdin_line);
-		mx_ush_loop();
+		mx_ush_loop(env);
 	}
 }

@@ -22,6 +22,8 @@ mx_chage_link_dir_pwd.c \
 mx_env.c \
 mx_export.c \
 mx_unset.c \
+mx_env_create.c \
+mx_check_flag.c \
 \
 mx_str_arr_size.c \
 mx_get_commands.c \

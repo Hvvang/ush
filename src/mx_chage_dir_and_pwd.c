@@ -1,28 +1,21 @@
 #include "ush.h"
 
 static int is_link(char *str) { // clean mem
-	struct stat st;
+	struct stat st; // leak
 
 	lstat(str, &st);
-	if (S_ISLNK(st.st_mode)){ //если линк
+	if (S_ISLNK(st.st_mode)) //если линк
     	return 1;
-    }
     return 0;
 }
 
 static void get_log(char *str) {
-	char *lst = mx_strnew(200);
-	char *s = NULL;
-
-	lst = getcwd(s, 1000);
-
-	mx_strdel(&s);
-	mx_strdel(&str);
-	mx_ush_loop();
+	chdir(str);
+	return ;
 }
 
 void mx_chage_dir_and_pwd(char *str) {
-	char *s = NULL;
+	char buff[PATH_MAX + 1]; // leak
 
 	if (is_link(getenv("PWD"))) {
 		get_log(str);
@@ -30,7 +23,6 @@ void mx_chage_dir_and_pwd(char *str) {
 	else {
 		setenv("OLDPWD", getenv("PWD"), 1);
 	    chdir(str);
-		setenv("PWD", getcwd(s, 1000), 1);
+		setenv("PWD", getcwd(buff, PATH_MAX + 1), 1);
 	}
-	free(s);
 }

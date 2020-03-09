@@ -1,10 +1,11 @@
 #include "ush.h"
 
-void mx_env(t_command *commands) {
+void mx_env(t_command *commands, t_env *env) {
 
-	for (int i = 0; commands->env[i]; i++) {
-		printf("%s\n", commands->env[i]);
+	commands->exit = 1;
+	for (int i = 0; env->env[i]; i++) {
+		printf("%s\n", env->env[i]);
 	}
-	mx_ush_loop();
+	return ;
 }
 

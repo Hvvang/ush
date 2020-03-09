@@ -20,7 +20,6 @@ static void cd_error(char *str, char *file_name, t_command *command) {
 	write(2, ": ", 2);
 	write(2, str, strlen(str));
 	write(2, "\n", 1);
-	command->exit = 1;
 	return ;
 }
 
@@ -56,10 +55,10 @@ static void return_old_pwd(void) {
 	char buff[PATH_MAX + 1];
 
 	if (!getenv("OLDPWD"))
-		mx_ush_loop();
+		return ;
 	else {
 		setenv("PWD", getenv("OLDPWD"), 1);
-		setenv("OLDPWD", getcwd(buff, 1000), 1);
+		setenv("OLDPWD", getcwd(buff, PATH_MAX), 1);
 		chdir(getenv("PWD"));
 		printf("%s\n", getenv("PWD"));
 	}
