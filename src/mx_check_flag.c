@@ -31,12 +31,10 @@ int mx_check_flag(char *str, t_command *commands) {
 				else
 					commands->fl[7] = 1;
 			}
-			if (str[i] == 'S')
-				commands->fl[8] = 1;
 			if (str[i] == 's')
-				commands->fl[9] = 1;
+				commands->fl[8] = 1;
 			if (str[i] == 'u')
-				commands->fl[10] = 1;
+				commands->fl[9] = 1;
 		}
 	}
 	return 0;
