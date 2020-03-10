@@ -29,7 +29,7 @@ static char *normal(char *str) {
 void mx_export(t_command *commands, t_env *env) {
 
 	if(!commands->arguments[0]) {
-		printf("standart out\n" );
+		
 	}
 	else {	
 		int len = mx_get_array_size(env->env);

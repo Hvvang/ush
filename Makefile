@@ -43,7 +43,7 @@ OBJ = $(SRC:%.c=%.o)
 
 CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
-all: install
+all: install clean
 
 install:
 	@make -C libmx

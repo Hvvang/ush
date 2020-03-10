@@ -120,6 +120,7 @@ typedef struct builtin_arr { // структура отформатирован�
 
 typedef struct environ {
 	char **env;
+	char **env_ch;
 	char **exp;
 	char **unset;
 } t_env;
