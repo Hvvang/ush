@@ -35,5 +35,6 @@ void mx_chage_dir_and_pwd(char *str) {
 		setenv("PWD", getcwd(s, 1000), 1);
 	}
 	free(s);
-	mx_ush_loop();
+	return;
+	// mx_ush_loop();
 }

@@ -32,11 +32,12 @@ static void cd_error(char *str, char *file_name, t_command *command) {
 	write(2, str, strlen(str));
 	write(2, "\n", 1);
 	command->exit = 1;
-	mx_ush_loop();
+	return;
+	// mx_ush_loop();
 }
 
 static int got_to_lvl_up (t_command *command) {
-	
+
 	if (strcmp(command->arguments[0], "..") == 0)
 		return 1;
 	if (strcmp(command->arguments[0], "../") == 0)
@@ -57,15 +58,18 @@ static void mx_dir_or_file(t_command *command) { //проверка аргуме
 		write(2, MANY_ARGV, 22);
 		write(2, "\n", 1);
 		command->exit = 1;
-		mx_ush_loop();
+		return;
+		// mx_ush_loop();
 	}
 	else //перейти по аргументу
     	mx_chage_dir_and_pwd(command->arguments[0]);
 }
 
 static void return_old_pwd(void) {
-	if (!getenv("OLDPWD"))
-		mx_ush_loop();
+	if (!getenv("OLDPWD")) {
+		return;
+		// mx_ush_loop();
+	}
 	else {
 		setenv("PWD", getenv("OLDPWD"), 1);
 		chdir(getenv("PWD"));

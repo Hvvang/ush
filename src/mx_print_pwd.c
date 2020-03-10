@@ -22,7 +22,8 @@ static void pwd_error(char *str, char *argv, t_command *command) {
 	}
 	write(2, "\n", 1);
 	command->exit = 1;
-	mx_ush_loop();
+	return;
+	// mx_ush_loop();
 }
 
 int mx_print_pwd(t_command *command) {

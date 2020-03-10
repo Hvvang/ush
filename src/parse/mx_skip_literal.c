@@ -9,7 +9,7 @@ int mx_skip_literal(char *str, int *index, int literal) {
         else if (literal == DOLLAR ) {
             int tmp = mx_get_literal(str[*index]);
 
-            while ((tmp == 3 || tmp == 4)
+            while ((tmp == BRACKET || tmp == QBRACKET)
                     && mx_get_literal(str[*index]) != tmp + 2)
                     (*index)++;
             break;

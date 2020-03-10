@@ -1,6 +1,6 @@
 #include "ush.h"
 
-//
+
 // static int is_exit(char *line) {
 // 	char **args = mx_strsplit(line, ' ');
 // 	int sw = 0;
@@ -13,7 +13,7 @@
 static int is_builtin(char *command) {
 	char *built_ins[11] = {"exit","fg","unset","export","cd",
 	                "pwd", "echo", "which", "env", NULL };
-	                
+
 	for (int i = 0; built_ins[i]; i++) {
 		if (!strcmp(command, built_ins[i]))
 			return 1;
@@ -22,29 +22,44 @@ static int is_builtin(char *command) {
 }
 
 
-void mx_ush_loop () {
+void mx_ush_loop (t_list *history) {
 	int status = 1;
 	char *stdin_line = NULL;
 
 	while (status) {
+
 		printf(MX_SHELL_PROMPT);
 		stdin_line = mx_ush_read_line(); //чтение аргументов
+
+		// if (stdin_line[0] == '\x03') {
+		// 	t_list *temp = history;
+		// 	int i = 0;
+		//
+		// 	while (temp) {
+		// 		printf("history[%d] = %s\n", i++, temp->data);
+		//
+		// 		temp = temp->next;
+		// 	}
+		// }
 
 		if (stdin_line[0] != '\0') {
 			t_command *commands = mx_split_to_struct(stdin_line);
 
-		// 	if (commands) {
-		// 		t_command *temp = commands;
-
-		// 		while (temp) {
-		// 			printf("command = %s\n", temp->command);
-		// 			for (int i = 0; temp->arguments[i]; i++) {
-		// 				printf("\targument[%i] = %s\n", i, temp->arguments[i]);
-		// 			}
-		// 			temp = temp->next;
-		// 		}
-		// 	}
+			mx_push_back(&history, mx_strdup(stdin_line));
+			// if (commands) {
+			// 	t_command *temp = commands;
+			//
+			// 	while (temp) {
+			// 		printf("command = %s\n", temp->command);
+			// 		for (int i = 0; temp->arguments[i]; i++) {
+			// 			printf("\targument[%i] = %s\n", i, temp->arguments[i]);
+			// 		}
+			// 		temp = temp->next;
+			// 	}
+			// }
 											//чтение аргументов
+
+
 			if (isatty(0)){
 				if (commands) {
 					t_command *temp = commands;
@@ -64,6 +79,6 @@ void mx_ush_loop () {
 		// 	exit(0);
 		// }
 		mx_strdel(&stdin_line);
-		mx_ush_loop();
+		mx_ush_loop(history);
 	}
 }

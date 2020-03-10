@@ -150,12 +150,14 @@ typedef enum e_literals { // Literal struct
 }            t_literals;
 
 
+
 typedef struct s_command {
 	char *command;
 	char **arguments;
 	int exit;
 	struct s_command *next;
 }              t_command;
+
 
 char mx_set_literal(const int literal);
 int mx_get_literal(const char c);
@@ -166,8 +168,10 @@ int mx_skip_literal(char *str, int *index, int literal);
 t_command *mx_split_to_struct(char *stdin_line);
 char **mx_list_to_arr(t_list *list);
 t_list *mx_split_commands(char *commands, char delim);
+int mx_check_subs_lvls(char *str, int *index);
 
-void         mx_ush_loop (void); // базовый цикл
+
+void         mx_ush_loop(t_list *history); // базовый цикл
 char         *mx_ush_read_line(void); // парсинг вводимых данных
 int          mx_launch_process(char **argv); // запуск дочернего процеса
 int          mx_print_pwd(t_command *command); //выводит текущее местополжение

@@ -36,7 +36,6 @@ t_command *mx_split_to_struct(char *stdin_line) {
 
             push_back(&commd_struct, arr[0], &arr[1]);
             mx_del_list(&temp);
-
         }
     }
     return commd_struct;

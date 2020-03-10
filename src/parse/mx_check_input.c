@@ -40,8 +40,10 @@ static int check_subquote(char *str, int *index, int len) {
 
         if (currLiteral == QUOTE && prevLiteral != SLASH)
             return 1;
-        else if (currLiteral > -1 && prevLiteral == SLASH)
-            error = mx_skip_literal(str, index, SQUOTE);
+        else if (currLiteral == QUOTE && prevLiteral == SLASH) {
+            *index = *index - 1;
+            error = mx_check_subs_lvls(str, index);
+        }
         else if (currLiteral == DQUOTE && prevLiteral != SLASH)
             error = check_dquote(str, index, len);
         else if (currLiteral == DOLLAR && prevLiteral != SLASH)
