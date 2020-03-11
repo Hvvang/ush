@@ -3,7 +3,7 @@
 static int is_dir(t_command *commands) { // clean mem
 	struct stat st;
 
-	if (commands->fl[7] || commands->fl[5])
+	if (commands->fl[7] || commands->fl[8])
 		lstat(mx_curl_normal(commands->arguments[1]), &st);
 	else
 		lstat(mx_curl_normal(commands->arguments[0]), &st);
@@ -18,6 +18,10 @@ static int is_dir(t_command *commands) { // clean mem
 }
 
 static void is_link(t_command *commands, char *buff, char *dest) {
+	if (commands->fl[8]) {
+		mx_cd_error(commands, 3);
+		return ;
+	}
 	if (commands->arguments[1][0] == '/') { // если переход от корня
 		chdir(commands->arguments[1]);
 		setenv("OLDPWD", getenv("PWD"), 1);
@@ -34,11 +38,10 @@ static void go_link(t_command *commands) {
 	char *buff = NULL;
 	char dest[PATH_MAX + 1];
 
-	if (commands->fl[5] || commands->fl[7]) // переход по линке с флагами
+	if (commands->fl[7] || commands->fl[8]) // переход по линке с флагами
 		is_link(commands, buff, dest);
 	else {  
 		if (commands->arguments[0][0] == '/') {  // переход по линке без флагов
-			
 			chdir(commands->arguments[0]);
 			setenv("OLDPWD", getenv("PWD"), 1);
 			setenv("PWD", commands->arguments[0], 1);
@@ -60,6 +63,6 @@ void mx_dir_file_link(t_command *commands) {
 		mx_go_dir(commands);
 	if (is_dir(commands) == 2) // если файл
 		mx_cd_error(commands, 2);
-	if (is_dir(commands) == 3) // если линк link/ - не работает, найти решение
+	if (is_dir(commands) == 3)  // если линк link/ - не работает, найти решение
 		go_link(commands);
 }

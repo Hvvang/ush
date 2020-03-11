@@ -9,7 +9,7 @@ static void change_dir(char *str) {
 }
 
 static void return_old_pwd(void) {
-	char buff[PATH_MAX + 1];
+	char buff[PATH_MAX + 1]; // добавить обработку флагов
 
 	if (!getenv("OLDPWD"))
 		return ;
