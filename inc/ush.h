@@ -120,7 +120,6 @@ typedef struct builtin_arr { // структура отформатирован�
 
 typedef struct environ {
 	char **env;
-	char **env_ch;
 	char **exp;
 	char **unset;
 } t_env;
@@ -178,5 +177,7 @@ void mx_dir_file_link(t_command *commands); // проверка и выполн�
 void mx_cd_error(t_command *commands, int error_code); //ошибки ф-и cd
 char *mx_curl_normal(char *str); // нормализация аргумента 
 void mx_go_dir(t_command *cmd); // переход по папка с флагами и без
+void mx_exp_change_dublicate(char *str, t_env *env, int index); // изменить дубликаты в export
+void mx_exp_add_argv(t_command *cmd, t_env *env); //добавить данные в export
 
 #endif

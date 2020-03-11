@@ -26,6 +26,8 @@ mx_dir_file_link.c \
 mx_cd_error.c \
 mx_curl_normal.c \
 mx_go_dir.c \
+mx_exp_change_dublicate.c \
+mx_exp_add_argv.c \
 \
 mx_str_arr_size.c \
 mx_get_commands.c \
