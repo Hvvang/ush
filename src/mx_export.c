@@ -1,5 +1,7 @@
 #include "ush.h"
 
+
+
 void mx_export(t_command *cmd, t_env *env) {
 
 	if(!cmd->arguments[0]) {
