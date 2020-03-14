@@ -19,6 +19,8 @@ mx_list_to_arr.c \
 mx_split_commands.c \
 mx_check_subs_lvls.c \
 
+BUILTINS = \
+\
 
 SRC = \
 main.c \
@@ -26,7 +28,7 @@ mx_ush_loop.c \
 mx_ush_read_line.c \
 mx_str_arr_size.c \
 mx_launch_process.c \
-mx_print_pwd.c \
+mx_pwd.c \
 mx_change_dir.c \
 mx_get_array_size.c \
 mx_builtin_func.c \
@@ -43,14 +45,12 @@ mx_exp_change_dublicate.c \
 mx_exp_add_argv.c \
 \
 mx_str_arr_size.c \
-mx_get_commands.c \
-mx_check_input.c \
-mx_set_literal.c \
-mx_get_literal.c \
-mx_skip_literal.c \
-mx_split_to_struct.c \
-mx_list_to_arr.c \
-mx_split_commands.c \
+\
+\
+mx_valid_pwd.c \
+mx_check_flags.c \
+\
+
 
 SRCS = $(addprefix src/, $(SRC))
 PARSERS = $(addprefix src/parse/, $(PARSER))
@@ -78,6 +78,7 @@ uninstall: clean
 
 app:
 	@cp $(SRCS) .
+	@cp $(PARSERS) .
 	@cp $(INCI) .
 	@clang $(CFLAGS) -c $(SRC) $(PARSER) -I $(INC)
 	@clang $(CFLAGS) $(INCLIB) $(OBJSRC) $(OBJPARSER) -o $(NAME)

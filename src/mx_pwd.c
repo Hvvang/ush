@@ -18,7 +18,7 @@ static int this_flag(t_command *commands) {
 	return 1;
 }
 
-int mx_print_pwd(t_command *commands) {
+int mx_pwd(t_command *commands) {
 	char s[1000];
 
 	if (!this_flag(commands))

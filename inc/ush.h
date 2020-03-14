@@ -142,6 +142,17 @@ typedef enum e_literals { // Literal struct
 }            t_literals;
 
 
+typedef enum e_builtins { // Literal struct
+	MX_ENV,
+	MX_CD,
+	MX_PWD,
+	MX_WHICH,
+	MX_ECHO,
+	MX_EXPORT,
+	MX_UNSET,
+	MX_EXIT
+}            t_builtins;
+
 
 typedef struct s_command {
 	char *command;
@@ -163,7 +174,8 @@ char **mx_list_to_arr(t_list *list);
 t_list *mx_split_commands(char *commands, char delim);
 int mx_check_subs_lvls(char *str, int *index);
 
-
+char mx_check_flags(int builtin, char **args,  bool(*valid)(int *, char *, char *));
+bool mx_valid_pwd(int *toggle, char *arg, char *flag);
 // void         mx_ush_loop(t_list *history); // базовый цикл
 // char         *mx_ush_read_line(void); // парсинг вводимых данных
 // int          mx_launch_process(char **argv); // запуск дочернего процеса
@@ -177,7 +189,7 @@ int mx_check_subs_lvls(char *str, int *index);
 void mx_ush_loop (t_env *env); // базовый цикл
 char *mx_ush_read_line(void); // парсинг вводимых данных
 int  mx_launch_process(char **argv); // запуск дочернего процеса
-int  mx_print_pwd(t_command *command); //выводит текущее местополжение
+int  mx_pwd(t_command *command); //выводит текущее местополжение
 int  mx_get_array_size(char **arr); // получить размер масива
 void mx_builtin_func(t_command *commands, t_env *env); //главная ф-я билтинтов
 void mx_change_dir(t_command *command); // запуск команды cd

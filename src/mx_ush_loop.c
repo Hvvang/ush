@@ -56,6 +56,12 @@ void mx_ush_loop (t_env *env) {
 				if (commands) {
 					t_command *temp = commands;
 
+					char flag = mx_check_flags(MX_PWD, temp->arguments, mx_valid_pwd);
+					if (!flag)
+						printf("LOL\n");
+					else
+						printf("flag is %c\n", flag);
+
 					while (temp) {
 						if (is_builtin(temp->command)) {
 							mx_builtin_func(temp, env);
