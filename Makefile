@@ -30,9 +30,27 @@ mx_print_pwd.c \
 mx_change_dir.c \
 mx_get_array_size.c \
 mx_builtin_func.c \
-mx_chage_dir_and_pwd.c \
-mx_chage_link_dir_pwd.c \
-
+mx_env.c \
+mx_export.c \
+mx_unset.c \
+mx_env_create.c \
+mx_check_flag.c \
+mx_dir_file_link.c \
+mx_cd_error.c \
+mx_curl_normal.c \
+mx_go_dir.c \
+mx_exp_change_dublicate.c \
+mx_exp_add_argv.c \
+\
+mx_str_arr_size.c \
+mx_get_commands.c \
+mx_check_input.c \
+mx_set_literal.c \
+mx_get_literal.c \
+mx_skip_literal.c \
+mx_split_to_struct.c \
+mx_list_to_arr.c \
+mx_split_commands.c \
 
 SRCS = $(addprefix src/, $(SRC))
 PARSERS = $(addprefix src/parse/, $(PARSER))
@@ -42,7 +60,7 @@ OBJPARSER = $(PARSER:%.c=%.o)
 
 CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
-all: install
+all: install clean
 
 install:
 	@make -C libmx

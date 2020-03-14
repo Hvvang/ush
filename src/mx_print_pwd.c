@@ -1,48 +1,35 @@
 #include "ush.h"
 
-static int check_flag(t_command *command) {
-	// доделать проверку на флаг ли это
-	for (int i = 0; command->arguments[i]; i++) {
-		if (mx_strcmp(command->arguments[0], "-L") == 0)
-			return 1;
-		else if (mx_strcmp(command->arguments[0], "-P") == 0)
-			return 2;
-		else if (mx_strcmp(command->arguments[0], "-PL") == 0)
-			return 3;
-		else if (mx_strcmp(command->arguments[0], "-LP") == 0)
-			return 4;
-	}
-	return 0;
+static void pwd_error(char *str) {
+	fprintf(stderr, "%s", "u$h: pwd: ");
+	fprintf(stderr, "%s", str);
+	fprintf(stderr, "%s", ": ");
+	fprintf(stderr, "%s\n", "invalid option");
+	fprintf(stderr, "%s\n", "pwd: usage: pwd [-LP]");
+	return ;
+}
+static int this_flag(t_command *commands) {
+	if (!commands->arguments[0])
+		return 0;
+	if (commands->arguments[0][0] == '-' && !commands->arguments[0][1])
+		return 0;
+	if (commands->arguments[0][0] != '-')
+		return 0;
+	return 1;
 }
 
-static void pwd_error(char *str, char *argv, t_command *command) {
-	write(2, str, mx_strlen(str));
-	if (argv != NULL) {
-		write(2, argv, mx_strlen(argv));
-	}
-	write(2, "\n", 1);
-	command->exit = 1;
-	return;
-	// mx_ush_loop();
-}
-
-int mx_print_pwd(t_command *command) {
+int mx_print_pwd(t_command *commands) {
 	char s[1000];
 
-	if (!command->arguments[0]) {
+	if (!this_flag(commands))
 		printf("%s\n", getenv("PWD"));
-	}
-	else if (check_flag(command) == 0)
-		pwd_error("pwd: too many arguments", NULL, command);
-	else if (check_flag(command) == 1)
-		printf("%s\n", getenv("PWD"));
-	else if (check_flag(command) == 2)
-		printf("%s\n", getcwd(s, 1000));
-	else if (check_flag(command) == 3)
-		printf("%s\n", getenv("PWD"));
-	else if (check_flag(command) == 4)
-		printf("%s\n", getcwd(s, 1000));
-	else if (check_flag(command) == 0)
-		pwd_error("pwd: bad option:", command->arguments[0], command);
+	else {
+		if (commands->fl[5] == 1)
+			printf("%s\n", getenv("PWD"));
+		else if (commands->fl[7] == 1)
+			printf("%s\n", getcwd(s, 1000));
+		else
+			pwd_error(commands->arguments[0]);
+		}
 	return 0;
 }

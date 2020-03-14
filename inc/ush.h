@@ -1,5 +1,5 @@
-#ifndef ULS_H
-#define ULS_H
+#ifndef USH_H
+#define USH_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -10,7 +10,7 @@
 #include <errno.h>
 #include <wchar.h>
 #include <fcntl.h>
-#include <malloc/malloc.h>
+#include <malloc.h>
 #include <dirent.h>
 #include "libmx/inc/libmx.h"
 #include <sys/ioctl.h>
@@ -50,7 +50,7 @@
 #include <math.h>        // Mathematical declarations, see C mathematical functions
 #include <monetary.h>    // String formatting of monetary units
 //#include <mqueue.h>      // Message queue
-#include <ndbm.h>        // NDBM database operations
+// #include <ndbm.h>        // NDBM database operations
 #include <net/if.h>      // Listing of local network interfaces
 #include <netdb.h>       // Translating protocol and host names into numeric addresses (part of Berkeley sockets)
 #include <netinet/in.h>  // Defines Internet protocol and address family (part of Berkeley sockets)
@@ -105,31 +105,23 @@
 #include <wchar.h>       // Wide-Character Handling, see C string handling
 #include <wctype.h>      // Wide-Character Classification and Mapping Utilities, see C character classification
 #include <wordexp.h>     // Word-expansion like the shell would perform
-#include <malloc/malloc.h>
 
-#define USH_BUFSIZE 1024
-#define LINE_DELIM "\t\r\n\a"
-#define CD_FALG "sP-"
-#define ENV_FLAG "iPu"
-#define PWD_FLAG "LP"
-#define WHICH_FLAG "as"
-#define ECHO_FLAG "nEe"
 #define NO_F_OR_D "cd: no such file or directory: "
 #define NO_D "cd: not a directory: "
 #define STR_NO_PWD "No such file or directory:"
 #define MANY_ARGV "cd: too many arguments"
 
+#define FLAG "acEeiLnPsu"
+
 typedef struct builtin_arr { // структура отформатированого масива для билтов
 	char **arr;
 } bl_arr;
 
-typedef struct command_built {
-	char *cmd;
-	char **argv;
-	char **falg;
-	int exit;
-} cmd_bl;
-
+typedef struct environ {
+	char **env;
+	char **exp;
+	char **unset;
+} t_env;
 
 
 #define MX_SHELL_NAME "ush"
@@ -154,6 +146,7 @@ typedef enum e_literals { // Literal struct
 typedef struct s_command {
 	char *command;
 	char **arguments;
+	int fl[10];
 	int exit;
 	struct s_command *next;
 }              t_command;
@@ -171,14 +164,33 @@ t_list *mx_split_commands(char *commands, char delim);
 int mx_check_subs_lvls(char *str, int *index);
 
 
-void         mx_ush_loop(t_list *history); // базовый цикл
-char         *mx_ush_read_line(void); // парсинг вводимых данных
-int          mx_launch_process(char **argv); // запуск дочернего процеса
-int          mx_print_pwd(t_command *command); //выводит текущее местополжение
-int          mx_get_array_size(char **arr);
-void         mx_builtin_func(t_command *commands);
-void         mx_change_dir(t_command *command);
-void         mx_chage_dir_and_pwd(char *str); // изменить каталог и pwd
-void         mx_chage_link_dir_pwd(char *str); // перейти по линку и поменять pwd
+// void         mx_ush_loop(t_list *history); // базовый цикл
+// char         *mx_ush_read_line(void); // парсинг вводимых данных
+// int          mx_launch_process(char **argv); // запуск дочернего процеса
+// int          mx_print_pwd(t_command *command); //выводит текущее местополжение
+// int          mx_get_array_size(char **arr);
+// void         mx_builtin_func(t_command *commands);
+// void         mx_change_dir(t_command *command);
+// void         mx_chage_dir_and_pwd(char *str); // изменить каталог и pwd
+// void         mx_chage_link_dir_pwd(char *str); // перейти по линку и поменять pwd
+
+void mx_ush_loop (t_env *env); // базовый цикл
+char *mx_ush_read_line(void); // парсинг вводимых данных
+int  mx_launch_process(char **argv); // запуск дочернего процеса
+int  mx_print_pwd(t_command *command); //выводит текущее местополжение
+int  mx_get_array_size(char **arr); // получить размер масива
+void mx_builtin_func(t_command *commands, t_env *env); //главная ф-я билтинтов
+void mx_change_dir(t_command *command); // запуск команды cd
+void mx_env(t_command *commands, t_env *env); //запуск команды env
+void mx_export(t_command *commands, t_env *env); // обработка export
+void mx_unset(t_command *commands, t_env *env); //обработка unset
+void mx_env_create(t_env *env); // функция создание среды переменных
+int mx_check_flag(char *str, t_command *commands); //проверка приходящих флагов
+void mx_dir_file_link(t_command *commands); // проверка и выполнения на папку,линк,файл
+void mx_cd_error(t_command *commands, int error_code); //ошибки ф-и cd
+char *mx_curl_normal(char *str); // нормализация аргумента
+void mx_go_dir(t_command *cmd); // переход по папка с флагами и без
+void mx_exp_change_dublicate(char *str, t_env *env, int index); // изменить дубликаты в export
+void mx_exp_add_argv(t_command *cmd, t_env *env); //добавить данные в export
 
 #endif

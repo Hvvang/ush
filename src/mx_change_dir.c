@@ -1,89 +1,70 @@
 #include "ush.h"
 
-// static int check_flag(t_command *command) {
-// 	int size = 0;
+static void change_dir(char *str) {
+	char buff[PATH_MAX + 1];
 
-// 	for (int i = 0; command->arguments[i]; i++) {
-// 		size = strlen(command->arguments[i]);
-// 		if ((command->arguments[i][0] == '-' && size > 1) && strcmp(command->arguments[0], "--"))
-// 			return 1;
-// 	}
-// 	return 0;
-// }
-
-static int is_dir(char *str) { // clean mem
-	struct stat st;
-
-	lstat(str, &st);
-	if (S_ISLNK(st.st_mode)) //если линк
-		return 10;
-	if (!S_ISDIR(st.st_mode) && !S_ISREG(st.st_mode))  // если не папка или не существует
-		return 0;
-	if (S_ISREG(st.st_mode)) // если не файл или несуществует
-		return 5;
-    return 1;
-}
-
-static void cd_error(char *str, char *file_name, t_command *command) {
-	write(2, command->command, mx_strlen(command->command));
-	write(2, ": ", 2);
-	write(2, file_name ,strlen(file_name));
-	write(2, ": ", 2);
-	write(2, str, strlen(str));
-	write(2, "\n", 1);
-	command->exit = 1;
-	return;
-	// mx_ush_loop();
-}
-
-static int got_to_lvl_up (t_command *command) {
-
-	if (strcmp(command->arguments[0], "..") == 0)
-		return 1;
-	if (strcmp(command->arguments[0], "../") == 0)
-		return 1;
-	return 0;
-}
-
-static void mx_dir_or_file(t_command *command) { //проверка аргументов
-	if (is_dir(command->arguments[0]) == 0) // если не папка или не существует
-    	cd_error(NO_F_OR_D, command->arguments[0], command);
-    else if (is_dir(command->arguments[0]) == 5) 	// елси не файл или не существует
-    	cd_error(NO_D, command->arguments[0], command);
-    else if (is_dir(command->arguments[0]) == 10) // если линк
-    	mx_chage_link_dir_pwd(command->arguments[0]);
-    else if (got_to_lvl_up(command)) // перейти на уровень выше
-    	mx_chage_dir_and_pwd("..");
-	else if (command->arguments[0] && command->arguments[1] && command->arguments[2]) { // если 3 аргумента
-		write(2, MANY_ARGV, 22);
-		write(2, "\n", 1);
-		command->exit = 1;
-		return;
-		// mx_ush_loop();
-	}
-	else //перейти по аргументу
-    	mx_chage_dir_and_pwd(command->arguments[0]);
+	chdir(str);
+	setenv("OLDPWD", getenv("PWD"), 1);
+	setenv("PWD", getcwd(buff, PATH_MAX), 1);
 }
 
 static void return_old_pwd(void) {
-	if (!getenv("OLDPWD")) {
-		return;
-		// mx_ush_loop();
-	}
+	char buff[PATH_MAX + 1]; // добавить обработку флагов
+
+	if (!getenv("OLDPWD"))
+		return ;
 	else {
 		setenv("PWD", getenv("OLDPWD"), 1);
+		setenv("OLDPWD", getcwd(buff, PATH_MAX), 1);
 		chdir(getenv("PWD"));
 		printf("%s\n", getenv("PWD"));
 	}
 }
 
-void mx_change_dir(t_command *command) {
-	if ((!command->arguments[0] || !strcmp(command->arguments[0], "--")) ||
-		 !strcmp(command->arguments[0], "~")) { //cd && cd -- && cd ~
-		mx_chage_dir_and_pwd(getenv("HOME"));
+static int cd_home(t_command *commands) {
+	if (!commands->arguments[0]) {
+		return 1;
 	}
-	else if (strcmp(command->arguments[0], "-") == 0)
+	if (!strcmp(commands->arguments[0], "--")) {
+
+		return 1;
+	}
+	if (commands->arguments[0][0] == '~' && commands->arguments[0][1] != '\0')
+		return 2;
+	if (!strcmp(commands->arguments[0], "~") && commands->arguments[0][1] == '\0') {
+		return 1;
+	}
+	return 0;
+}
+static void change_dir_home(char *str) {
+	char buff[PATH_MAX + 1];
+	int size = strlen(str);
+	char *way = malloc(sizeof(char*) * size);
+	char *dst = malloc(sizeof(char*) * strlen(getenv("HOME")) + size);
+
+	for (int i = 0; i < size - 1; i++) {
+		way[i] = str[i + 1];
+		way[i + 1] = '\0';
+	}
+	dst = mx_strjoin(getenv("HOME"), way); // проверка на то существует ли путь????
+	chdir(dst);
+	setenv("OLDPWD", getenv("PWD"), 1);
+	setenv("PWD", getcwd(buff, PATH_MAX), 1);
+	mx_strdel(&way);
+	mx_strdel(&dst);
+}
+
+void mx_change_dir(t_command *commands) {
+	if (cd_home(commands) == 1) {
+		change_dir(getenv("HOME"));
+	}
+	else if (cd_home(commands) == 2) {
+		change_dir_home(commands->arguments[0]);
+	}
+	else if (strcmp(commands->arguments[0], "-") == 0) //back to oldpwd
 		return_old_pwd();
+	else if ((commands->fl[8] || commands->fl[7]) && !commands->arguments[1])
+		return ;
 	else
-		mx_dir_or_file(command);
+		mx_dir_file_link(commands);
 }

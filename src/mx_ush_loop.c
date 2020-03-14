@@ -1,15 +1,6 @@
 #include "ush.h"
 
 
-// static int is_exit(char *line) {
-// 	char **args = mx_strsplit(line, ' ');
-// 	int sw = 0;
-//
-// 	if (mx_strncmp(args[0], "exit", 4) == 0)
-// 		sw = 1;
-// 	return sw;
-// }
-
 static int is_builtin(char *command) {
 	char *built_ins[11] = {"exit","fg","unset","export","cd",
 	                "pwd", "echo", "which", "env", NULL };
@@ -21,8 +12,9 @@ static int is_builtin(char *command) {
 	return 0;
 }
 
+// void mx_ush_loop (t_list *history) {
 
-void mx_ush_loop (t_list *history) {
+void mx_ush_loop (t_env *env) {
 	int status = 1;
 	char *stdin_line = NULL;
 
@@ -45,7 +37,7 @@ void mx_ush_loop (t_list *history) {
 		if (stdin_line[0] != '\0') {
 			t_command *commands = mx_split_to_struct(stdin_line);
 
-			mx_push_back(&history, mx_strdup(stdin_line));
+			// mx_push_back(&history, mx_strdup(stdin_line));
 			// if (commands) {
 			// 	t_command *temp = commands;
 			//
@@ -65,20 +57,22 @@ void mx_ush_loop (t_list *history) {
 					t_command *temp = commands;
 
 					while (temp) {
-						if (is_builtin(temp->command))
-							mx_builtin_func(temp);
+						if (is_builtin(temp->command)) {
+							mx_builtin_func(temp, env);
+						}
 						else 													// если функции надо искать
 							fprintf(stderr, "u$h: command  not found: %s\n", temp->command);
 						temp = temp->next;
 					}
-				}														// если запуск с ./ush
+				}
 			}
 		}
-		// else { 																	//  если запуск с echo "some text" | ./ush
+		// else {
 		// 	printf("asd\n");
 		// 	exit(0);
 		// }
 		mx_strdel(&stdin_line);
-		mx_ush_loop(history);
+		mx_ush_loop(env);
+		// mx_ush_loop(history);
 	}
 }
