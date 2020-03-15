@@ -142,7 +142,7 @@ typedef enum e_literals { // Literal struct
 }            t_literals;
 
 
-typedef enum e_builtins { // Literal struct
+typedef enum e_builtins { // builtins struct
 	MX_ENV,
 	MX_CD,
 	MX_PWD,
@@ -152,6 +152,13 @@ typedef enum e_builtins { // Literal struct
 	MX_UNSET,
 	MX_EXIT
 }            t_builtins;
+
+typedef enum e_types { // Types stuct
+	MX_DIR,
+	MX_FILE,
+	MX_LINK,
+	MX_EFAULT
+}            t_types;
 
 
 typedef struct s_command {
@@ -176,7 +183,7 @@ int mx_check_subs_lvls(char *str, int *index);
 
 
 void mx_builtin_usage(int builtin, char error);
-char mx_check_flags(int builtin, char **args,  bool(*valid)(int *, char *, char *));
+char mx_check_flags(int builtin, int *index, char **args,  bool(*valid)(int *, char *, char *));
 bool mx_valid_cd(int *toggle, char *arg, char *flag);
 bool mx_valid_pwd(int *toggle, char *arg, char *flag);
 // void         mx_ush_loop(t_list *history); // базовый цикл
@@ -192,10 +199,16 @@ bool mx_valid_pwd(int *toggle, char *arg, char *flag);
 void mx_ush_loop (t_env *env); // базовый цикл
 char *mx_ush_read_line(void); // парсинг вводимых данных
 int  mx_launch_process(char **argv); // запуск дочернего процеса
-int  mx_pwd(t_command *command); //выводит текущее местополжение
 int  mx_get_array_size(char **arr); // получить размер масива
 void mx_builtin_func(t_command *commands, t_env *env); //главная ф-я билтинтов
-void mx_change_dir(t_command *command); // запуск команды cd
+
+
+char *mx_create_path(char *command, int d_type, char flag);
+char *mx_path_to_canonical(char *str); // нормализация аргумента
+int  mx_pwd(t_command *command); //выводит текущее местополжение
+void mx_cd(t_command *command); // запуск команды cd
+
+
 void mx_env(t_command *commands, t_env *env); //запуск команды env
 void mx_export(t_command *commands, t_env *env); // обработка export
 void mx_unset(t_command *commands, t_env *env); //обработка unset
@@ -203,7 +216,6 @@ void mx_env_create(t_env *env); // функция создание среды п
 int mx_check_flag(char *str, t_command *commands); //проверка приходящих флагов
 void mx_dir_file_link(t_command *commands); // проверка и выполнения на папку,линк,файл
 void mx_cd_error(t_command *commands, int error_code); //ошибки ф-и cd
-char *mx_curl_normal(char *str); // нормализация аргумента
 void mx_go_dir(t_command *cmd); // переход по папка с флагами и без
 void mx_exp_change_dublicate(char *str, t_env *env, int index); // изменить дубликаты в export
 void mx_exp_add_argv(t_command *cmd, t_env *env); //добавить данные в export

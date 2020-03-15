@@ -28,8 +28,6 @@ mx_ush_loop.c \
 mx_ush_read_line.c \
 mx_str_arr_size.c \
 mx_launch_process.c \
-mx_pwd.c \
-mx_change_dir.c \
 mx_get_array_size.c \
 mx_builtin_func.c \
 mx_env.c \
@@ -37,20 +35,17 @@ mx_export.c \
 mx_unset.c \
 mx_env_create.c \
 mx_check_flag.c \
-mx_dir_file_link.c \
-mx_cd_error.c \
-mx_curl_normal.c \
-mx_go_dir.c \
 mx_exp_change_dublicate.c \
 mx_exp_add_argv.c \
-\
-mx_str_arr_size.c \
-\
 \
 mx_builtin_usage.c \
 mx_valid_cd.c \
 mx_valid_pwd.c \
 mx_check_flags.c \
+mx_create_path.c \
+mx_path_to_canonical.c \
+mx_pwd.c \
+mx_cd.c \
 \
 
 

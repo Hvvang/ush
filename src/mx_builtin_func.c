@@ -6,7 +6,7 @@ void mx_builtin_func(t_command *commands, t_env *env) {
 	if (!strcmp(commands->command, "env"))
 		mx_env(commands, env);
 	else if (!strcmp(commands->command, "cd"))
-		mx_change_dir(commands);
+		mx_cd(commands);
 	else if (!strcmp(commands->command, "pwd"))
 		mx_pwd(commands);
 	else if (!strcmp(commands->command, "export"))
