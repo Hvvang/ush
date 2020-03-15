@@ -63,6 +63,6 @@ void mx_dir_file_link(t_command *commands) {
 		mx_go_dir(commands);
 	if (is_dir(commands) == 2) // если файл
 		mx_cd_error(commands, 2);
-	if (is_dir(commands) == 3)  // если линк link/ - не работает, найти решение
+	if (is_dir(commands) == 3)
 		go_link(commands);
 }
