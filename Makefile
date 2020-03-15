@@ -47,6 +47,8 @@ mx_exp_add_argv.c \
 mx_str_arr_size.c \
 \
 \
+mx_builtin_usage.c \
+mx_valid_cd.c \
 mx_valid_pwd.c \
 mx_check_flags.c \
 \

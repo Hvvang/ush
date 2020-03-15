@@ -174,7 +174,10 @@ char **mx_list_to_arr(t_list *list);
 t_list *mx_split_commands(char *commands, char delim);
 int mx_check_subs_lvls(char *str, int *index);
 
+
+void mx_builtin_usage(int builtin, char error);
 char mx_check_flags(int builtin, char **args,  bool(*valid)(int *, char *, char *));
+bool mx_valid_cd(int *toggle, char *arg, char *flag);
 bool mx_valid_pwd(int *toggle, char *arg, char *flag);
 // void         mx_ush_loop(t_list *history); // базовый цикл
 // char         *mx_ush_read_line(void); // парсинг вводимых данных
