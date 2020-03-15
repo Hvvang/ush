@@ -1,10 +1,11 @@
 #include "ush.h"
 
 static int get_type(const char *path) {
-	char *tmp_path = NULL;
 	struct stat stat;
+	char *t_path = mx_create_path(path, '0');
 
-	lstat(path, &stat);
+	t_path = mx_path_to_canonical(t_path);
+	lstat(t_path, &stat);
 	if (S_ISDIR(stat.st_mode))
 		return MX_DIR;
 	else if (S_ISREG(stat.st_mode))
@@ -25,14 +26,13 @@ static void handle_error(const char *command, int d_type) {
 
 static char *create_path(const char *command, char flag) {
 	char *path = NULL;
-	char buff[PATH_MAX + 1];
 	int d_type = get_type(command);
 
 	if (d_type == MX_FILE || d_type == MX_EFAULT
 		|| (d_type == MX_LINK && flag == 's'))
 		handle_error(command, d_type);
 	else {
-		path = mx_create_path((char*)command, d_type, flag);
+		path = mx_create_path((char*)command, flag);
 		path = mx_path_to_canonical(path);
 	}
 	return path;

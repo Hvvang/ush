@@ -203,7 +203,7 @@ int  mx_get_array_size(char **arr); // получить размер масив�
 void mx_builtin_func(t_command *commands, t_env *env); //главная ф-я билтинтов
 
 
-char *mx_create_path(char *command, int d_type, char flag);
+char *mx_create_path(char *command, char flag);
 char *mx_path_to_canonical(char *str); // нормализация аргумента
 int  mx_pwd(t_command *command); //выводит текущее местополжение
 void mx_cd(t_command *command); // запуск команды cd
