@@ -14,7 +14,8 @@ static char set_default(int builtin) {
     return flag;
 }
 
-char mx_check_flags(int builtin, int *index, char **args,  bool(*valid)(int *, char *, char *)) {
+char mx_check_flags(int builtin, int *index, t_command *commands,  bool(*valid)(int *, char *, char *)) {
+    char **args = commands->arguments;
     char flag = set_default(builtin);
     int toggle = 1;
 
@@ -22,6 +23,7 @@ char mx_check_flags(int builtin, int *index, char **args,  bool(*valid)(int *, c
         if (!(*valid)(&toggle, args[i], &flag)) {
             mx_builtin_usage(builtin, flag);
             flag = '\0';
+            commands->exit = 1;
             break;
         }
         *index = i;

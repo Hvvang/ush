@@ -21,6 +21,7 @@
 #include <sys/xattr.h>
 #include <pwd.h>
 #include <grp.h>
+#include <linux/limits.h>
 
 //------ POSIX C lib------
 #include <aio.h>         // Asynchronous input and output
@@ -154,9 +155,14 @@ typedef enum e_builtins { // builtins struct
 }            t_builtins;
 
 typedef enum e_types { // Types stuct
-	MX_DIR,
-	MX_FILE,
+	// MX_SOCKET,
 	MX_LINK,
+	MX_FILE,
+	MX_BLOCK,
+	MX_DIR,
+	MX_CHAR,
+	MX_FIFO,
+	MX_ANY,
 	MX_EFAULT
 }            t_types;
 
@@ -170,6 +176,10 @@ typedef struct s_command {
 }              t_command;
 
 
+// DEFAULT funcs
+int mx_get_type(const char *path);
+
+// PARSER funcs
 char mx_set_literal(const int literal);
 int mx_get_literal(const char c);
 int mx_str_arr_size(char **arr);
@@ -181,20 +191,15 @@ char **mx_list_to_arr(t_list *list);
 t_list *mx_split_commands(char *commands, char delim);
 int mx_check_subs_lvls(char *str, int *index);
 
-
+// BUILTINS funcs
 void mx_builtin_usage(int builtin, char error);
-char mx_check_flags(int builtin, int *index, char **args,  bool(*valid)(int *, char *, char *));
-bool mx_valid_cd(int *toggle, char *arg, char *flag);
+char mx_check_flags(int builtin, int *index, t_command *commands, bool(*valid)(int *, char *, char *));
+void mx_error_handle(int builtin, const char *command, int d_type);
+void  mx_pwd(t_command *command); //выводит текущее местополжение
 bool mx_valid_pwd(int *toggle, char *arg, char *flag);
-// void         mx_ush_loop(t_list *history); // базовый цикл
-// char         *mx_ush_read_line(void); // парсинг вводимых данных
-// int          mx_launch_process(char **argv); // запуск дочернего процеса
-// int          mx_print_pwd(t_command *command); //выводит текущее местополжение
-// int          mx_get_array_size(char **arr);
-// void         mx_builtin_func(t_command *commands);
-// void         mx_change_dir(t_command *command);
-// void         mx_chage_dir_and_pwd(char *str); // изменить каталог и pwd
-// void         mx_chage_link_dir_pwd(char *str); // перейти по линку и поменять pwd
+void mx_cd(t_command *command); // запуск команды cd
+bool mx_valid_cd(int *toggle, char *arg, char *flag);
+
 
 void mx_ush_loop (t_env *env); // базовый цикл
 char *mx_ush_read_line(void); // парсинг вводимых данных
@@ -202,11 +207,6 @@ int  mx_launch_process(char **argv); // запуск дочернего проц
 int  mx_get_array_size(char **arr); // получить размер масива
 void mx_builtin_func(t_command *commands, t_env *env); //главная ф-я билтинтов
 
-
-char *mx_create_path(char *command, char flag);
-char *mx_path_to_canonical(char *str); // нормализация аргумента
-int  mx_pwd(t_command *command); //выводит текущее местополжение
-void mx_cd(t_command *command); // запуск команды cd
 
 
 void mx_env(t_command *commands, t_env *env); //запуск команды env
