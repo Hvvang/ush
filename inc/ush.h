@@ -1,5 +1,5 @@
-#ifndef ULS_H
-#define ULS_H
+#ifndef USH_H
+#define USH_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -21,6 +21,7 @@
 #include <sys/xattr.h>
 #include <pwd.h>
 #include <grp.h>
+#include <limits.h>
 
 //------ POSIX C lib------
 #include <aio.h>         // Asynchronous input and output
@@ -50,7 +51,7 @@
 #include <math.h>        // Mathematical declarations, see C mathematical functions
 #include <monetary.h>    // String formatting of monetary units
 //#include <mqueue.h>      // Message queue
-#include <ndbm.h>        // NDBM database operations
+// #include <ndbm.h>        // NDBM database operations
 #include <net/if.h>      // Listing of local network interfaces
 #include <netdb.h>       // Translating protocol and host names into numeric addresses (part of Berkeley sockets)
 #include <netinet/in.h>  // Defines Internet protocol and address family (part of Berkeley sockets)
@@ -105,7 +106,6 @@
 #include <wchar.h>       // Wide-Character Handling, see C string handling
 #include <wctype.h>      // Wide-Character Classification and Mapping Utilities, see C character classification
 #include <wordexp.h>     // Word-expansion like the shell would perform
-#include <malloc/malloc.h>
 
 #define NO_F_OR_D "cd: no such file or directory: "
 #define NO_D "cd: not a directory: "
@@ -143,6 +143,30 @@ typedef enum e_literals { // Literal struct
 }            t_literals;
 
 
+typedef enum e_builtins { // builtins struct
+	MX_ENV,
+	MX_CD,
+	MX_PWD,
+	MX_WHICH,
+	MX_ECHO,
+	MX_EXPORT,
+	MX_UNSET,
+	MX_EXIT
+}            t_builtins;
+
+typedef enum e_types { // Types stuct
+	// MX_SOCKET,
+	MX_LINK,
+	MX_FILE,
+	MX_BLOCK,
+	MX_DIR,
+	MX_CHAR,
+	MX_FIFO,
+	MX_ANY,
+	MX_EFAULT
+}            t_types;
+
+
 typedef struct s_command {
 	char *command;
 	char **arguments;
@@ -151,6 +175,11 @@ typedef struct s_command {
 	struct s_command *next;
 }              t_command;
 
+
+// DEFAULT funcs
+int mx_get_type(const char *path);
+
+// PARSER funcs
 char mx_set_literal(const int literal);
 int mx_get_literal(const char c);
 int mx_str_arr_size(char **arr);
@@ -160,14 +189,26 @@ int mx_skip_literal(char *str, int *index, int literal);
 t_command *mx_split_to_struct(char *stdin_line);
 char **mx_list_to_arr(t_list *list);
 t_list *mx_split_commands(char *commands, char delim);
+int mx_check_subs_lvls(char *str, int *index);
+
+// BUILTINS funcs
+void mx_builtin_usage(int builtin, char error);
+char mx_check_flags(int builtin, int *index, t_command *commands, bool(*valid)(int *, char *, char *));
+void mx_error_handle(int builtin, const char *command, int d_type);
+void  mx_pwd(t_command *command); //выводит текущее местополжение
+bool mx_valid_pwd(int *toggle, char *arg, char *flag);
+void mx_cd(t_command *command); // запуск команды cd
+bool mx_valid_cd(int *toggle, char *arg, char *flag);
+
 
 void mx_ush_loop (t_env *env); // базовый цикл
 char *mx_ush_read_line(void); // парсинг вводимых данных
 int  mx_launch_process(char **argv); // запуск дочернего процеса
-int  mx_print_pwd(t_command *command); //выводит текущее местополжение
 int  mx_get_array_size(char **arr); // получить размер масива
 void mx_builtin_func(t_command *commands, t_env *env); //главная ф-я билтинтов
-void mx_change_dir(t_command *command); // запуск команды cd
+
+
+
 void mx_env(t_command *commands, t_env *env); //запуск команды env
 void mx_export(t_command *commands, t_env *env); // обработка export
 void mx_unset(t_command *commands, t_env *env); //обработка unset
@@ -175,7 +216,6 @@ void mx_env_create(t_env *env); // функция создание среды п
 int mx_check_flag(char *str, t_command *commands); //проверка приходящих флагов
 void mx_dir_file_link(t_command *commands); // проверка и выполнения на папку,линк,файл
 void mx_cd_error(t_command *commands, int error_code); //ошибки ф-и cd
-char *mx_curl_normal(char *str); // нормализация аргумента 
 void mx_go_dir(t_command *cmd); // переход по папка с флагами и без
 void mx_exp_change_dublicate(char *str, t_env *env, int index); // изменить дубликаты в export
 void mx_exp_add_argv(t_command *cmd, t_env *env); //добавить данные в export

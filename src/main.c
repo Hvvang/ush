@@ -4,6 +4,7 @@ int main(int argc, char **argv) {
 	//Загрузка конфигураций
 	argc += 0;
 	argv[0] = argv[1];
+	t_list *history = NULL;
 	//Цыкл команды
 
 	t_env *env = (t_env*)malloc(sizeof(t_env));
