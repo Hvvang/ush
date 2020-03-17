@@ -28,7 +28,11 @@ mx_check_flags.c \
 mx_pwd.c \
 mx_cd.c \
 mx_builtin_func.c \
-\
+mx_env_create.c \
+mx_env.c \
+mx_exp_add_argv.c \
+mx_valid_export_unset.c \
+mx_error_export_unset.c \
 
 SRC = \
 main.c \
@@ -37,15 +41,10 @@ mx_ush_read_line.c \
 mx_str_arr_size.c \
 mx_launch_process.c \
 mx_get_array_size.c \
-mx_env.c \
 mx_export.c \
 mx_unset.c \
-mx_env_create.c \
 mx_exp_change_dublicate.c \
-mx_exp_add_argv.c \
-\
 mx_get_type.c \
-\
 
 
 SRCS = $(addprefix src/, $(SRC))

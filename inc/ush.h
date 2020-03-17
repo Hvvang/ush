@@ -199,6 +199,8 @@ void  mx_pwd(t_command *command); //выводит текущее местопо
 bool mx_valid_pwd(int *toggle, char *arg, char *flag);
 void mx_cd(t_command *command); // запуск команды cd
 bool mx_valid_cd(int *toggle, char *arg, char *flag);
+bool mx_valid_export_unset(t_command *cmd); // валидация export and unset
+bool mx_error_export_unset(t_command *cmd, char *builtin); //error for unset and export
 
 
 void mx_ush_loop (t_env *env); // базовый цикл
