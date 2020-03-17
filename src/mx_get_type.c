@@ -1,11 +1,14 @@
 #include "ush.h"
 
 int mx_get_type(const char *path) {
+	DIR *dir = opendir(path);
 	struct stat stat;
 
 	lstat(path, &stat);
 	// if (S_ISSOCK(stat.st_mode))
 	// 	return MX_SOCKET;
+	if (dir)
+		closedir(dir);
 	if (S_ISLNK(stat.st_mode))
 		return MX_LINK;
 	else if (S_ISREG(stat.st_mode))
