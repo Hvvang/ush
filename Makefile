@@ -48,7 +48,7 @@ mx_get_type.c \
 
 
 SRCS = $(addprefix src/, $(SRC))
-PARSERS = $(addprefix src/parse/, $(PARSER))
+PARSERS = $(addprefix src/parser/, $(PARSER))
 BUILTINS = $(addprefix src/builtins/, $(BUILTIN))
 
 OBJSRC = $(SRC:%.c=%.o)
