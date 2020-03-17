@@ -10,7 +10,7 @@
 #include <errno.h>
 #include <wchar.h>
 #include <fcntl.h>
-#include <malloc/malloc.h>
+#include <malloc.h>
 #include <dirent.h>
 #include "libmx/inc/libmx.h"
 #include <sys/ioctl.h>

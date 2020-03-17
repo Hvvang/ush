@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <wchar.h>
 #include <fcntl.h>
-#include <malloc/malloc.h>
+#include <malloc.h>
 
 #define BUF_SIZE 8;
 

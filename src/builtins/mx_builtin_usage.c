@@ -8,7 +8,19 @@ void mx_builtin_usage(int builtin, char error) {
             break;
         case MX_CD:
             fprintf(stderr, "u$h: cd: -%c: invalid option\n", error);
-            fprintf(stderr, "cd: usage: cd [-s|[-P] [{-}|dir]\n");
+            fprintf(stderr, "cd: usage: cd [-sP] [{-}|dir]\n");
+            break;
+        case MX_EXPORT:
+            fprintf(stderr, "u$h: export: -%c: invalid option\n", error);
+            fprintf(stderr, "export: usage: export [name[=value] ...]\n");
+            break;
+        case MX_UNSET:
+            fprintf(stderr, "u$h: unset: -%c: invalid option\n", error);
+            fprintf(stderr, "unset: usage: export [name ...]\n");
+            break;
+        case MX_WHICH:
+            fprintf(stderr, "u$h: which: -%c: invalid option\n", error);
+            fprintf(stderr, "which: usage: which [-as] [pragramname ...]\n");
             break;
     }
 }
