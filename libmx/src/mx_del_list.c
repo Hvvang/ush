@@ -6,7 +6,7 @@ void mx_del_list(t_list **head) {
     while (*head) {
         tmp = *head;
         *head = (*head)->next;
-        free(tmp->data);
+        mx_strdel(&tmp->data);
         free(tmp);
     }
 }

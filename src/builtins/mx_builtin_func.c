@@ -13,6 +13,12 @@ void mx_builtin_func(t_command *commands, t_env *env) {
 		mx_export(commands, env);
 	else if (!strcmp(commands->command, "unset"))
 		mx_unset(commands, env);
-	else if (!strcmp(commands->command, "exit"))
+	else if (!strcmp(commands->command, "exit")) {
+		mx_del_struct(&commands);
+		// mx_del_strarr(&env->env);
+		// mx_del_strarr(&env->exp);
+		// mx_del_strarr(&env->unset);
+
 		exit(0);
+	}
 }

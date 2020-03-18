@@ -6,7 +6,7 @@ static int check_dquote(char *str, int *index, int len);
 
 static int check_dollar(char *str, int *index, int len) {
     int literal_close = mx_get_literal(str[*index + 1]);
-
+    
     if (literal_close == BRACKET || literal_close == QBRACKET) {
         for (*index = *index + 2; *index < len; (*index)++) {
             int currLiteral = mx_get_literal(str[*index]);
@@ -72,6 +72,7 @@ static int check_dquote(char *str, int *index, int len) {
     return -1;
 }
 
+// Func that check input on quote closing
 int mx_check_input(char *stdin_line, int *index) {
     int len = strlen(stdin_line);
     int error = 0;

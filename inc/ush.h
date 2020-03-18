@@ -23,6 +23,10 @@
 #include <grp.h>
 #include <linux/limits.h>
 
+#include <term.h>
+#include <termios.h>
+#include <curses.h>
+
 //------ POSIX C lib------
 #include <aio.h>         // Asynchronous input and output
 #include <arpa/inet.h>   // Functions for manipulating numeric IP addresses (part of Berkeley sockets)
@@ -178,6 +182,13 @@ typedef struct s_command {
 
 // DEFAULT funcs
 int mx_get_type(const char *path);
+void pop_front(t_command **head);
+void mx_del_str_arr(char **arr);
+void mx_del_struct(t_command **head);
+void mx_enable_canon(void);
+bool mx_match(char *src, char *regex);
+void mx_backspace(unsigned int times, int fd);
+
 
 // PARSER funcs
 char mx_set_literal(const int literal);
@@ -201,13 +212,13 @@ void mx_cd(t_command *command); // запуск команды cd
 bool mx_valid_cd(int *toggle, char *arg, char *flag);
 
 
-void mx_ush_loop (t_env *env); // базовый цикл
-char *mx_ush_read_line(void); // парсинг вводимых данных
+void mx_ush_loop (t_env *env, t_list *history); // базовый цикл
+char *mx_ush_read_line(t_list *history); // парсинг вводимых данных
 int  mx_launch_process(char **argv); // запуск дочернего процеса
 int  mx_get_array_size(char **arr); // получить размер масива
 void mx_builtin_func(t_command *commands, t_env *env); //главная ф-я билтинтов
 
-
+void mx_get_history(char *input, int *pos, t_list *histry);
 
 void mx_env(t_command *commands, t_env *env); //запуск команды env
 void mx_export(t_command *commands, t_env *env); // обработка export

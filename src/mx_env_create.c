@@ -2,7 +2,6 @@
 
 void mx_env_create(t_env *env) {
 	extern char **environ; //clear mem
-
 	int arr_size = mx_get_array_size(environ);
 
 	env->exp = (char **)malloc(sizeof(char*) * arr_size + 1);

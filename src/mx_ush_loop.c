@@ -14,71 +14,32 @@ static int is_builtin(char *command) {
 
 // void mx_ush_loop (t_list *history) {
 
-void mx_ush_loop (t_env *env) {
+void mx_ush_loop (t_env *env, t_list *history) {
 	int status = 1;
 	char *stdin_line = NULL;
 
 	while (status) {
-
 		printf(MX_SHELL_PROMPT);
-		stdin_line = mx_ush_read_line(); //чтение аргументов
+		stdin_line = mx_ush_read_line(history); //чтение аргументов
 
-		// if (stdin_line[0] == '\x03') {
-		// 	t_list *temp = history;
-		// 	int i = 0;
-		//
-		// 	while (temp) {
-		// 		printf("history[%d] = %s\n", i++, temp->data);
-		//
-		// 		temp = temp->next;
-		// 	}
-		// }
-
+		mx_push_back(&history, mx_strdup(stdin_line));
 		if (stdin_line[0] != '\0') {
 			t_command *commands = mx_split_to_struct(stdin_line);
-
-			// mx_push_back(&history, mx_strdup(stdin_line));
-			// if (commands) {
-			// 	t_command *temp = commands;
-			//
-			// 	while (temp) {
-			// 		printf("command = %s\n", temp->command);
-			// 		for (int i = 0; temp->arguments[i]; i++) {
-			// 			printf("\targument[%i] = %s\n", i, temp->arguments[i]);
-			// 		}
-			// 		temp = temp->next;
-			// 	}
-			// }
-											//чтение аргументов
-
+			commands->exit = 0;
 
 			if (isatty(0)){
-				if (commands) {
-					t_command *temp = commands;
-
-					// char flag = mx_check_flags(MX_CD, temp->arguments, mx_valid_cd);
-					// if (!flag)
-					// 	printf("LOL\n");
-					// else
-					// 	printf("flag is %c\n", flag);
-
-					while (temp) {
-						if (is_builtin(temp->command)) {
-							mx_builtin_func(temp, env);
-						}
-						else 													// если функции надо искать
-							fprintf(stderr, "u$h: command  not found: %s\n", temp->command);
-						temp = temp->next;
-					}
+				while (commands) {
+					if (is_builtin(commands->command))
+						mx_builtin_func(commands, env);
+					else 													// если функции надо искать
+						fprintf(stderr, "u$h: command  not found: %s\n", commands->command);
+					pop_front(&commands);
 				}
 			}
 		}
-		// else {
-		// 	printf("asd\n");
-		// 	exit(0);
-		// }
 		mx_strdel(&stdin_line);
-		mx_ush_loop(env);
+		// system("leaks ush");
+		mx_ush_loop(env, history);
 		// mx_ush_loop(history);
 	}
 }

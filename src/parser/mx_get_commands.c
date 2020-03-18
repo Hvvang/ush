@@ -23,6 +23,7 @@ char **mx_get_commands(const char *stdin_line) {
     int result = 0;
 
     if (mx_check_input(temp, &result) == -1) {
+        mx_strdel(&temp);
         printf("ERROR\n");
         return NULL;
     }
@@ -31,6 +32,7 @@ char **mx_get_commands(const char *stdin_line) {
         char **commands = mx_list_to_arr(list);
 
         mx_del_list(&list);
+        mx_strdel(&temp);
         if (check_command_on_exist(commands)) {
             mx_del_strarr(&commands);
             return NULL;

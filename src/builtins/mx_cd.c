@@ -57,7 +57,7 @@ static char *create_path(const char *command, char flag) {
 }
 
 static void change_dir_and_env(t_command *commands, int index, char flag) {
-	char *path = strdup(commands->arguments[index]);
+	char *path = commands->arguments[index];
 	int d_type = mx_get_type(path);
 
 	commands->exit = 1;
@@ -74,8 +74,8 @@ static void change_dir_and_env(t_command *commands, int index, char flag) {
 			chdir(path);
 		setenv("OLDPWD", getenv("PWD"), 1);
 		setenv("PWD", path, 1);
+		mx_strdel(&path);
 	}
-	mx_strdel(&path);
 }
 
 void mx_cd(t_command *commands) {
@@ -85,7 +85,9 @@ void mx_cd(t_command *commands) {
 
 	if (!commands->exit) {
 		if (!commands->arguments[index]) {
+			commands->arguments = malloc(sizeof(char *) + 1);
 			commands->arguments[index] = strdup(getenv("HOME"));
+			commands->arguments[index + 1] = NULL;
 		}
 		else if (!strcmp(commands->arguments[index], "-")) {
 			free(commands->arguments[index]);

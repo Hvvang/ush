@@ -46,6 +46,14 @@ mx_exp_change_dublicate.c \
 mx_exp_add_argv.c \
 \
 mx_get_type.c \
+pop_front.c \
+mx_del_str_arr.c \
+mx_del_struct.c \
+mx_enable_canon.c \
+mx_match.c \
+mx_backspace.c \
+\
+mx_get_history.c \
 \
 
 
