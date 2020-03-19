@@ -1,15 +1,5 @@
 #include "ush.h"
 
-static char *is_variable(char *str) {
-	int len = strlen(str);
-
-	if (str[len - 1] == '=' && str[len] == '\0'){
-		str = mx_strjoin(str, "\"\"");
-		return str;
-	}
-	return str;
-}
-
 static char *nrml_str (char *str) { //пишем все до =
 	char *buff = (char*)malloc(sizeof(char)* strlen(str));
 
@@ -36,16 +26,15 @@ static int mx_is_exp_dbl (char *str, char **arr) { //проверка на ду�
 
 static void add_in_exp(char *str, t_env *env) { //добавляем в export
 	int len = mx_get_array_size(env->exp);
-	char *dst = strdup(is_variable(str)); // добавить "" для агрумента
 
-	env->exp[len] = (char *)malloc(sizeof(char) * strlen(dst));
-	env->exp[len] = dst;
+	env->exp[len] = (char *)malloc(sizeof(char) * strlen(str));
+	env->exp[len] = str;
 	env->exp[len + 1] = NULL;
 }
 
 void mx_exp_add_argv(t_command *cmd, t_env *env) {
 	for (int i = 0; cmd->arguments[i]; ++i) {
-		if (mx_is_exp_dbl(cmd->arguments[i], env->exp) > -1) {
+		if (mx_is_exp_dbl(cmd->arguments[i], env->exp) > -1) { // если дубликат
 			mx_exp_change_dublicate(cmd->arguments[i], env,
 					 mx_is_exp_dbl(cmd->arguments[i], env->exp));
 		} 

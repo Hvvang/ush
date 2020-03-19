@@ -1,6 +1,5 @@
 #include "ush.h"
 
-// #define CTRL(c) ((c) & 037)
 #define MX_IS_BS(code)          !strcmp(code, "\010\0")
 #define MX_IS_VT(code)          !strcmp(code, "\013\0")
 #define MX_IS_ESC(code)         !strcmp(code, "\033\0")

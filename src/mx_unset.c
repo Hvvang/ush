@@ -36,18 +36,12 @@ static void dell_from_env(t_command *commands, t_env *env) {
 	env->exp = buff;
 }
 
-void mx_unset(t_command *commands, t_env *env) {
-	
-	if (commands->arguments[0]) {
-		for (int i = 0; commands->arguments[i]; i++) {
-			if (commands->arguments[i][0] == '=') {
-				fprintf(stderr, "%s", "u$h: unset: `");
-				fprintf(stderr, "%s", commands->arguments[i]);
-				fprintf(stderr, "%s\n", "': not a valid identifier");
-				return ;
-			}
-		}
-		dell_from_env(commands, env);
-	}
+void mx_unset(t_command *cmd, t_env *env) {
+	if (mx_valid_export_unset(cmd))
+		return ;
+	else if (mx_error_export_unset(cmd, "u$h: unset: `")) // если есть ошибки export no_alpha: 123 234 -- -- 
+		return ;
+	else
+		dell_from_env(cmd, env);
 	return ;
 }
