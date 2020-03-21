@@ -9,8 +9,11 @@ static t_command *create_node(char *command, char **arguments) {
 		return NULL;
     node->command = command;
 	node->arguments = malloc(sizeof(char*) * size + 1);
-	for (int i = 0; i <= size; i++)
-    	node->arguments[i] = arguments[i];
+	for (int i = 0; i <= size; i++) {
+		node->arguments[i] = arguments[i];
+		if (node->arguments[i])
+			node->arguments[i] = mx_filter_input(node->arguments[i]);
+	}
     node->next = NULL;
     return node;
 }

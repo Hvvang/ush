@@ -9,6 +9,8 @@ void mx_builtin_func(t_command *commands, t_env *env) {
 		mx_cd(commands);
 	else if (!strcmp(commands->command, "pwd"))
 		mx_pwd(commands);
+	else if (!strcmp(commands->command, "echo"))
+		mx_echo(commands);
 	else if (!strcmp(commands->command, "export"))
 		mx_export(commands, env);
 	else if (!strcmp(commands->command, "unset"))

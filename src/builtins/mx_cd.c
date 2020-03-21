@@ -85,7 +85,7 @@ void mx_cd(t_command *commands) {
 
 	if (!commands->exit) {
 		if (!commands->arguments[index]) {
-			commands->arguments = malloc(sizeof(char *) + 1);
+			commands->arguments[index] = malloc(sizeof(char *) + 1);
 			commands->arguments[index] = strdup(getenv("HOME"));
 			commands->arguments[index + 1] = NULL;
 		}

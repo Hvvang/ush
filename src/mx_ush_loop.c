@@ -21,14 +21,14 @@ void mx_ush_loop (t_env *env, t_list *history) {
 	while (status) {
 		printf(MX_SHELL_PROMPT);
 		stdin_line = mx_ush_read_line(history); //чтение аргументов
-
-		mx_push_back(&history, mx_strdup(stdin_line));
+		if (!history || (history && strcmp(history->data, stdin_line)))
+			mx_push_front(&history, mx_strdup(stdin_line));
 		if (stdin_line[0] != '\0') {
 			t_command *commands = mx_split_to_struct(stdin_line);
-			commands->exit = 0;
 
 			if (isatty(0)){
 				while (commands) {
+					commands->exit = 0;
 					if (is_builtin(commands->command))
 						mx_builtin_func(commands, env);
 					else 													// если функции надо искать

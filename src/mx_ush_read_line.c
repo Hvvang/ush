@@ -15,33 +15,9 @@
 #define MX_IS_PgUp(code)        !strcmp(code, "\033[I\0")
 #define MX_IS_PgDn(code)        !strcmp(code, "\033[G\0")
 
-static void insert_char_to_str(char *str, char c, int pos) {
-    int len = strlen(str);
-    int i = len - 1;
-
-    if (str == NULL)
-        return;
-
-    for (; i >= pos; i--)
-        str[i + 1] = str[i];
-
-    str[pos] = c;
-}
-
-static void del_char_in_str(char *str, int pos) {
-    int len = strlen(str);
-    int i = pos;
-
-    if (pos > len - 1 || pos < 0)
-        return;
-
-    for (; i <= len - 1; i++)
-        str[i] = str[i + 1];
-    str[i] = '\0';
-}
 
 static void print_regular(char *str, char c, int *pos) {
-    insert_char_to_str(str, c, *pos);
+    mx_insert_char_to_str(str, c, *pos);
 
     printf("%s", str + (*pos));
     for (int i = 0; i < strlen(str + (*pos)); i++)
@@ -55,7 +31,7 @@ static void print_regular(char *str, char c, int *pos) {
 
 static void print_backspace(char *str, int *pos) {
     if (*pos > 0) {
-        del_char_in_str(str, *pos - 1);
+        mx_del_char_in_str(str, *pos - 1);
         printf("\b%s ", str + (*pos) - 1);
         for (int i = 0; i <= strlen(str + (*pos) - 1); i++)
             printf("\b");
@@ -83,7 +59,7 @@ static void get_next(char *str, int *pos) {
 }
 
 static void print_del(char *str, int *pos) {
-    del_char_in_str(str, *pos);
+    mx_del_char_in_str(str, *pos);
     int i = strlen(str);
 
     printf("%s ", &str[*pos]);
@@ -137,7 +113,6 @@ static t_list *create_copy(t_list *history) {
     return copy;
 }
 
-
 char *mx_ush_read_line(t_list *history) {
     char c[5];
     char *line = mx_strnew(PATH_MAX);
@@ -153,18 +128,22 @@ char *mx_ush_read_line(t_list *history) {
     mx_enable_canon();
     while (read(STDIN_FILENO, &c, 4)) {
         // printf("c[0] = %c, c[1] = %c, c[2] = %c c[3] = %c c[4] = %c ",c[0], c[1], c[2], c[3], c[4]);
-        // return line;
+        // exit(1);
         int len = strlen(line);
 
-        if (c[0] == '\n') {
+        if (c[0] == '\t') {
+            continue;
+        }
+        else if (c[0] == '\n') {
             write(STDOUT_FILENO, "\n", 1);
             break;
+        }
+        else if (c[0] == 127) {
+            print_backspace(line, &pos);
         }
         else if (MX_IS_ESC(c)) {
             esc = !esc;
         }
-        else if (c[0] == 127)
-            print_backspace(line, &pos);
         else if (MX_IS_LEFT_ARROW(c)) {
             if (!esc)
                 get_prev(&pos);

@@ -10,7 +10,6 @@
 #include <errno.h>
 #include <wchar.h>
 #include <fcntl.h>
-#include <malloc.h>
 #include <dirent.h>
 #include "libmx/inc/libmx.h"
 #include <sys/ioctl.h>
@@ -24,8 +23,10 @@
 
 #ifdef __linux__
 	#include <linux/limits.h>
+	#include <malloc.h>
 #else
 	#include <limits.h>
+	#include <malloc/malloc.h>
 #endif
 
 #include <term.h>
@@ -148,7 +149,7 @@ typedef enum e_literals { // Literal struct
 	CBRACKET, // )
 	CQBRACKET, // }
 	SLASH, // "\"
-	DOLLAR, // $
+	DOLLAR // $
 }            t_literals;
 
 
@@ -192,8 +193,8 @@ void mx_del_str_arr(char **arr);
 void mx_del_struct(t_command **head);
 void mx_enable_canon(void);
 bool mx_match(char *src, char *regex);
-void mx_backspace(unsigned int times, int fd);
-
+void mx_del_char_in_str(char *str, int pos);
+void mx_insert_char_to_str(char *str, char c, int pos);
 
 // PARSER funcs
 char mx_set_literal(const int literal);
@@ -206,17 +207,22 @@ t_command *mx_split_to_struct(char *stdin_line);
 char **mx_list_to_arr(t_list *list);
 t_list *mx_split_commands(char *commands, char delim);
 int mx_check_subs_lvls(char *str, int *index);
+char *mx_filter_input(char *arg);
+
 
 // BUILTINS funcs
 void mx_builtin_usage(int builtin, char error);
-char mx_check_flags(int builtin, int *index, t_command *commands, bool(*valid)(int *, char *, char *));
 void mx_error_handle(int builtin, const char *command, int d_type);
 void  mx_pwd(t_command *command); //выводит текущее местополжение
-bool mx_valid_pwd(int *toggle, char *arg, char *flag);
 void mx_cd(t_command *command); // запуск команды cd
-bool mx_valid_cd(int *toggle, char *arg, char *flag);
+char mx_check_flags(int builtin, int *index, t_command *commands, bool(*valid)(int *, char *, char *, int *));
+bool mx_valid_pwd(int *toggle, char *arg, char *flag, int *index);
+bool mx_valid_cd(int *toggle, char *arg, char *flag, int *index);
+bool mx_valid_echo(int *toggle, char *arg, char *flag, int *index);
 bool mx_valid_export_unset(t_command *cmd); // валидация export and unset
 bool mx_error_export_unset(t_command *cmd, char *builtin); //error for unset and export
+void mx_echo(t_command *commands);
+
 
 
 void mx_ush_loop (t_env *env, t_list *history); // базовый цикл

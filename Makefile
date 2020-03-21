@@ -18,21 +18,24 @@ mx_split_to_struct.c \
 mx_list_to_arr.c \
 mx_split_commands.c \
 mx_check_subs_lvls.c \
+mx_filter_input.c \
 
 BUILTIN = \
 mx_error_handle.c \
 mx_builtin_usage.c \
 mx_valid_cd.c \
 mx_valid_pwd.c \
+mx_valid_export_unset.c \
 mx_check_flags.c \
 mx_pwd.c \
 mx_cd.c \
+mx_echo.c \
+mx_env.c \
 mx_builtin_func.c \
 mx_env_create.c \
-mx_env.c \
 mx_exp_add_argv.c \
-mx_valid_export_unset.c \
 mx_error_export_unset.c \
+mx_valid_echo.c \
 
 SRC = \
 main.c \
@@ -50,9 +53,10 @@ mx_del_str_arr.c \
 mx_del_struct.c \
 mx_enable_canon.c \
 mx_match.c \
-mx_backspace.c \
 \
 mx_get_history.c \
+mx_del_char_in_str.c \
+mx_insert_char_to_str.c \
 \
 
 
