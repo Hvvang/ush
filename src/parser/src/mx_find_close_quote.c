@@ -1,6 +1,6 @@
-#include "ush.h"
+#include "../inc/mx_parser.h"
 
-int mx_find_close_quote(char *str, int *i, char c) {
+void mx_find_close_quote(char *str, int *i, char c) {
     if (str[*i] == c) {
         (*i)++;
         while (str[*i]) {
