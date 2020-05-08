@@ -1,4 +1,4 @@
-#include "ush.h"
+#include "../inc/ush.h"
 
 int mx_launch_process(char **args) {
 	pid_t pid;

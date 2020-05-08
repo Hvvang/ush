@@ -10,12 +10,6 @@ void set_props(void) {
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &tty);
 }
 
-// struct termios *mx_get_tty(void) {
-//     static struct termios tty;
-//
-//     return &tty;
-// }
-
 void mx_enable_canon(void) {
     static struct termios tty;
 

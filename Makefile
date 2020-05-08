@@ -3,9 +3,9 @@ NAME = ush
 INCD = inc
 SRCD = src
 OBJD = obj
+LIBD = libmx
 
-INC = $(wildcard $(INCD)/*.h)
-
+INC = inc/ush.h
 
 LIB = libmx/libmx.a
 INPUT = $(SRCD)/input/input.a
@@ -16,26 +16,36 @@ INPUT_INC = $(SRCD)/input/$(INCD)/mx_input.h
 PARSER_INC = $(SRCD)/parser/$(INCD)/mx_parser.h
 BUILTINS_INC = $(SRCD)/builtins/$(INCD)/mx_builtins.h
 
-MODULES = $(LIB) $(INPUT) $(PARSER) $(BUILTINS)
+MODULES = $(INPUT) $(PARSER) $(BUILTINS) $(LIB)
 INCLUDE = \
-	-I $(INCD) \
-	-I $(LIB) \
+	-I $(INC) \
 	-I $(INPUT) \
 	-I $(PARSER) \
 	-I $(BUILTINS) \
 
 
 SRCS = $(wildcard $(SRCD)/*.c)
-OBJS = $(SRCS:src/%.c=%.o)
+OBJS = $(addprefix $(OBJD)/, $(SRCS:src/%.c=%.o))
 
 CFLAGS = -std=c11
 # -Wall -Wextra -Werror -Wpedantic
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	@clang $(CFLAGS) $(MODULES) $(OBJS) -o $@
-	@printf "\e[32;1m$@ created\e[0m\n"
+install: all clean
+
+$(LIB):
+	@make -sC $(LIBD)
+
+modules:
+	@make -sC $(LIBD)
+	@make -sC src/input
+	@make -sC src/parser
+	@make -sC src/builtins
+
+$(NAME): modules $(OBJS)
+	@clang $(CFLAGS) $(OBJS) $(MODULES) -o $@
+	@printf "\e[32;1mProject $@ created\e[0m\n"
 
 $(OBJD)/%.o: $(SRCD)/%.c $(INC)
 	@clang $(CFLAGS) -c $< -o $@ $(INCLUDE)
@@ -46,39 +56,20 @@ $(OBJS): | $(OBJD)
 $(OBJD):
 	@mkdir -p $@
 
-install:
-	@make -C libmx
-	@cp $(SRCS) .
-	@cp $(PARSERS) .
-	@cp $(BUILTINS) .
-	@cp $(INCI) .
-	@clang $(CFLAGS) -c $(SRC) $(PARSER) $(BUILTIN) -I $(INC)
-	@clang $(CFLAGS) -g $(OBJSRC) $(OBJPARSER) $(OBJBUILTIN) $(INCLIB) -o $(NAME)
-	@mkdir -p obj
-	@mv $(OBJSRC) $(OBJPARSER) $(OBJBUILTIN) ./obj
-
 uninstall: clean
-	@make uninstall -C $(LIBMXF)
+	@make -sC $(LIBD) $@
+	@make -sC src/input $@
+	@make -sC src/parser $@
+	@make -sC src/builtins $@
 	@rm -rf $(NAME)
-
-
-
-
-app:
-	@cp $(SRCS) .
-	@cp $(PARSERS) .
-	@cp $(BUILTINS) .
-	@cp $(INPUTS) .
-	@cp $(INCI) .
-	@clang $(CFLAGS) -c $(SRC) $(PARSER) $(INPUT) $(BUILTIN) -I $(INC)
-	@clang $(CFLAGS) -g $(OBJSRC) $(OBJPARSER) $(OBJINPUT) $(OBJBUILTIN) $(INCLIB) -o $(NAME)
-	@mkdir -p obj
-	@mv $(OBJSRC) $(OBJPARSER) $(OBJINPUT) $(OBJBUILTIN) ./obj
-	@make clean
+	@printf "\e[34;1mProject $(NAME) deleted \e[0m\n"
 
 clean:
-	@make clean -C $(LIBMXF)
-	@rm -rf $(SRC) $(PARSER) $(BUILTIN) $(OBJSRC) $(OBJPARSER) $(OBJBUILTIN) $(INC)
-	@rm -rf ./obj
+	@rm -rf $(OBJD)
+	@make -sC $(LIBD) $@
+	@make -sC src/input $@
+	@make -sC src/parser $@
+	@make -sC src/builtins $@
+	@printf "\e[34;1mdeleted object files in $(NAME)\e[0m\n"
 
 reinstall: uninstall install

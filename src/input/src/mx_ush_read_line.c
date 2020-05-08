@@ -11,7 +11,6 @@ char *mx_ush_read_line() {
         int len = strlen(line);
 
         // printf("c[0] = %c c[1] = %c c[2] = %c c[3] = %c c[4] = %c\n", c[0], c[1], c[2], c[3], c[4]);
-
         if (c[0] == '\n') {
             write(STDOUT_FILENO, "\n", 1);
             break;
@@ -35,6 +34,7 @@ char *mx_ush_read_line() {
         memset(c, '\0', 5);
 
     }
+    // mx_disable_canon();
     line = mx_strtrim(line);
     return line;
 }

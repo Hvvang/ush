@@ -24,8 +24,9 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@ar crs $(MODULE) $(OBJS)
+	@printf "\e[32;1m$@ module created\e[0m\n"
 
-$(OBJD)/%.o: $(SRCD)/%.c $(INC_PATH) $(INC_POSIX)
+$(OBJD)/%.o: $(SRCD)/%.c $(INC_PATH)
 	@clang $(CFLAGS) -c $< -o $@ $(INCLUDE)
 	@printf "\e[32mcompiled: \e[0m[$(<:$(SRCD)/%.c=%.c)]\n"
 
@@ -34,18 +35,17 @@ $(OBJS): | $(OBJD)
 $(OBJD):
 	@mkdir -p $@
 
+install: all clean
 
-install: $(NAME) clean
+uninstall: clean
+	@rm -rf $(MODULE)
+	@printf "\e[34;1mdeleted $(NAME) module\e[0m\n"
 
 clean:
 	@rm -rf $(OBJD)
-	@printf "\e[35;1mdeleted $(OBJD)\e[0m\n"
+	@printf "\e[34;1mdeleted object files in $(NAME)\e[0m\n"
 
-uninstall:
-	@make clean
-	@rm -rf $(MODULE)
-	@rm -rf $(NAME)
-	@printf "\e[35;1mUninstall $(MODULE)\e[0m\n"
+reinstall: uninstall install
 
 test1:
 	@make all

@@ -1,6 +1,6 @@
 #include "../inc/mx_parser.h"
 
-int mx_error_handle(int error) {
+int mx_error(int error) {
     switch (error) {
         case 1:
             fprintf(stderr,

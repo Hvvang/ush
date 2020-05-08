@@ -1,4 +1,4 @@
-#include "ush.h"
+#include "../inc/ush.h"
 
 void pop_front(t_command **head) {
 	t_command *prev = NULL;

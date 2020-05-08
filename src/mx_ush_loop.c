@@ -1,5 +1,4 @@
-#include "ush.h"
-
+#include "../inc/ush.h"
 
 static int is_builtin(char *command) {
 	char *built_ins[11] = {"exit","fg","unset","export","cd",
@@ -14,15 +13,13 @@ static int is_builtin(char *command) {
 
 // void mx_ush_loop (t_list *history) {
 
-void mx_ush_loop (t_env *env, t_list *history) {
+void mx_ush_loop (t_env *env) {
 	int status = 1;
 	char *stdin_line = NULL;
 
 	while (status) {
 		printf(MX_SHELL_PROMPT);
-		stdin_line = mx_ush_read_line(history); //чтение аргументов
-		if (!history || (history && strcmp(history->data, stdin_line)))
-			mx_push_front(&history, mx_strdup(stdin_line));
+		stdin_line = mx_ush_read_line(); //чтение аргументов
 		if (stdin_line[0] != '\0') {
 			t_command *commands = mx_split_to_struct(stdin_line);
 
@@ -39,7 +36,6 @@ void mx_ush_loop (t_env *env, t_list *history) {
 		}
 		mx_strdel(&stdin_line);
 		// system("leaks ush");
-		mx_ush_loop(env, history);
-		// mx_ush_loop(history);
+		mx_ush_loop(env);
 	}
 }

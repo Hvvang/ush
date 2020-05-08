@@ -1,18 +1,24 @@
 #ifndef LIBMX_H
 #define LIBMX_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <errno.h>
-#include <wchar.h>
-#include <fcntl.h>
-#include <malloc.h>
+#include "../../inc/mx_posix.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+
 
 #define BUF_SIZE 8;
 
+typedef enum e_types { // Types stuct
+	// MX_SOCKET,
+	MX_LINK,
+	MX_FILE,
+	MX_BLOCK,
+	MX_DIR,
+	MX_CHAR,
+	MX_FIFO,
+	MX_ANY,
+	MX_EFAULT
+}            t_types;
 
 
 //***************************** Utils pack *******************************
@@ -105,4 +111,12 @@ t_list *mx_sort_list(t_list *lst, bool (*cmp)(void *, void *));
 int mx_atoi(const char *str);
 void mx_del_list(t_list **head);
 //------------------------------------------------------------
+
+//************************ Other pack *************************
+int mx_str_arr_size(char **arr);
+void mx_del_char_in_str(char *str, int pos);
+void mx_insert_char_to_str(char *str, char c, int pos);
+int mx_get_type(const char *path);
+//------------------------------------------------------------
+
 #endif

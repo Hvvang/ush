@@ -27,31 +27,6 @@ typedef enum e_literals { // Literal struct
 	DOLLAR // $
 }            t_literals;
 
-
-typedef enum e_builtins { // builtins struct
-	MX_ENV,
-	MX_CD,
-	MX_PWD,
-	MX_WHICH,
-	MX_ECHO,
-	MX_EXPORT,
-	MX_UNSET,
-	MX_EXIT
-}            t_builtins;
-
-typedef enum e_types { // Types stuct
-	// MX_SOCKET,
-	MX_LINK,
-	MX_FILE,
-	MX_BLOCK,
-	MX_DIR,
-	MX_CHAR,
-	MX_FIFO,
-	MX_ANY,
-	MX_EFAULT
-}            t_types;
-
-
 typedef struct s_command {
 	char *command;
 	char **arguments;
@@ -62,7 +37,7 @@ typedef struct s_command {
 
 int mx_check_input(char *stdin_line, int *index);
 int mx_check_subs_lvls(char *str, int *index);
-int mx_error_handle(int error);
+int mx_error(int error);
 char *mx_filter_input(char *arg);
 void mx_find_close_quote(char *str, int *i, char c);
 char **mx_get_commands(const char *stdin_line);

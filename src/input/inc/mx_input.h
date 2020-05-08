@@ -2,6 +2,8 @@
 #define MX_INPUT_H
 
 #include "../../../inc/mx_posix.h"
+#include "../../history/inc/mx_history.h"
+#include "../../../libmx/inc/libmx.h"
 
 #define MX_IS_BS(code)          !strcmp(code, "\010\0")
 #define MX_IS_VT(code)          !strcmp(code, "\013\0")
@@ -19,8 +21,7 @@
 #define MX_IS_PgDn(code)        !strcmp(code, "\033[G\0")
 
 void mx_enable_canon(void);
-void mx_del_char_in_str(char *str, int pos);
-void mx_insert_char_to_str(char *str, char c, int pos);
+void mx_disable_canon(void);
 void mx_clear_input(char *input, int *pos);
 void mx_clear_part_input(char *line, int len, int *pos, char *c);
 void mx_get_end(char *str, int *pos, bool *esc);
@@ -32,9 +33,5 @@ void mx_print_backspace(char *str, int *pos);
 void mx_print_del(char *str, int *pos);
 void mx_print_regular(char *str, char c, int *pos);
 char *mx_ush_read_line();
-char *mx_strtrim(const char *str);
-int mx_strlen(const char *s);
-char *mx_strnew(const int size);
-bool mx_isspace(char c);
 
 #endif

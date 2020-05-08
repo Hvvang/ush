@@ -1,91 +1,40 @@
 NAME = libmx.a
 
+INCD = inc
+SRCD = src
+OBJD = obj
+
 INC = libmx.h
 
-INCI = inc/libmx.h
+INCS = inc/libmx.h
+SRCS = $(wildcard src/*.c)
+OBJS = $(SRCS:src/%.c=obj/%.o)
 
-SRC = \
-mx_binary_search.c \
-mx_memmove.c \
-mx_sqrt.c \
-mx_bubble_sort.c \
-mx_memrchr.c \
-mx_str_reverse.c \
-mx_count_substr.c \
-mx_memset.c \
-mx_strcat.c \
-mx_count_words.c \
-mx_nbr_to_hex.c \
-mx_create_node.c \
-mx_pop_back.c \
-mx_strcmp.c \
-mx_del_extra_spaces.c \
-mx_pop_front.c \
-mx_strcpy.c \
-mx_del_strarr.c \
-mx_pow.c \
-mx_strdel.c \
-mx_file_to_str.c \
-mx_print_strarr.c \
-mx_strdup.c \
-mx_foreach.c \
-mx_print_unicode.c \
-mx_strjoin.c \
-mx_get_char_index.c \
-mx_printchar.c \
-mx_strlen.c \
-mx_get_substr_index.c \
-mx_strncmp.c \
-mx_hex_to_nbr.c \
-mx_printint.c \
-mx_strncpy.c \
-mx_printstr.c \
-mx_strndup.c \
-mx_itoa.c \
-mx_push_back.c \
-mx_strnew.c \
-mx_list_size.c \
-mx_push_front.c \
-mx_strsplit.c \
-mx_memccpy.c \
-mx_quicksort.c \
-mx_strstr.c \
-mx_memchr.c \
-mx_read_line.c \
-mx_strtrim.c \
-mx_memcmp.c \
-mx_realloc.c \
-mx_swap_char.c \
-mx_memcpy.c \
-mx_replace_substr.c \
-mx_memmem.c \
-mx_sort_list.c \
-mx_calc_num.c \
-mx_isspace.c \
-mx_strchr.c \
-mx_strjoin_no_leaks.c \
-mx_strchr_index.c \
-mx_add_buff_to_static.c \
-mx_atoi.c \
-mx_del_list.c \
+CFLAGS = -std=gnu99 -Wall -Wextra -Werror -Wpedantic
 
-SRCS = $(addprefix src/, $(SRC))
-OBJ = $(SRC:%.c=%.o)
+all: $(NAME)
 
-CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
+$(NAME): $(OBJS)
+	@ar rcs $@ $^
+	@printf "\e[32;1m$@ created\e[0m\n"
 
-all: install clean
+$(OBJD)/%.o: $(SRCD)/%.c $(INCS)
+	@clang $(CFLAGS) -c $< -o $@ -I $(INCD)
+	@printf "\e[32mcompiled[libmx]: \e[0m[$(<:$(SRCD)/%.c=%.c)]\n"
 
-install:
-	@cp $(SRCS) .
-	@cp $(INCI) .
-	@clang $(CFLAGS) -c $(SRC) -I $(INC)
-	@ar crs $(NAME) $(OBJ)
-	@mkdir -p obj
-	@mv $(OBJ) ./obj
+$(OBJS): | $(OBJD)
+
+$(OBJD):
+	@mkdir -p $@
+
+install: all clean
+
 uninstall: clean
 	@rm -rf $(NAME)
+	@printf "\e[34;1mUninstall $(NAME)\e[0m\n"
+
 clean:
-	@rm -rf $(SRC) $(INC)
-	@rm -rf ./obj
+	@rm -rf $(OBJD)
+	@printf "\e[34;1mdeleted object files in libmx\e[0m\n"
+
 reinstall: uninstall install

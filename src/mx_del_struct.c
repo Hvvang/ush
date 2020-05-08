@@ -1,4 +1,4 @@
-#include "ush.h"
+#include "../inc/ush.h"
 
 void mx_del_struct(t_command **head) {
     t_command *tmp;

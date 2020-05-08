@@ -1,4 +1,4 @@
-#include "ush.h"
+#include "../inc/ush.h"
 
 bool mx_match(char *src, char *regex) {
     regex_t reg;

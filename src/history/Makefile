@@ -1,19 +1,17 @@
-NAME = parser
+NAME = history
 MODULE = $(NAME).a
 
 SRCD = src
 OBJD = obj
 INCD = inc
 
-INC_POSIX = ../../inc/mx_posix.h
-INC_PATH = inc/mx_parser.h
+INC_PATH = inc/mx_history.h
 
 LIB_PATH = ../../libmx/libmx.a
 
 INCLUDE = \
-	-I $(LIB_PATH) \
 	-I $(INCD) \
-	-I ../../libmx/inc \
+	-I $(LIB_PATH) \
 
 SRCS = $(wildcard $(SRCD)/*.c)
 OBJS = $(addprefix $(OBJD)/, $(SRCS:src/%.c=%.o))
@@ -27,7 +25,7 @@ $(NAME): $(OBJS)
 	@ar crs $(MODULE) $(OBJS)
 	@printf "\e[32;1m$@ module created\e[0m\n"
 
-$(OBJD)/%.o: $(SRCD)/%.c $(INC_PATH) $(INC_POSIX)
+$(OBJD)/%.o: $(SRCD)/%.c $(INC_PATH)
 	@clang $(CFLAGS) -c $< -o $@ $(INCLUDE)
 	@printf "\e[32mcompiled: \e[0m[$(<:$(SRCD)/%.c=%.c)]\n"
 
