@@ -22,7 +22,7 @@ void mx_exp_change_dublicate(char *str, t_env *env, int index) {
 	if (not_variable(str))
 		return ;
 	else {
-		char *dst = strdup(is_variable(str)); //leak
+		char *dst = mx_strdup(is_variable(str)); //leak
 
 		env->exp[index] = (char*)malloc(sizeof(char) * strlen(dst));
 		env->exp[index] = dst;

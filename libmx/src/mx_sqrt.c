@@ -3,7 +3,7 @@
 int mx_sqrt(int x)
 {
     int l = 0;
-    int r = 0; 
+    int r = 0;
     int c = 0;
 
     r = x;

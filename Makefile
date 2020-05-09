@@ -11,14 +11,17 @@ LIB = libmx/libmx.a
 INPUT = $(SRCD)/input/input.a
 PARSER = $(SRCD)/parser/parser.a
 BUILTINS = $(SRCD)/builtins/builtins.a
+HISTORY = $(SRCD)/history/history.a
 
 INPUT_INC = $(SRCD)/input/$(INCD)/mx_input.h
 PARSER_INC = $(SRCD)/parser/$(INCD)/mx_parser.h
 BUILTINS_INC = $(SRCD)/builtins/$(INCD)/mx_builtins.h
+BUILTINS_INC = $(SRCD)/history/$(INCD)/mx_history.h
 
-MODULES = $(INPUT) $(PARSER) $(BUILTINS) $(LIB)
+MODULES = $(INPUT) $(HISTORY) $(PARSER) $(BUILTINS) $(LIB)
 INCLUDE = \
 	-I $(INC) \
+	-I $(HISTORY) \
 	-I $(INPUT) \
 	-I $(PARSER) \
 	-I $(BUILTINS) \
@@ -34,11 +37,9 @@ all: $(NAME)
 
 install: all clean
 
-$(LIB):
-	@make -sC $(LIBD)
-
 modules:
 	@make -sC $(LIBD)
+	@make -sC src/history
 	@make -sC src/input
 	@make -sC src/parser
 	@make -sC src/builtins

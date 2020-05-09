@@ -8,7 +8,7 @@ t_list *mx_split_commands(char *commands, char delim) {
         if (mx_get_literal(commands[i]) > - 1)
             mx_skip_literal(commands, &i, mx_get_literal(commands[i]));
         if (commands[i] == delim) {
-            mx_push_back(&list, strndup(&commands[index], i - index));
+            mx_push_back(&list, mx_strndup(&commands[index], i - index));
             while (commands[i] == delim) {
                 i++;
             }
@@ -16,7 +16,7 @@ t_list *mx_split_commands(char *commands, char delim) {
             i--;
         }
         else if (!commands[i + 1])
-            mx_push_back(&list, strndup(&commands[index], i - index + 1));
+            mx_push_back(&list, mx_strndup(&commands[index], i - index + 1));
     }
     return list;
 }

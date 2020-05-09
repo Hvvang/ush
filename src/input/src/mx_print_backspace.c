@@ -4,7 +4,7 @@ void mx_print_backspace(char *str, int *pos) {
     if (*pos > 0) {
         mx_del_char_in_str(str, *pos - 1);
         printf("\b%s ", str + (*pos) - 1);
-        for (int i = 0; i <= strlen(str + (*pos) - 1); i++)
+        for (unsigned i = 0; i <= strlen(str + (*pos) - 1); i++)
             printf("\b");
         fflush(NULL);
         *pos = (*pos) - 1;

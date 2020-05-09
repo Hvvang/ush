@@ -1,14 +1,12 @@
 #ifndef MX_HISTORY_H
 #define MX_HISTORY_H
 
-#define MX_HISTORY_PATH "~/.ush_history"
-#define MX_UP_ARROW "\033[A\0"
-#define MX_DOWN_ARROW "\033[B\0"
+#include "../../input/inc/mx_input.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <string.h>
+#define MX_HISTORY_PATH "/home/hwang/.ush_history"
+// #define MX_UP_ARROW "\033[A\0"
+// #define MX_DOWN_ARROW "\033[B\0"
+
 
 typedef struct s_history {
     char *command;

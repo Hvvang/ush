@@ -6,7 +6,7 @@ void mx_print_regular(char *str, char c, int *pos) {
     mx_insert_char_to_str(str, c, *pos);
 
     printf("%s", str + (*pos));
-    for (int i = 0; i < strlen(str + (*pos)); i++)
+    for (unsigned i = 0; i < strlen(str + (*pos)); i++)
         printf("\b");
     printf("%c", c);
     fflush(stdout);

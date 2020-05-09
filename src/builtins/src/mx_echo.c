@@ -1,4 +1,5 @@
 #include "../inc/mx_builtins.h"
+#define _BSD_SOURCE
 
 static void change_char_to_unprint(char *str, int i) {
     char c = str[i + 1];
@@ -22,7 +23,7 @@ static void change_char_to_unprint(char *str, int i) {
         str[i] = '\r';
 }
 
-static char *get_echo_flags(int *flags, char **args, int index) {
+static void get_echo_flags(int *flags, char **args, int index) {
     for (int i = 0; i < index; i++) {
         for (int j = 1; args[i][j]; j++) {
             if (args[i][j] == 'n')

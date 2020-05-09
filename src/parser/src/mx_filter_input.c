@@ -1,7 +1,7 @@
 #include "../inc/mx_parser.h"
 
 static char *replace_chars_by_str(char *str, int itms, char *substr) {
-    char *tmp = strdup(substr);
+    char *tmp = mx_strdup(substr);
 
     while (itms--)
         mx_del_char_in_str(str, 0);
@@ -48,7 +48,7 @@ static void filter_quote(char *arg, int *i, int literal) {
 //         }
 //     }
 
-//     param = strndup(arg + *i + 1, index - *i);
+//     param = mx_strndup(arg + *i + 1, index - *i);
 //
 //     printf("param")
 // }

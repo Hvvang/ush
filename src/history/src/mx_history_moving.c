@@ -2,12 +2,12 @@
 
 char *mx_history_moving(t_history *history, char *keyCode) {
     if (history) {
-        if (!strcmp(keyCode, MX_UP_ARROW)) {
+        if (!MX_IS_UP_ARROW(keyCode)) {
             if (history->next)
                 history = history->next;
             return history->command;
         }
-        else if (!strcmp(keyCode, MX_DOWN_ARROW) && history->prev) {
+        else if (!MX_IS_DOWN_ARROW(keyCode) && history->prev) {
             history = history->prev;
             return history->command;
         }

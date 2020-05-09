@@ -15,7 +15,7 @@ static void export_unset_error(char *str, char *builtin, int er_case) {
 bool mx_error_export_unset(t_command *cmd, char *builtin) {
 	int len = mx_str_arr_size(cmd->arguments);
 	int sw = 0;
-		
+
 	if (cmd->arguments[0][0] == '-' && isalpha(cmd->arguments[0][1])) {
 		export_unset_error(cmd->arguments[0], builtin, 0);
 		return true;

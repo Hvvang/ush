@@ -18,7 +18,6 @@ int mx_error(int error) {
             fprintf(stderr,
                     "%s: command contain forbidden character\n",
                     MX_SHELL_NAME);
-        case 5:
-            return 0;
     }
+    return 0;
 }

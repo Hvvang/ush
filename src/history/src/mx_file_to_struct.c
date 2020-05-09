@@ -2,11 +2,19 @@
 
 t_history *mx_file_to_struct(void) {
     FILE * fp = fopen(MX_HISTORY_PATH, "r");
-    char *line = NULL;
-    size_t len = 0;
+
+    char *line = mx_strnew(PATH_MAX);
     t_history *history = NULL;
 
-    while ((getline(&line, &len, fp)) != -1)
-        history = mx_command_to_struct(history, line);
-    return history;
+    if (fp) {
+        while ((fgets(line, PATH_MAX, fp)) != NULL) {
+            history = mx_command_to_struct(history, line);
+        }
+        fclose(fp);
+        return history;
+    }
+    else {
+        perror(MX_HISTORY_PATH);
+        return NULL;
+    }
 }

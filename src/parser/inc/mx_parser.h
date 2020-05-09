@@ -44,6 +44,7 @@ char **mx_get_commands(const char *stdin_line);
 int mx_get_literal(const char c);
 char **mx_list_to_arr(t_list *list);
 char mx_set_literal(const int literal);
+int mx_skip_literal(char *str, int *index, int literal);
 t_list *mx_split_commands(char *commands, char delim);
 t_command *mx_split_to_struct(char *stdin_line);
 

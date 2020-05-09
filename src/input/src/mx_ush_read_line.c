@@ -23,16 +23,18 @@ char *mx_ush_read_line() {
         else if (MX_IS_ESC(c)) {
             esc = !esc;
         }
-        // else if (MX_IS_UP_ARROW(c) || MX_IS_DOWN_ARROW(c)) {
-        //     t_history *history = mx_file_to_struct();
-        //
-        //     line = mx_history_moving(c);
-        // }
+        else if (MX_IS_UP_ARROW(c) || MX_IS_DOWN_ARROW(c)) {
+            t_history *history = mx_file_to_struct();
+
+            // line = mx_history_moving(history, c);
+            mx_clear_input(line, &pos);
+            printf("%s", history->command);
+            pos += strlen(history->command);
+        }
         else {
             mx_print_regular(line, c[0], &pos);
         }
         memset(c, '\0', 5);
-
     }
     // mx_disable_canon();
     line = mx_strtrim(line);
