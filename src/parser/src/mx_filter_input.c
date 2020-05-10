@@ -24,50 +24,27 @@ static char *filter_tilda(char *arg) {
     return arg;
 }
 
-static void filter_quote(char *arg, int *i, int literal) {
+static char *filter_quote(char *arg, int *i, int literal) {
     mx_del_char_in_str(arg, *i);
     mx_skip_literal(arg, i, literal);
     mx_del_char_in_str(arg, *i);
     *i -= 1;
+    return arg;
 }
-// static char *get_parameter(char *arg, int *i) {
-//     char *param = NULL;
-//     int items = 0;
-//     int nestLiteral = mx_get_literal(arg[*i + 1]);
-//
-//     for (int i = *i; arg[i]; i++) {
-//         if (nextLiteral == QBRACKET) {
-//             if (arg[i] == '}')
-//                 break;
-//             items++;
-//         }
-//         else if (nextLiteral == -1) {
-//             if (arg[i]) == ' ')
-//                 break;
-//             items++;
-//         }
-//     }
 
-//     param = mx_strndup(arg + *i + 1, index - *i);
-//
-//     printf("param")
-// }
+static char *filter_parameter(char *arg, int *i) {
+    int nextLiteral = mx_get_literal(arg[*i]);
+    int index = *i;
+    char *param = NULL;
 
-// static void filter_parameter(char *arg, int *i) {
-//     int nextLiteral = mx_get_literal(arg[*i + 1]);
-//     int index = *i;
-//
-//     if (nextLiteral == QBRACKET)
-//         filter_quote(arg, &index, BRACKET);
-//     nextLiteral = mx_get_literal(arg[*i + 1]);
-//     if (nextLiteral == -1) {
-//         int items = *i;
-//
-//             printf("COUNT");
-//         printf("param = %s\n", param);
-//         replace_chars_by_str(arg, index - *i + 1, getenv(param), *i);
-//     }
-// }
+    if (nextLiteral == QBRACKET)
+        filter_quote(arg, &index, BRACKET);
+    param = getenv(arg);
+    free(arg);
+    arg = (param) ? mx_strdup(param) : mx_strdup("\0");
+    *i = strlen(arg);
+    return arg;
+}
 
 char *mx_filter_input(char *arg) {
     arg = filter_tilda(arg);
@@ -77,9 +54,13 @@ char *mx_filter_input(char *arg) {
         if (currLiteral == SLASH)
             mx_del_char_in_str(arg, i);
         else if (currLiteral == SQUOTE || currLiteral == DQUOTE)
-            filter_quote(arg, &i, currLiteral);
-        // else if (currLiteral == DOLLAR)
-        //     filter_parameter(arg, &i);
+            arg = filter_quote(arg, &i, currLiteral);
+        else if (currLiteral == DOLLAR) {
+            if (mx_get_literal(arg[i + 1]) == QBRACKET || mx_get_literal(arg[i + 1]) == -1) {
+                mx_del_char_in_str(arg, i);
+                arg = filter_parameter(arg, &i);
+            }
+        }
     }
     return arg;
 }

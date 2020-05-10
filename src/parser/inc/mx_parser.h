@@ -24,7 +24,7 @@ typedef enum e_literals { // Literal struct
 	CBRACKET, // )
 	CQBRACKET, // }
 	SLASH, // "\"
-	DOLLAR // $
+	DOLLAR, // $
 }            t_literals;
 
 typedef struct s_command {
