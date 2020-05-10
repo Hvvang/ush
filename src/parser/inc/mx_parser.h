@@ -30,7 +30,6 @@ typedef enum e_literals { // Literal struct
 typedef struct s_command {
 	char *command;
 	char **arguments;
-	int fl[10];
 	int exit;
 	struct s_command *next;
 }              t_command;

@@ -5,12 +5,11 @@
 #include "../../../libmx/inc/libmx.h"
 #include "../../parser/inc/mx_parser.h"
 
-typedef struct environ {
+typedef struct s_environment {
 	char **env;
 	char **exp;
 	char **unset;
-} t_env;
-
+}			   t_env;
 
 typedef enum e_builtins { // builtins struct
 	MX_ENV,

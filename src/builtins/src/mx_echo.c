@@ -1,5 +1,4 @@
 #include "../inc/mx_builtins.h"
-#define _BSD_SOURCE
 
 static void change_char_to_unprint(char *str, int i) {
     char c = str[i + 1];
@@ -47,9 +46,11 @@ void mx_echo(t_command *commands) {
     mx_check_flags(MX_ECHO, &index, commands, mx_valid_echo);
     get_echo_flags(flags, commands->arguments, index);
     if (flags[1]) {
-        for (int i = 0; commands->arguments[index][i]; i++) {
-            if (commands->arguments[index][i] == '\\')
-                change_char_to_unprint(commands->arguments[index], i);
+        for (unsigned i = index; commands->arguments[i]; i++) {
+            for (unsigned j = 0; commands->arguments[i][j]; j++) {
+                if (commands->arguments[i][j] == '\\')
+                    change_char_to_unprint(commands->arguments[i], j);
+            }
         }
     }
     mx_print_strarr(&commands->arguments[index], " ");

@@ -73,7 +73,8 @@ static void change_dir_and_env(t_command *commands, int index, char flag) {
 		path = create_path(path, flag);
 		if (flag != 'P')
 			chdir(path);
-		setenv("OLDPWD", getenv("PWD"), 1);
+		if (strcmp(getenv("PWD"), path))
+			setenv("OLDPWD", getenv("PWD"), 1);
 		setenv("PWD", path, 1);
 		mx_strdel(&path);
 	}
@@ -82,7 +83,6 @@ static void change_dir_and_env(t_command *commands, int index, char flag) {
 void mx_cd(t_command *commands) {
 	int index = 0;
 	char flag = mx_check_flags(MX_CD, &index, commands, mx_valid_cd);
-	// char *path = NULL;
 
 	if (!commands->exit) {
 		if (!commands->arguments[index]) {

@@ -11,8 +11,6 @@ static int is_builtin(char *command) {
 	return 0;
 }
 
-// void mx_ush_loop (t_list *history) {
-
 void mx_ush_loop (t_env *env) {
 	int status = 1;
 	char *stdin_line = NULL;
