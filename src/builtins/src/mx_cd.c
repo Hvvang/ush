@@ -39,13 +39,8 @@ static char *create_path(const char *command, char flag) {
     char buff[PATH_MAX + 1];
 
     if (flag == '0' || flag == 's') {
-        if (command[0] != '/') {
-			char *tmp = NULL;
-
-			tmp = mx_strjoin("/", command);
-			path = mx_strjoin(getenv("PWD"), tmp);
-			mx_strdel(&tmp);
-		}
+        if (command[0] != '/')
+			path = mx_join_path(getenv("PWD"), command);
 		else
 			path = mx_strdup(command);
     }
@@ -58,7 +53,7 @@ static char *create_path(const char *command, char flag) {
 }
 
 static void change_dir_and_env(t_command *command, int index, char flag) {
-	char *path = command->arguments[index];
+	char *path = path_to_canonical(command->arguments[index]);
 	int d_type = mx_get_type(path);
 
 	command->exit = 1;

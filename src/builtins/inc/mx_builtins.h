@@ -24,6 +24,7 @@ typedef enum e_builtins { // builtins struct
 	MX_NOT_A_USH_BUILTIN
 }            t_builtins;
 
+char *mx_join_path(const char *left, const char *right);
 void mx_builtin_func(t_command *commands, t_env *env);
 int mx_is_ush_builtins(char *command);
 void mx_builtin_usage(int builtin, char error);

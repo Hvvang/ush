@@ -2,22 +2,21 @@
 
 #define MX_SHELL_BUILTIN ": shell built-in command"
 
-char **get_progs_paths(char *programm_name) {
+static char **get_progs_paths(char *programm_name) {
     char *env_path = getenv("PATH");
 
     if (env_path) {
         char **paths = mx_strsplit(env_path, ':');
-        char *programm_path = mx_strjoin("/", programm_name);
 
         for (unsigned i = 0; paths[i]; i++) {
-            paths[i] = mx_strjoin(paths[i], programm_path);
+            paths[i] = mx_join_path(paths[i], programm_name);
         }
         return paths;
     }
     return NULL;
 }
 
-char **get_true_path(char *programm_name) {
+static char **get_true_path(char *programm_name) {
     char **all_paths = get_progs_paths(programm_name);
     char **true_path = (char **)malloc(sizeof(char *));
     int index = 0;
