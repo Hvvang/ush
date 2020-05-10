@@ -23,10 +23,10 @@ static void add_exp_in_env(t_env *env) {
 	}
 }
 
-void mx_env(t_command *commands, t_env *env) {
+void mx_env(t_command *command, t_env *env) {
 	add_exp_in_env(env); //пишем в env данные из export
 
-	if (!commands->arguments[1])
+	if (!command->arguments[1])
 		return ;
 	for (int i = 0; env->env[i]; i++) {
 		printf("%s\n", env->env[i]);

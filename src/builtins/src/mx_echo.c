@@ -39,21 +39,21 @@ static void get_echo_flags(int *flags, char **args, int index) {
     }
 }
 
-void mx_echo(t_command *commands) {
+void mx_echo(t_command *command) {
     int index = 0;
     int flags[3] = {0, 0, 0};
 
-    mx_check_flags(MX_ECHO, &index, commands, mx_valid_echo);
-    get_echo_flags(flags, commands->arguments, index);
+    mx_check_flags(MX_ECHO, &index, command, mx_valid_echo);
+    get_echo_flags(flags, command->arguments, index);
     if (flags[1]) {
-        for (unsigned i = index; commands->arguments[i]; i++) {
-            for (unsigned j = 0; commands->arguments[i][j]; j++) {
-                if (commands->arguments[i][j] == '\\')
-                    change_char_to_unprint(commands->arguments[i], j);
+        for (unsigned i = index; command->arguments[i]; i++) {
+            for (unsigned j = 0; command->arguments[i][j]; j++) {
+                if (command->arguments[i][j] == '\\')
+                    change_char_to_unprint(command->arguments[i], j);
             }
         }
     }
-    mx_print_strarr(&commands->arguments[index], " ");
+    mx_print_strarr(&command->arguments[index], " ");
     if (!flags[0])
         printf("\n");
 }

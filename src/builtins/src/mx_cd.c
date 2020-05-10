@@ -57,19 +57,19 @@ static char *create_path(const char *command, char flag) {
     return path;
 }
 
-static void change_dir_and_env(t_command *commands, int index, char flag) {
-	char *path = commands->arguments[index];
+static void change_dir_and_env(t_command *command, int index, char flag) {
+	char *path = command->arguments[index];
 	int d_type = mx_get_type(path);
 
-	commands->exit = 1;
-	if (commands->arguments[index + 1])
+	command->exit = 1;
+	if (command->arguments[index + 1])
 		mx_error_handle(MX_CD, path, MX_ANY);
 	else if (d_type == MX_LINK && flag == 's')
-		mx_error_handle(MX_CD, commands->arguments[index], d_type);
+		mx_error_handle(MX_CD, command->arguments[index], d_type);
 	else if (errno)
-		mx_error_handle(MX_CD, commands->arguments[index], MX_EFAULT);
+		mx_error_handle(MX_CD, command->arguments[index], MX_EFAULT);
 	else {
-		commands->exit = 0;
+		command->exit = 0;
 		path = create_path(path, flag);
 		if (flag != 'P')
 			chdir(path);
@@ -80,24 +80,24 @@ static void change_dir_and_env(t_command *commands, int index, char flag) {
 	}
 }
 
-void mx_cd(t_command *commands) {
+void mx_cd(t_command *command) {
 	int index = 0;
-	char flag = mx_check_flags(MX_CD, &index, commands, mx_valid_cd);
+	char flag = mx_check_flags(MX_CD, &index, command, mx_valid_cd);
 
-	if (!commands->exit) {
-		if (!commands->arguments[index]) {
-			commands->arguments[index] = malloc(sizeof(char *) + 1);
-			commands->arguments[index] = mx_strdup(getenv("HOME"));
-			commands->arguments[index + 1] = NULL;
+	if (!command->exit) {
+		if (!command->arguments[index]) {
+			command->arguments[index] = malloc(sizeof(char *) + 1);
+			command->arguments[index] = mx_strdup(getenv("HOME"));
+			command->arguments[index + 1] = NULL;
 		}
-		else if (!strcmp(commands->arguments[index], "-")) {
-			free(commands->arguments[index]);
-			commands->arguments[index] = mx_strdup(getenv("OLDPWD"));
-			mx_cd(commands);
-			if (!commands->exit)
+		else if (!strcmp(command->arguments[index], "-")) {
+			free(command->arguments[index]);
+			command->arguments[index] = mx_strdup(getenv("OLDPWD"));
+			mx_cd(command);
+			if (!command->exit)
 				printf("%s\n", getenv("PWD"));
 			return;
 		}
-		change_dir_and_env(commands, index, flag);
+		change_dir_and_env(command, index, flag);
 	}
 }

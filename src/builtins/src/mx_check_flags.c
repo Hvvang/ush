@@ -2,6 +2,7 @@
 #define MX_PWD_DEFAULT 'L'
 #define MX_CD_DEFAULT '0'
 #define MX_ECHO_DEFAULT '0'
+#define MX_WHICH_DEFAULT '0'
 
 static char set_default(int builtin) {
     char flag;
@@ -15,11 +16,14 @@ static char set_default(int builtin) {
     if (builtin == MX_ECHO) {
         flag = MX_ECHO_DEFAULT;
     }
+    if (builtin == MX_WHICH) {
+        flag = MX_WHICH_DEFAULT;
+    }
     return flag;
 }
 
-char mx_check_flags(int builtin, int *index, t_command *commands,  bool(*valid)(int *, char *, char *, int *)) {
-    char **args = commands->arguments;
+char mx_check_flags(int builtin, int *index, t_command *command,  bool(*valid)(int *, char *, char *, int *)) {
+    char **args = command->arguments;
     char flag = set_default(builtin);
     int toggle = 1;
 
@@ -27,7 +31,7 @@ char mx_check_flags(int builtin, int *index, t_command *commands,  bool(*valid)(
         if (!(*valid)(&toggle, args[i], &flag, index)) {
             mx_builtin_usage(builtin, flag);
             flag = '\0';
-            commands->exit = 1;
+            command->exit = 1;
             break;
         }
         // *index = i;
