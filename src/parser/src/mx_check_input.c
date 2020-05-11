@@ -46,7 +46,7 @@ static int check_subquote(char *str, int *index, int len) {
         }
         else if (currLiteral == DQUOTE && prevLiteral != SLASH)
             error = check_dquote(str, index, len);
-        else if (currLiteral == DOLLAR && prevLiteral != SLASH)
+        else if (currLiteral == DOLLAR)
             error = check_dollar(str, index, len);
         if (error == -1)
             return -1;
@@ -76,15 +76,14 @@ static int check_slash(char *str, int *index, int len) {
     *index = *index + 1;
 
     if (*index < len) {
-        // int currLiteral = mx_get_literal(str[*index]);
+        int currLiteral = mx_get_literal(str[*index]);
 
-        if (str[*index] != ' ') {
-            // mx_del_char_in_str(str, *index - 1);
-            // *index = *index - 1;
-            return 1;
-        }
+        if (currLiteral == QUOTE || currLiteral == DOLLAR)
+            *index = *index - 1;
+        return 0;
     }
-    return -1;
+    else
+        return -1;
 }
 
 // Func that check input on quote closing
@@ -94,7 +93,6 @@ int mx_check_input(char *stdin_line, int *index) {
 
     for (int i = *index; i < len && error != -1; i++) {
         int currLiteral = mx_get_literal(stdin_line[i]);
-        // int prevLiteral = mx_get_literal(stdin_line[i - 1]);
 
         if (currLiteral == SLASH)
             error = check_slash(stdin_line, &i, len);

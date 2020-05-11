@@ -8,7 +8,7 @@
 #ifdef __linux__
     #define USERFOLDER "/home/"
 #else
-    #define USERFOLDER "/USERS/"
+    #define USERFOLDER "/Users/"
 #endif
 
 #include "../../../inc/mx_posix.h"
