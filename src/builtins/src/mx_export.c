@@ -6,13 +6,17 @@
 
 static int validation(char **args, bool *toggle) {
 	if (args[0]) {
-		if ((!strcmp(args[0], "-") || !strcmp(args[0], "--")) && *toggle)
+		if ((!strcmp(args[0], "-") || !strcmp(args[0], "--")) && *toggle) {
 			*toggle = !(*toggle);
-		else if (!isalpha(args[0][0])) {
-			fprintf(stderr, "%s %s\n", MX_NOT_AN_IDENTIFIER, args[0]);
 			return MX_NOT_A_PARAM;
 		}
-		return MX_SUCCESS;
+		for (unsigned i = 0; args[0][i]; i++) {
+			if (!isalpha(args[0][i]) || (i > 0 && !isdigit(args[0][i]))) {
+				fprintf(stderr, "%s %s\n", MX_NOT_AN_IDENTIFIER, args[0]);
+				return MX_NOT_A_PARAM;
+			}
+			return MX_SUCCESS;
+		}
 	}
 	return MX_NO_OPTIONS;
 }
@@ -31,9 +35,10 @@ static char *append_arg(char **args) {
 
 static void paste_arg(char **args, t_env *env) {
 	unsigned i = 0;
+	int size = mx_str_arr_size(env->export);
 
 	for (; env->export[i]; i++) {
-		if (env->export[i][0] == args[0][0]) {
+		if (strstr(env->export[i], args[0])) {
 			char **parameter = mx_strsplit(env->export[i], '=');
 
 			if (!strcmp(parameter[0], args[0])) {
@@ -45,9 +50,8 @@ static void paste_arg(char **args, t_env *env) {
 			mx_del_strarr(&parameter);
 		}
 	}
-	env->export[i] = malloc(sizeof(char *) + 1);
-	env->export[i++] = append_arg(args);
-	env->export[i] = NULL;
+	env->export[size] = append_arg(args);
+	env->export[size + 1] = NULL;
 }
 
 static void export_print(char **export) {
@@ -79,7 +83,6 @@ void mx_export(t_command *command, t_env *env) {
 			else
 				paste_arg(args, env);
 		}
-		if (args)
-			mx_del_strarr(&args);
+		mx_del_strarr(&args);
 	}
 }

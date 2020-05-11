@@ -1,5 +1,18 @@
 #include "../inc/mx_builtins.h"
 
+void del_struct(t_command **head) {
+    t_command *tmp;
+
+    while (*head) {
+        tmp = *head;
+        *head = (*head)->next;
+        mx_strdel(&tmp->command);
+        mx_del_strarr(&tmp->arguments);
+        free(tmp);
+    }
+}
+
+
 void mx_builtin_func(t_command *command, t_env *env) {
 	// for (int i = 0; command->arguments[i]; i++)
 	// 	mx_check_flag(command->arguments[i], command);
@@ -18,9 +31,9 @@ void mx_builtin_func(t_command *command, t_env *env) {
 	else if (!strcmp(command->command, "which"))
 		mx_which(command);
 	else if (!strcmp(command->command, "exit")) {
-		// mx_del_struct(&command);
+		del_struct(&command);
 		// mx_del_strarr(&env->env);
-		// mx_del_strarr(&env->export);
+		mx_del_strarr(&env->export);
 		// mx_del_strarr(&env->unset);
 
 		exit(0);

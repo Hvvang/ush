@@ -2,14 +2,18 @@
 
 #define MX_SHELL_BUILTIN ": shell built-in command"
 
-static char **get_progs_paths(char *programm_name) {
+static char **split_PATH(char *programm_name) {
     char *env_path = getenv("PATH");
 
     if (env_path) {
         char **paths = mx_strsplit(env_path, ':');
 
         for (unsigned i = 0; paths[i]; i++) {
-            paths[i] = mx_join_path(paths[i], programm_name);
+            char *temp = mx_strdup(paths[i]);
+
+            free(paths[i]);
+            paths[i] = mx_join_path(temp, programm_name);
+            mx_strdel(&temp);
         }
         return paths;
     }
@@ -17,21 +21,20 @@ static char **get_progs_paths(char *programm_name) {
 }
 
 static char **get_true_path(char *programm_name) {
-    char **all_paths = get_progs_paths(programm_name);
-    char **true_path = (char **)malloc(sizeof(char *));
+    char **all_paths = split_PATH(programm_name);
+    char **true_path = (char **)malloc(sizeof(char *) + 1);
     int index = 0;
 
     if (mx_is_ush_builtins(programm_name) != MX_NOT_A_USH_BUILTIN) {
-        true_path[index] = malloc(sizeof(char *) + 1);
         true_path[index++] = mx_strjoin(programm_name, MX_SHELL_BUILTIN);
+        true_path[index] = NULL;
     }
     for (unsigned i = 0; all_paths[i]; i++) {
         if (mx_get_type(all_paths[i]) < 2) {
-            true_path[index] = malloc(sizeof(char *) + 1);
             true_path[index++] = mx_strdup(all_paths[i]);
+            true_path[index] = NULL;
         }
     }
-    true_path[index] = NULL;
     mx_del_strarr(&all_paths);
     return true_path;
 }

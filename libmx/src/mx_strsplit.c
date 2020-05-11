@@ -8,7 +8,7 @@ char **mx_strsplit(const char *s, char c) {
 
     for (int i = 0; i < mx_strlen(s); i++) {
         index = mx_get_char_index(s + i, c);
-        index = index == -1 ? mx_strlen(s) : index;
+        index = (index == -1) ? mx_strlen(s) : index;
         if (index) {
             result[counter] = mx_strndup(s + i, index);
             i += mx_strlen(result[counter]) - 1;

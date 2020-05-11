@@ -1,5 +1,4 @@
 #include "../inc/mx_builtins.h"
-#define _BSD_SOURCE
 
 static void get_ref_of_dir_up(char *str, int *index) {
 	int len = strlen(str) - 1;
@@ -34,7 +33,7 @@ static char *path_to_canonical(char *str) {
 	return str;
 }
 
-static char *create_path(const char *command, char flag) {
+static char *create_path(char *command, char flag) {
 	char *path = NULL;
     char buff[PATH_MAX + 1];
 
@@ -49,6 +48,7 @@ static char *create_path(const char *command, char flag) {
 		path = mx_strdup(getcwd(buff, PATH_MAX));
     }
 	path = path_to_canonical(path);
+	mx_strdel(&command);
     return path;
 }
 
@@ -71,8 +71,8 @@ static void change_dir_and_env(t_command *command, int index, char flag) {
 		if (strcmp(getenv("PWD"), path))
 			setenv("OLDPWD", getenv("PWD"), 1);
 		setenv("PWD", path, 1);
-		mx_strdel(&path);
 	}
+	mx_strdel(&path);
 }
 
 void mx_cd(t_command *command) {
@@ -81,7 +81,6 @@ void mx_cd(t_command *command) {
 
 	if (!command->exit) {
 		if (!command->arguments[index]) {
-			command->arguments[index] = malloc(sizeof(char *) + 1);
 			command->arguments[index] = mx_strdup(getenv("HOME"));
 			command->arguments[index + 1] = NULL;
 		}

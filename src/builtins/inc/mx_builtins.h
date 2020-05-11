@@ -41,7 +41,7 @@ bool mx_valid_cd(int *toggle, char *arg, char *flag, int *index);
 bool mx_valid_echo(int *toggle, char *arg, char *flag, int *index);
 bool mx_valid_export_unset(t_command *cmd);
 void mx_exp_change_dublicate(char *str, t_env *env, int index);
-void mx_unset(t_command *cmd, t_env *env);
+void mx_unset(t_command *command, t_env *env);
 void mx_export(t_command *command, t_env *env);
 bool mx_valid_which(int *toggle, char *arg, char *flag, int *index);
 void mx_which(t_command *command);

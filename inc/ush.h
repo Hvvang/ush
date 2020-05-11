@@ -17,7 +17,6 @@
 #define MX_SHELL_PROMPT "u$h> "
 
 // DEFAULT funcs
-void mx_del_str_arr(char **arr);
 void mx_del_struct(t_command **head);
 int  mx_launch_process(char **argv); // запуск дочернего процеса
 bool mx_match(char *src, char *regex);

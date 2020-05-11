@@ -1,47 +1,52 @@
 #include "../inc/mx_builtins.h"
 
-static char *nrml_str (char *str) { //пишем все до =
-	char *buff = (char*)malloc(sizeof(char)* strlen(str));
+#define MX_INVALID_NAME "invalid parameter name"
+#define MX_NO_OPTIONS 1
+#define MX_SUCCESS 0
+#define MX_NOT_A_PARAM -1
 
-	for (int i = 0; str[i]; i++) {
-		if (str[i] == '=')
-			break;
-		buff[i] = str[i];
-		buff[i + 1] = '\0';
+static int validation(char *arg, bool *toggle) {
+	if ((!strcmp(arg, "-") || !strcmp(arg, "--")) && *toggle) {
+		*toggle = !(*toggle);
+		return MX_NOT_A_PARAM;
 	}
-	return buff;
+	for (unsigned i = 0; arg[i]; i++) {
+		if (!isalpha(arg[i]) || (i > 0 && !isdigit(arg[i]))) {
+			fprintf(stderr, "unset: %s: %s\n", arg, MX_INVALID_NAME);
+			return MX_NOT_A_PARAM;
+		}
+		return MX_SUCCESS;
+	}
+	return MX_NO_OPTIONS;
 }
 
-static void dell_from_env(t_command *commands, t_env *env) {
-	int size = 0;
-	int sw = 0;
-	char **buff = malloc(sizeof(char*) * mx_str_arr_size(env->export));
+static void del_arg(char *arg, t_env *env) {
+	for (unsigned i = 0; env->export[i]; i++) {
+		if (strstr(env->export[i], arg)) {
+			char **parameter = mx_strsplit(env->export[i], '=');
 
-	for (int i = 0, j = 0; env->export[i]; i++) { 
-		sw = 0;
-		for (int k = 0; commands->arguments[k]; k++) {
-			size = strlen(commands->arguments[k]);
-			if (strcmp(nrml_str(env->export[i]), nrml_str(commands->arguments[k])) == 0) {
-				sw = 1;
-				break;
+			if (!strcmp(parameter[0], arg)) {
+				for ( ; env->export[i]; i++) {
+					mx_strdel(&(env->export[i]));
+					if (env->export[i + 1])
+						env->export[i] = mx_strdup(env->export[i + 1]);
+					else
+						env->export[i] = NULL;
+				}
+				mx_del_strarr(&parameter);
+				return ;
 			}
-		}
-		if (sw == 0) {
-			buff[j] = mx_strnew(strlen(env->export[i]));
-			buff[j] = env->export[i];
-			buff[j + 1] = NULL;
-			j++;
+			mx_del_strarr(&parameter);
 		}
 	}
-	env->export = buff;
 }
 
-void mx_unset(t_command *cmd, t_env *env) {
-	if (mx_valid_export_unset(cmd))
-		return ;
-	else if (mx_error_export_unset(cmd, "u$h: unset: `")) // если есть ошибки export no_alpha: 123 234 -- -- 
-		return ;
-	else
-		dell_from_env(cmd, env);
-	return ;
+void mx_unset(t_command *command, t_env *env) {
+	bool toggle = true;
+
+	for (unsigned i = 0; command->arguments[i]; i++) {
+		if (validation(command->arguments[i], &toggle) == MX_SUCCESS) {
+			del_arg(command->arguments[i], env);
+		}
+	}
 }

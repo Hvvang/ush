@@ -37,6 +37,5 @@ char *mx_ush_read_line() {
         memset(c, '\0', 5);
     }
     // mx_disable_canon();
-    line = mx_strtrim(line);
     return line;
 }

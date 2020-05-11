@@ -51,5 +51,5 @@ reinstall: uninstall install
 test1:
 	@make all
 	@clang $(CFLAGS) -c test.c -o test.o -I $(INC_PATH)
-	@clang $(CFLAGS) -g test.o $(MODULE) $(LIB_PATH) $(HISTORY_PATH) -o $(NAME)
+	@clang $(CFLAGS) -g test.o $(MODULE) ../parser/parser.a   $(HISTORY_PATH) ../builtins/builtins.a $(LIB_PATH) -o $(NAME)
 	@rm -rf test.o
