@@ -46,14 +46,25 @@ static void paste_arg(char **args, t_env *env) {
 	env->export[i] = malloc(sizeof(char *) + 1);
 	env->export[i++] = append_arg(args);
 	env->export[i] = NULL;
-	mx_quicksort(env->export, 0, i - 1);
+}
+
+static void export_print(char **export) {
+	unsigned size = mx_str_arr_size(export);
+	char **copy_export = (char **)malloc(sizeof(char *) * size + 1);
+
+	for (unsigned i = 0; i < size; i++) {
+		copy_export[i] = mx_strdup(export[i]);
+	}
+	copy_export[size] = NULL;
+	mx_quicksort(copy_export, 0, size - 1);
+	mx_print_strarr(copy_export, "\n");
+	printf("\n");
+	mx_del_strarr(&copy_export);
 }
 
 void mx_export(t_command *command, t_env *env) {
-	if (!command->arguments[0]) {
-		mx_print_strarr(env->export, "\n");
-		printf("\n");
-	}
+	if (!command->arguments[0])
+		export_print(env->export);
 	for (unsigned i = 0; command->arguments[i]; i++) {
 		char **args = mx_strsplit(command->arguments[i], '=');
 
