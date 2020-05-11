@@ -1,6 +1,6 @@
 #include "../inc/mx_builtins.h"
 
-void mx_env_create(t_env *env) {
+static void get_export_env(t_env *env) {
 	if (!env->export) {
 		extern char **environ;
 		int arr_size = mx_str_arr_size(environ);
@@ -12,7 +12,7 @@ void mx_env_create(t_env *env) {
 			env->export[i] = mx_strdup(environ[i]);
 			if (params[2]) {
 				int index = strchr(env->export[i], '=') - env->export[i] + 1;
-				
+
 				mx_insert_char_to_str(env->export[i], '\'', index);
 				mx_insert_char_to_str(env->export[i], '\'', strlen(env->export[i]));
 			}
@@ -20,4 +20,9 @@ void mx_env_create(t_env *env) {
 		}
 		env->export[arr_size + 1] = NULL;
 	}
+}
+
+void mx_env_create(t_env *env) {
+	get_export_env(env);
+	
 }

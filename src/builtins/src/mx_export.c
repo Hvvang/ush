@@ -1,14 +1,16 @@
 #include "../inc/mx_builtins.h"
 #define MX_NO_OPTIONS 1
 #define MX_SUCCESS 0
-#define MX_ERROR -1
+#define MX_NOT_A_PARAM -1
 #define MX_NOT_AN_IDENTIFIER "export: not an identifier:"
 
-static int validation(char **args) {
+static int validation(char **args, bool *toggle) {
 	if (args[0]) {
-		if (!isalpha(args[0][0])) {
+		if ((!strcmp(args[0], "-") || !strcmp(args[0], "--")) && *toggle)
+			*toggle = !(*toggle);
+		else if (!isalpha(args[0][0])) {
 			fprintf(stderr, "%s %s\n", MX_NOT_AN_IDENTIFIER, args[0]);
-			return MX_ERROR;
+			return MX_NOT_A_PARAM;
 		}
 		return MX_SUCCESS;
 	}
@@ -63,13 +65,19 @@ static void export_print(char **export) {
 }
 
 void mx_export(t_command *command, t_env *env) {
+	bool toggle = true;
+
 	if (!command->arguments[0])
 		export_print(env->export);
 	for (unsigned i = 0; command->arguments[i]; i++) {
 		char **args = mx_strsplit(command->arguments[i], '=');
+		int valid_key = validation(args, &toggle);
 
-		if (validation(args) != MX_ERROR) {
-			paste_arg(args, env);
+		if (valid_key != MX_NOT_A_PARAM) {
+			if (valid_key == MX_NO_OPTIONS)
+				export_print(env->export);
+			else
+				paste_arg(args, env);
 		}
 		if (args)
 			mx_del_strarr(&args);
