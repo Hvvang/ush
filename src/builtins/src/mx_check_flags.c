@@ -22,7 +22,8 @@ static char set_default(int builtin) {
     return flag;
 }
 
-char mx_check_flags(int builtin, int *index, t_command *command,  bool(*valid)(int *, char *, char *, int *)) {
+char mx_check_flags(int builtin, int *index, t_command *command,
+                    bool(*valid)(int *, char *, char *, int *)) {
     char **args = command->arguments;
     char flag = set_default(builtin);
     int toggle = 1;
@@ -34,11 +35,6 @@ char mx_check_flags(int builtin, int *index, t_command *command,  bool(*valid)(i
             command->exit = 1;
             break;
         }
-        // *index = i;
-        // if (!mx_strcmp(args[i], "--"))
-        //     *index = *index + 1;
     }
-    // printf("index = %d\n", *index);
-    // exit(1);
     return flag;
 }

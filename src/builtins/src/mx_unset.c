@@ -15,25 +15,25 @@ static char *nrml_str (char *str) { //пишем все до =
 static void dell_from_env(t_command *commands, t_env *env) {
 	int size = 0;
 	int sw = 0;
-	char **buff = malloc(sizeof(char*) * mx_str_arr_size(env->exp));
+	char **buff = malloc(sizeof(char*) * mx_str_arr_size(env->export));
 
-	for (int i = 0, j = 0; env->exp[i]; i++) { 
+	for (int i = 0, j = 0; env->export[i]; i++) { 
 		sw = 0;
 		for (int k = 0; commands->arguments[k]; k++) {
 			size = strlen(commands->arguments[k]);
-			if (strcmp(nrml_str(env->exp[i]), nrml_str(commands->arguments[k])) == 0) {
+			if (strcmp(nrml_str(env->export[i]), nrml_str(commands->arguments[k])) == 0) {
 				sw = 1;
 				break;
 			}
 		}
 		if (sw == 0) {
-			buff[j] = mx_strnew(strlen(env->exp[i]));
-			buff[j] = env->exp[i];
+			buff[j] = mx_strnew(strlen(env->export[i]));
+			buff[j] = env->export[i];
 			buff[j + 1] = NULL;
 			j++;
 		}
 	}
-	env->exp = buff;
+	env->export = buff;
 }
 
 void mx_unset(t_command *cmd, t_env *env) {

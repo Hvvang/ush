@@ -24,7 +24,7 @@ void mx_exp_change_dublicate(char *str, t_env *env, int index) {
 	else {
 		char *dst = mx_strdup(is_variable(str)); //leak
 
-		env->exp[index] = (char*)malloc(sizeof(char) * strlen(dst));
-		env->exp[index] = dst;
+		env->export[index] = (char*)malloc(sizeof(char) * strlen(dst));
+		env->export[index] = dst;
 	}
 }

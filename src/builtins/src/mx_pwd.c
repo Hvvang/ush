@@ -28,25 +28,25 @@ static int validation(char **args, char *flag) {
 	return MX_FLAG;
 }
 
-static char get_flag(t_command *commands) {
+static char get_flag(t_command *command) {
 	char flag = MX_PWD_DEFAULT;
-	int error = validation(commands->arguments, &flag);
+	int error = validation(command->arguments, &flag);
 
 	if (error) {
 		if (error == MX_MANY_ARGS)
 			fprintf(stderr, "pwd: too many arguments\n");
 		else if (error == MX_BAD_OPTION)
 			fprintf(stderr, "pwd: bad option: -%c\n", flag);
-		commands->exit = -1;
+		command->exit = -1;
 	}
 	return flag;
 }
 
-void mx_pwd(t_command *commands) {
+void mx_pwd(t_command *command) {
 	char str[PATH_MAX + 1];
-	char flag = get_flag(commands);
+	char flag = get_flag(command);
 
-	if (!commands->exit) {
+	if (!command->exit) {
 		if (flag == 'L')
 			printf("%s\n", getenv("PWD"));
 		if (flag == 'P')

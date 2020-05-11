@@ -8,15 +8,15 @@ static int is_break(char *str) { //если данные без = не пише�
 }
 
 static void add_exp_in_env(t_env *env) {
-	int len = mx_str_arr_size(env->exp);
+	int len = mx_str_arr_size(env->export);
 
 	env->env = (char**)malloc(sizeof(char*) * len);
-	for (int i = 0, j = 0; env->exp[i]; i++) {
-		if (is_break(env->exp[i]) == 1)
+	for (int i = 0, j = 0; env->export[i]; i++) {
+		if (is_break(env->export[i]) == 1)
 			continue;
 		else {
-			env->env[j] = (char*)malloc(sizeof(char) * strlen(env->exp[i]));
-			env->env[j] = env->exp[i];
+			env->env[j] = (char*)malloc(sizeof(char) * strlen(env->export[i]));
+			env->env[j] = env->export[i];
 			j++;
 			env->env[j + 1] = NULL;
 		}

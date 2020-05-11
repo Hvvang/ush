@@ -25,18 +25,18 @@ static int mx_is_exp_dbl (char *str, char **arr) { //проверка на ду�
 }
 
 static void add_in_exp(char *str, t_env *env) { //добавляем в export
-	int len = mx_str_arr_size(env->exp);
+	int len = mx_str_arr_size(env->export);
 
-	env->exp[len] = (char *)malloc(sizeof(char) * strlen(str));
-	env->exp[len] = str;
-	env->exp[len + 1] = NULL;
+	env->export[len] = (char *)malloc(sizeof(char) * strlen(str));
+	env->export[len] = str;
+	env->export[len + 1] = NULL;
 }
 
 void mx_exp_add_argv(t_command *cmd, t_env *env) {
 	for (int i = 0; cmd->arguments[i]; ++i) {
-		if (mx_is_exp_dbl(cmd->arguments[i], env->exp) > -1) { // если дубликат
+		if (mx_is_exp_dbl(cmd->arguments[i], env->export) > -1) { // если дубликат
 			mx_exp_change_dublicate(cmd->arguments[i], env,
-					 mx_is_exp_dbl(cmd->arguments[i], env->exp));
+					 mx_is_exp_dbl(cmd->arguments[i], env->export));
 		} 
 		else {
 			add_in_exp(cmd->arguments[i], env);
