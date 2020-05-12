@@ -20,39 +20,39 @@ static int validation(char **args, bool *toggle) {
 	}
 	return MX_NO_OPTIONS;
 }
-
-static char *append_arg(char **args) {
-	char *new_arg = NULL;
-	char *temp = mx_strjoin(args[0], "=");
-
-	if (args[1])
-		new_arg = mx_strjoin(temp, args[1]);
-	else
-		new_arg = mx_strjoin(temp, "''");
-	mx_strdel(&temp);
-	return new_arg;
-}
-
-static void paste_arg(char **args, t_env *env) {
-	unsigned i = 0;
-	int size = mx_str_arr_size(env->export);
-
-	for (; env->export[i]; i++) {
-		if (strstr(env->export[i], args[0])) {
-			char **parameter = mx_strsplit(env->export[i], '=');
-
-			if (!strcmp(parameter[0], args[0])) {
-				free(env->export[i]);
-				env->export[i] = append_arg(args);
-				mx_del_strarr(&parameter);
-				return ;
-			}
-			mx_del_strarr(&parameter);
-		}
-	}
-	env->export[size] = append_arg(args);
-	env->export[size + 1] = NULL;
-}
+//
+// static char *append_arg(char **args) {
+// 	char *new_arg = NULL;
+// 	char *temp = mx_strjoin(args[0], "=");
+//
+// 	if (args[1])
+// 		new_arg = mx_strjoin(temp, args[1]);
+// 	else
+// 		new_arg = mx_strjoin(temp, "''");
+// 	mx_strdel(&temp);
+// 	return new_arg;
+// }
+//
+// static void paste_arg(char **args, t_env *env) {
+// 	unsigned i = 0;
+// 	int size = mx_str_arr_size(env->export);
+//
+// 	for (; env->export[i]; i++) {
+// 		if (strstr(env->export[i], args[0])) {
+// 			char **parameter = mx_strsplit(env->export[i], '=');
+//
+// 			if (!strcmp(parameter[0], args[0])) {
+// 				free(env->export[i]);
+// 				env->export[i] = append_arg(args);
+// 				mx_del_strarr(&parameter);
+// 				return ;
+// 			}
+// 			mx_del_strarr(&parameter);
+// 		}
+// 	}
+// 	env->export[size] = append_arg(args);
+// 	env->export[size + 1] = NULL;
+// }
 
 static void export_print(char **export) {
 	unsigned size = mx_str_arr_size(export);
@@ -71,6 +71,7 @@ static void export_print(char **export) {
 void mx_export(t_command *command, t_env *env) {
 	bool toggle = true;
 
+	mx_env_create(env);
 	if (!command->arguments[0])
 		export_print(env->export);
 	for (unsigned i = 0; command->arguments[i]; i++) {
@@ -80,8 +81,13 @@ void mx_export(t_command *command, t_env *env) {
 		if (valid_key != MX_NOT_A_PARAM) {
 			if (valid_key == MX_NO_OPTIONS)
 				export_print(env->export);
-			else
-				paste_arg(args, env);
+			else {
+				if (!args[1]) {
+					args[1] = mx_strdup("");
+					args[2] = NULL;
+				}
+				setenv(args[0], args[1], 1);
+			}
 		}
 		mx_del_strarr(&args);
 	}

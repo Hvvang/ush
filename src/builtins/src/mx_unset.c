@@ -47,6 +47,7 @@ void mx_unset(t_command *command, t_env *env) {
 	for (unsigned i = 0; command->arguments[i]; i++) {
 		if (validation(command->arguments[i], &toggle) == MX_SUCCESS) {
 			del_arg(command->arguments[i], env);
+			unsetenv(command->arguments[i]);
 		}
 	}
 }

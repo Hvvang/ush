@@ -1,7 +1,7 @@
 #include "../inc/mx_builtins.h"
 
 static void get_export_env(t_env *env) {
-	if (!env->export) {
+	// if (!env->export) {
 		extern char **environ;
 		int arr_size = mx_str_arr_size(environ);
 
@@ -18,11 +18,11 @@ static void get_export_env(t_env *env) {
 			}
 			mx_del_strarr(&params);
 		}
-		env->export[arr_size + 1] = NULL;
-	}
+		env->export[arr_size] = NULL;
+	// }
 }
 
 void mx_env_create(t_env *env) {
 	get_export_env(env);
-	
+
 }

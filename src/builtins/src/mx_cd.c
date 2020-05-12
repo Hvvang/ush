@@ -27,10 +27,7 @@ static char *path_to_canonical(char *str) {
 	}
 	if (buff[index - 1] == '/' && strcmp(buff, "/"))
 		buff[index - 1] = '\0';
-	free(str);
-	str = mx_strdup(buff);
-	mx_strdel(&buff);
-	return str;
+	return buff;
 }
 
 static char *create_path(char *command, char flag) {
@@ -48,7 +45,6 @@ static char *create_path(char *command, char flag) {
 		path = mx_strdup(getcwd(buff, PATH_MAX));
     }
 	path = path_to_canonical(path);
-	mx_strdel(&command);
     return path;
 }
 
@@ -56,30 +52,32 @@ static void change_dir_and_env(t_command *command, int index, char flag) {
 	char *path = path_to_canonical(command->arguments[index]);
 	int d_type = mx_get_type(path);
 
-	command->exit = 1;
-	if (command->arguments[index + 1])
-		mx_error_handle(MX_CD, path, MX_ANY);
-	else if (d_type == MX_LINK && flag == 's')
+	if (d_type == MX_LINK && flag == 's') {
 		mx_error_handle(MX_CD, command->arguments[index], d_type);
-	else if (errno)
+		mx_strdel(&path);
+	}
+	else if (errno) {
 		mx_error_handle(MX_CD, command->arguments[index], MX_EFAULT);
+		mx_strdel(&path);
+	}
 	else {
-		command->exit = 0;
 		path = create_path(path, flag);
 		if (flag != 'P')
 			chdir(path);
 		if (strcmp(getenv("PWD"), path))
 			setenv("OLDPWD", getenv("PWD"), 1);
 		setenv("PWD", path, 1);
+		mx_strdel(&path);
 	}
-	mx_strdel(&path);
 }
 
 void mx_cd(t_command *command) {
 	int index = 0;
 	char flag = mx_check_flags(MX_CD, &index, command, mx_valid_cd);
 
-	if (!command->exit) {
+	if (command->arguments[index + 1])
+		mx_error_handle(MX_CD, NULL, MX_ANY);
+	else if (!command->exit) {
 		if (!command->arguments[index]) {
 			command->arguments[index] = mx_strdup(getenv("HOME"));
 			command->arguments[index + 1] = NULL;

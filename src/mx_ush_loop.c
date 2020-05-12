@@ -18,6 +18,7 @@ void mx_ush_loop (t_env *env) {
 	while (status) {
 		printf(MX_SHELL_PROMPT);
 		stdin_line = mx_ush_read_line(); //чтение аргументов
+
 		if (stdin_line[0] != '\0') {
 			t_command *commands = mx_split_to_struct(stdin_line);
 
