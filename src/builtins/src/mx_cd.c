@@ -51,7 +51,7 @@ static char *create_path(char *command, char flag) {
     return path;
 }
 
-static void change_dir_and_env(t_command *command, int index, char flag) {
+static void change_dir_and_hash_table(t_command *command, int index, char flag) {
 	int d_type = mx_get_type(command->arguments[index]);
 
 	if (d_type == MX_LINK && flag == 's')
@@ -89,6 +89,6 @@ void mx_cd(t_command *command) {
 				printf("%s\n", getenv("PWD"));
 			return;
 		}
-		change_dir_and_env(command, index, flag);
+		change_dir_and_hash_table(command, index, flag);
 	}
 }

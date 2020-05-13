@@ -20,18 +20,18 @@ static int validation(char *arg, bool *toggle) {
 	return MX_NO_OPTIONS;
 }
 
-static void del_arg(char *arg, t_env *env) {
-	for (unsigned i = 0; env->export[i]; i++) {
-		if (strstr(env->export[i], arg)) {
-			char **parameter = mx_strsplit(env->export[i], '=');
+static void del_arg(char *arg, t_hash_table *hash_table) {
+	for (unsigned i = 0; hash_table->export[i]; i++) {
+		if (strstr(hash_table->export[i], arg)) {
+			char **parameter = mx_strsplit(hash_table->export[i], '=');
 
 			if (!strcmp(parameter[0], arg)) {
-				for ( ; env->export[i]; i++) {
-					mx_strdel(&(env->export[i]));
-					if (env->export[i + 1])
-						env->export[i] = mx_strdup(env->export[i + 1]);
+				for ( ; hash_table->export[i]; i++) {
+					mx_strdel(&(hash_table->export[i]));
+					if (hash_table->export[i + 1])
+						hash_table->export[i] = mx_strdup(hash_table->export[i + 1]);
 					else
-						env->export[i] = NULL;
+						hash_table->export[i] = NULL;
 				}
 				mx_del_strarr(&parameter);
 				return ;
@@ -41,12 +41,12 @@ static void del_arg(char *arg, t_env *env) {
 	}
 }
 
-void mx_unset(t_command *command, t_env *env) {
+void mx_unset(t_command *command, t_hash_table *hash_table) {
 	bool toggle = true;
 
 	for (unsigned i = 0; command->arguments[i]; i++) {
 		if (validation(command->arguments[i], &toggle) == MX_SUCCESS) {
-			del_arg(command->arguments[i], env);
+			del_arg(command->arguments[i], hash_table);
 			unsetenv(command->arguments[i]);
 		}
 	}

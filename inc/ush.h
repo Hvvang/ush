@@ -20,7 +20,7 @@
 void mx_del_struct(t_command **head);
 int  mx_launch_process(char **argv); // запуск дочернего процеса
 bool mx_match(char *src, char *regex);
-void mx_ush_loop (t_env *env); // базовый цикл
+void mx_ush_loop (t_hash_table *hash_table); // базовый цикл
 void pop_front(t_command **head);
 
 #endif

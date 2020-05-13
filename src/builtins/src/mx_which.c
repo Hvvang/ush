@@ -3,10 +3,10 @@
 #define MX_SHELL_BUILTIN ": shell built-in command"
 
 static char **split_PATH(char *programm_name) {
-    char *env_path = getenv("PATH");
+    char *hash_table_path = getenv("PATH");
 
-    if (env_path) {
-        char **paths = mx_strsplit(env_path, ':');
+    if (hash_table_path) {
+        char **paths = mx_strsplit(hash_table_path, ':');
 
         for (unsigned i = 0; paths[i]; i++) {
             char *temp = mx_join_path(paths[i], programm_name);

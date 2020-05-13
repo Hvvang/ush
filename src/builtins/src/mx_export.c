@@ -1,18 +1,21 @@
 #include "../inc/mx_builtins.h"
+
 #define MX_NO_OPTIONS 1
 #define MX_SUCCESS 0
 #define MX_NOT_A_PARAM -1
 #define MX_NOT_AN_IDENTIFIER "export: not an identifier:"
 
-static int validation(char **args, bool *toggle) {
-	if (args[0]) {
-		if ((!strcmp(args[0], "-") || !strcmp(args[0], "--")) && *toggle) {
+static int validation(char *command, bool *toggle) {
+	if (command) {
+		if ((!strcmp(command, "-") || !strcmp(command, "--")) && *toggle) {
 			*toggle = !(*toggle);
 			return MX_NOT_A_PARAM;
 		}
-		for (unsigned i = 0; args[0][i]; i++) {
-			if (!isalpha(args[0][i]) || (i > 0 && !isdigit(args[0][i]))) {
-				fprintf(stderr, "%s %s\n", MX_NOT_AN_IDENTIFIER, args[0]);
+		for (unsigned i = 0; command[i]; i++) {
+			if (!isalpha(command[i]) || (i > 0 && !isdigit(command[i]))) {
+				if (command[i] == '=')
+					return MX_SUCCESS;
+				fprintf(stderr, "%s %s\n", MX_NOT_AN_IDENTIFIER, command);
 				return MX_NOT_A_PARAM;
 			}
 			return MX_SUCCESS;
@@ -20,75 +23,66 @@ static int validation(char **args, bool *toggle) {
 	}
 	return MX_NO_OPTIONS;
 }
-//
-// static char *append_arg(char **args) {
-// 	char *new_arg = NULL;
-// 	char *temp = mx_strjoin(args[0], "=");
-//
-// 	if (args[1])
-// 		new_arg = mx_strjoin(temp, args[1]);
-// 	else
-// 		new_arg = mx_strjoin(temp, "''");
-// 	mx_strdel(&temp);
-// 	return new_arg;
-// }
-//
-// static void paste_arg(char **args, t_env *env) {
-// 	unsigned i = 0;
-// 	int size = mx_str_arr_size(env->export);
-//
-// 	for (; env->export[i]; i++) {
-// 		if (strstr(env->export[i], args[0])) {
-// 			char **parameter = mx_strsplit(env->export[i], '=');
-//
-// 			if (!strcmp(parameter[0], args[0])) {
-// 				free(env->export[i]);
-// 				env->export[i] = append_arg(args);
-// 				mx_del_strarr(&parameter);
-// 				return ;
-// 			}
-// 			mx_del_strarr(&parameter);
-// 		}
-// 	}
-// 	env->export[size] = append_arg(args);
-// 	env->export[size + 1] = NULL;
-// }
 
-static void export_print(char **export) {
-	unsigned size = mx_str_arr_size(export);
-	char **copy_export = (char **)malloc(sizeof(char *) * size + 1);
-
-	for (unsigned i = 0; i < size; i++) {
-		copy_export[i] = mx_strdup(export[i]);
+static void sort_export(t_hash_table *hash_table, t_export *copy_export) {
+	for (unsigned i = 0; i < hash_table->export_size; i++) {
+		copy_export[i].key = mx_strdup(hash_table->export[i].key);
+		if (hash_table->export[i].value)
+			copy_export[i].value = strdup(hash_table->export[i].value);
+		else
+			copy_export[i].value = NULL;
 	}
-	copy_export[size] = NULL;
-	mx_quicksort(copy_export, 0, size - 1);
-	mx_print_strarr(copy_export, "\n");
-	printf("\n");
-	mx_del_strarr(&copy_export);
+	for (unsigned i = 0; i < hash_table->export_size; i++) {
+		for (unsigned j = 0; j < hash_table->export_size - i - 1; j++) {
+			if (strcmp(copy_export[j].key, copy_export[j + 1].key) > 0) {
+				char *temp_key = copy_export[j].key;
+				char *temp_value = copy_export[j].value;
+
+				copy_export[j].key = copy_export[j + 1].key;
+				copy_export[j].value = copy_export[j + 1].value;
+				copy_export[j + 1].key = temp_key;
+				copy_export[j + 1].value = temp_value;
+			}
+		}
+	}
 }
 
-void mx_export(t_command *command, t_env *env) {
+static void export_print(t_hash_table *hash_table) {
+	t_export copy_export[hash_table->export_size];
+
+	sort_export(hash_table, &copy_export[0]);
+	for (unsigned i = 0; i < hash_table->export_size; i++) {
+		printf("%s=", copy_export[i].key);
+		if (!copy_export[i].value || copy_export[i].value[0] == '\0')
+			printf("\'\'");
+		else if (mx_get_char_index(copy_export[i].value, '=') > 0
+				 || mx_get_char_index(copy_export[i].value, ';') > 0)
+			printf("\'%s\'", copy_export[i].value);
+		else
+			printf("%s", copy_export[i].value);
+		printf("\n");
+		mx_strdel(&copy_export[i].key);
+		mx_strdel(&copy_export[i].value);
+	}
+}
+
+void mx_export(t_command *command, t_hash_table *hash_table) {
 	bool toggle = true;
 
-	mx_env_create(env);
 	if (!command->arguments[0])
-		export_print(env->export);
+		export_print(hash_table);
 	for (unsigned i = 0; command->arguments[i]; i++) {
-		char **args = mx_strsplit(command->arguments[i], '=');
-		int valid_key = validation(args, &toggle);
+		int valid_key = validation(command->arguments[i], &toggle);
 
 		if (valid_key != MX_NOT_A_PARAM) {
 			if (valid_key == MX_NO_OPTIONS)
-				export_print(env->export);
-			else {
-				if (!args[1]) {
-					args[1] = mx_strdup("");
-					args[2] = NULL;
-				}
-				setenv(args[0], args[1], 1);
+				export_print(hash_table);
+			else if (mx_create_variable(command->arguments[i], hash_table)) {
+				if (hash_table->export[hash_table->export_size].value)
+					setenv(hash_table->export[hash_table->export_size].key,
+						   hash_table->export[hash_table->export_size].value,
+						   1);
 			}
 		}
-		mx_del_strarr(&args);
 	}
 }

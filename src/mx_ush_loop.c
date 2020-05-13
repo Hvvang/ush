@@ -2,7 +2,7 @@
 
 static int is_builtin(char *command) {
 	char *built_ins[11] = {"exit","fg","unset","export","cd",
-	                "pwd", "echo", "which", "env", NULL };
+	                "pwd", "echo", "which", "hash_table", NULL };
 
 	for (int i = 0; built_ins[i]; i++) {
 		if (!strcmp(command, built_ins[i]))
@@ -11,7 +11,7 @@ static int is_builtin(char *command) {
 	return 0;
 }
 
-void mx_ush_loop (t_env *env) {
+void mx_ush_loop (t_hash_table *hash_table) {
 	int status = 1;
 	char *stdin_line = NULL;
 
@@ -26,7 +26,7 @@ void mx_ush_loop (t_env *env) {
 				while (commands) {
 					commands->exit = 0;
 					if (is_builtin(commands->command))
-						mx_builtin_func(commands, env);
+						mx_builtin_func(commands, hash_table);
 					else 													// если функции надо искать
 						fprintf(stderr, "u$h: command  not found: %s\n", commands->command);
 					pop_front(&commands);
@@ -35,6 +35,6 @@ void mx_ush_loop (t_env *env) {
 		}
 		mx_strdel(&stdin_line);
 		// system("leaks ush");
-		mx_ush_loop(env);
+		mx_ush_loop(hash_table);
 	}
 }

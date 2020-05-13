@@ -73,7 +73,7 @@
 #include <sched.h>       // Execution scheduling
 #include <search.h>      // Search tables
 #include <semaphore.h>   // POSIX semaphores
-#include <setjmp.h>      // Stack environment declarations
+#include <setjmp.h>      // Stack hash_tableironment declarations
 #include <signal.h>      // Signals, see C signal handling
 #include <spawn.h>       // Process spawning
 #include <stdarg.h>      // Handle Variable Argument List
