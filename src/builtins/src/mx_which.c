@@ -9,10 +9,10 @@ static char **split_PATH(char *programm_name) {
         char **paths = mx_strsplit(env_path, ':');
 
         for (unsigned i = 0; paths[i]; i++) {
-            char *temp = mx_strdup(paths[i]);
+            char *temp = mx_join_path(paths[i], programm_name);
 
             free(paths[i]);
-            paths[i] = mx_join_path(temp, programm_name);
+            paths[i] = mx_strdup(temp);
             mx_strdel(&temp);
         }
         return paths;

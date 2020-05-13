@@ -48,29 +48,26 @@ static char *create_path(char *command, char flag) {
 		chdir(command);
 		path = path_to_canonical(getcwd(buff, PATH_MAX));
     }
-	free(command);
     return path;
 }
 
 static void change_dir_and_env(t_command *command, int index, char flag) {
-	char *path = path_to_canonical(command->arguments[index]);
-	int d_type = mx_get_type(path);
+	int d_type = mx_get_type(command->arguments[index]);
 
 	if (d_type == MX_LINK && flag == 's')
 		mx_error_handle(MX_CD, command->arguments[index], d_type);
 	else if (errno)
 		mx_error_handle(MX_CD, command->arguments[index], MX_EFAULT);
 	else {
-		path = create_path(path, flag);
+		char *path = create_path(command->arguments[index], flag);
+
 		if (flag != 'P')
 			chdir(path);
 		if (strcmp(getenv("PWD"), path))
 			setenv("OLDPWD", getenv("PWD"), 1);
 		setenv("PWD", path, 1);
 		mx_strdel(&path);
-		return ;
 	}
-	mx_strdel(&path);
 }
 
 void mx_cd(t_command *command) {
