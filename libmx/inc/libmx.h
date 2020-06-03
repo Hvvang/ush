@@ -117,6 +117,7 @@ int mx_str_arr_size(char **arr);
 void mx_del_char_in_str(char *str, int pos);
 void mx_insert_char_to_str(char *str, char c, int pos);
 int mx_get_type(const char *path);
+char **mx_str_join_arr(char *str, char **arr);
 //------------------------------------------------------------
 
 #endif

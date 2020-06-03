@@ -1,25 +1,17 @@
 #include "../inc/ush.h"
 
-int mx_launch_process(char **args) {
-	pid_t pid;
-	pid_t wpid;
-	int status = 0;
-
-	pid = fork();
+int mx_launch_process(t_command *command) {
+	// pid_t wpid;
+	char **args = mx_str_join_arr(command->command, command->arguments);
+	int status;
+	pid_t pid = fork();
 
 	if (pid == 0) {
-		//Дочерний
-		if (execvp(args[0], args) == -1) { //не удалось создать дочерный процес
-			perror("ush: bad create child procces");
-		}
-		exit(EXIT_FAILURE);
+		if (execvp(args[0], args) == -1)
+			fprintf(stderr, "u$h: command  not found: %s\n", command->command);
+		_exit(1);
 	}
-	else if (pid < 0) {
-		perror("ush: bad forking");
-	}
-	else {
-		wpid = waitpid(pid, &status, WUNTRACED);
-		while (!!WIFEXITED(status) && !WIFSIGNALED(status));
-	}
+	else
+		waitpid(pid, &status, WUNTRACED);
 	return 1;
 }
