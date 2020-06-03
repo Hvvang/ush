@@ -33,7 +33,7 @@ void mx_ush_loop (t_hash_table *hash_table) {
 				}
 			}
 		}
-		mx_strdel(&stdin_line);
+		// mx_strdel(&stdin_line);
 		// system("leaks ush");
 		mx_ush_loop(hash_table);
 	}

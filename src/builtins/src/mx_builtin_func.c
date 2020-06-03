@@ -31,8 +31,8 @@ void mx_builtin_func(t_command *command, t_hash_table *hash_table) {
 	else if (!strcmp(command->command, "which"))
 		mx_which(command);
 	else if (!strcmp(command->command, "exit")) {
-		del_struct(&command);
-        mx_del_hash_table(hash_table);
+		// del_struct(&command);
+        // mx_del_hash_table(hash_table);
 		// mx_del_strarr(&hash_table->hash_table);
 		// mx_del_strarr(&hash_table->unset);
 

@@ -9,10 +9,10 @@ static char **split_PATH(char *programm_name) {
         char **paths = mx_strsplit(hash_table_path, ':');
 
         for (unsigned i = 0; paths[i]; i++) {
-            char *temp = mx_join_path(paths[i], programm_name);
+            char *temp = strdup(paths[i]);
 
             free(paths[i]);
-            paths[i] = mx_strdup(temp);
+            paths[i] = mx_join_path(temp, programm_name);
             mx_strdel(&temp);
         }
         return paths;
@@ -26,16 +26,17 @@ static char **get_true_path(char *programm_name) {
     int index = 0;
 
     if (mx_is_ush_builtins(programm_name) != MX_NOT_A_USH_BUILTIN) {
-        true_path[index++] = mx_strjoin(programm_name, MX_SHELL_BUILTIN);
-        true_path[index] = NULL;
+        true_path[index] = mx_strjoin(programm_name, MX_SHELL_BUILTIN);
+        true_path[++index] = NULL;
     }
     for (unsigned i = 0; all_paths[i]; i++) {
         if (mx_get_type(all_paths[i]) < 2) {
-            true_path[index++] = mx_strdup(all_paths[i]);
-            true_path[index] = NULL;
+            true_path[index] = mx_strdup(all_paths[i]);
+            true_path[++index] = NULL;
         }
     }
     mx_del_strarr(&all_paths);
+    true_path[index] = NULL;
     return true_path;
 }
 
