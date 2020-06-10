@@ -76,16 +76,20 @@ void mx_cd(t_command *command) {
 
 	if (command->arguments[index] && command->arguments[index + 1])
 		mx_error_handle(MX_CD, NULL, MX_ANY);
-	else if (!command->exit) {
+	else if (!atoi(getenv("status"))) {
 		if (!command->arguments[index]) {
 			command->arguments[index] = mx_strdup(getenv("HOME"));
 			command->arguments[index + 1] = NULL;
+		}
+		if (!strcmp(command->arguments[index], "--")) {
+			free(command->arguments[index]);
+			command->arguments[index] = strdup(getenv("HOME"));
 		}
 		else if (!strcmp(command->arguments[index], "-")) {
 			free(command->arguments[index]);
 			command->arguments[index] = mx_strdup(getenv("OLDPWD"));
 			mx_cd(command);
-			if (!command->exit)
+			if (!atoi(getenv("status")))
 				printf("%s\n", getenv("PWD"));
 			return;
 		}

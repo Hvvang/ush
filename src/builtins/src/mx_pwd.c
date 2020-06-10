@@ -32,12 +32,13 @@ static char get_flag(t_command *command) {
 	char flag = MX_PWD_DEFAULT;
 	int error = validation(command->arguments, &flag);
 
+	setenv("status", "0", 1);
 	if (error) {
 		if (error == MX_MANY_ARGS)
 			fprintf(stderr, "pwd: too many arguments\n");
 		else if (error == MX_BAD_OPTION)
 			fprintf(stderr, "pwd: bad option: -%c\n", flag);
-		command->exit = -1;
+			setenv("status", "-1", 1);
 	}
 	return flag;
 }
@@ -46,7 +47,7 @@ void mx_pwd(t_command *command) {
 	char str[PATH_MAX + 1];
 	char flag = get_flag(command);
 
-	if (!command->exit) {
+	if (!atoi(getenv("status"))) {
 		if (flag == 'L')
 			printf("%s\n", getenv("PWD"));
 		if (flag == 'P')

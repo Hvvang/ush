@@ -6,11 +6,11 @@ char **mx_strsplit(const char *s, char c) {
     char **result = malloc(sizeof(char *) * (size_arr + 1));
     int index = 0;
 
-    for (int i = 0; i < mx_strlen(s); i++) {
+    for (unsigned long i = 0; i < strlen(s); i++) {
         index = mx_get_char_index(s + i, c);
-        index = (index == -1) ? mx_strlen(s) : index;
+        index = (index == -1) ? strlen(s) : index;
         if (index) {
-            result[counter] = mx_strndup(s + i, index);
+            result[counter] = strndup(s + i, index);
             i += mx_strlen(result[counter]) - 1;
             counter++;
         }

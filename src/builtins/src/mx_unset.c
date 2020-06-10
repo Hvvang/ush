@@ -6,37 +6,36 @@
 #define MX_NOT_A_PARAM -1
 
 static int validation(char *arg, bool *toggle) {
+	setenv("status", "0", 1);
 	if ((!strcmp(arg, "-") || !strcmp(arg, "--")) && *toggle) {
 		*toggle = !(*toggle);
+		setenv("status", "-1", 1);
 		return MX_NOT_A_PARAM;
 	}
 	for (unsigned i = 0; arg[i]; i++) {
-		if (!isalpha(arg[i]) || (i > 0 && !isdigit(arg[i]))) {
+		if (!isalpha(arg[i]) && (i > 0 && !isdigit(arg[i]))) {
+			setenv("status", "-1", 1);
 			fprintf(stderr, "unset: %s: %s\n", arg, MX_INVALID_NAME);
 			return MX_NOT_A_PARAM;
 		}
-		return MX_SUCCESS;
+		if (!arg[i + 1])
+			return MX_SUCCESS;
 	}
 	return MX_NO_OPTIONS;
 }
 
 static void del_arg(char *arg, t_hash_table *hash_table) {
-	for (unsigned i = 0; hash_table->export[i]; i++) {
-		if (strstr(hash_table->export[i], arg)) {
-			char **parameter = mx_strsplit(hash_table->export[i], '=');
-
-			if (!strcmp(parameter[0], arg)) {
-				for ( ; hash_table->export[i]; i++) {
-					mx_strdel(&(hash_table->export[i]));
-					if (hash_table->export[i + 1])
-						hash_table->export[i] = mx_strdup(hash_table->export[i + 1]);
-					else
-						hash_table->export[i] = NULL;
-				}
-				mx_del_strarr(&parameter);
-				return ;
+	for (unsigned i = 0; i < hash_table->export_size; i++) {
+		if (strstr(hash_table->export[i].key, arg)) {
+			free(hash_table->export[i].key);
+			free(hash_table->export[i].value);
+			for (; i < hash_table->export_size - 1; i++) {
+				hash_table->export[i].key = strdup(hash_table->export[i + 1].key);
+				hash_table->export[i].value = strdup(hash_table->export[i + 1].value);
+				free(hash_table->export[i + 1].key);
+				free(hash_table->export[i + 1].value);
 			}
-			mx_del_strarr(&parameter);
+			hash_table->export_size--;
 		}
 	}
 }

@@ -25,8 +25,11 @@ static char **get_true_path(char *programm_name) {
     char **true_path = (char **)malloc(sizeof(char *) + 1);
     int index = 0;
 
-    if (mx_is_ush_builtins(programm_name) != MX_NOT_A_USH_BUILTIN) {
-        true_path[index] = mx_strjoin(programm_name, MX_SHELL_BUILTIN);
+    if (mx_is_ush_builtins(programm_name) != MX_NOT_A_USH_BUILTIN ||
+        mx_get_type(programm_name) < 2) {
+        true_path[index] = (mx_get_type(programm_name) < 2) ?
+                                   mx_strdup(programm_name) :
+                                   mx_strjoin(programm_name, MX_SHELL_BUILTIN);
         true_path[++index] = NULL;
     }
     for (unsigned i = 0; all_paths[i]; i++) {
@@ -52,7 +55,7 @@ static void print_paths(t_command *command, int index, char flag) {
     }
     else {
         fprintf(stderr, "%s not found\n", command->arguments[index]);
-        command->exit = 1;
+        setenv("status", "1", 1);
     }
 }
 
@@ -60,7 +63,7 @@ void mx_which(t_command *command) {
     int index = 0;
     char flag = mx_check_flags(MX_WHICH, &index, command, mx_valid_which);
 
-    if (!command->exit) {
+    if (!atoi(getenv("status"))) {
         if (flag != 's') {
             while (command->arguments[index]) {
                 print_paths(command, index, flag);

@@ -14,7 +14,6 @@ void pop_front(t_command **head) {
             *head = NULL;
             return ;
         }
-		// printf ("2\n");
         prev = (*head)->next;
         free(*head);
         *head = prev;

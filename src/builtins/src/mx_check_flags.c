@@ -28,11 +28,12 @@ char mx_check_flags(int builtin, int *index, t_command *command,
     char flag = set_default(builtin);
     int toggle = 1;
 
+    setenv("status", "0", 1);
     for (int i = 0; toggle && args[i]; i++) {
         if (!(*valid)(&toggle, args[i], &flag, index)) {
             mx_builtin_usage(builtin, flag);
+            setenv("status", "-1", 1);
             flag = '\0';
-            command->exit = 1;
             break;
         }
     }

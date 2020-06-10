@@ -2,7 +2,6 @@
 
 bool mx_valid_cd(int *toggle, char *arg, char *flag, int *index) {
     if (!strcmp(arg, "--")) {
-        *index = *index + 1;
         *toggle = 0;
     }
     else if (arg[0] == '-' && arg[1]) {

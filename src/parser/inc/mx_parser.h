@@ -6,10 +6,21 @@
 #define MX_ARGS_DELIM ' '
 
 #ifdef __linux__
-    #define USERFOLDER "/home/"
+    #define MX_USERFOLDER "/home/"
 #else
-    #define USERFOLDER "/Users/"
+    #define MX_USERFOLDER "/Users/"
 #endif
+
+#define MX_IS_QUOTE(c) mx_get_literal(c) == QUOTE
+#define MX_IS_SQUOTE(c) mx_get_literal(c) == SQUOTE
+#define MX_IS_DQUOTE(c) mx_get_literal(c) == DQUOTE
+#define MX_IS_BRACKET(c) mx_get_literal(c) == BRACKET
+#define MX_IS_QBRACKET(c) mx_get_literal(c) == QBRACKET
+#define MX_IS_CBRACKET(c) mx_get_literal(c) == CBRACKET
+#define MX_IS_CQBRACKET(c) mx_get_literal(c) == CQBRACKET
+#define MX_IS_SLASH(c) mx_get_literal(c) == SLASH
+#define MX_IS_DOLLAR(c) mx_get_literal(c) == DOLLAR
+#define MX_IS_REGULAR(c) mx_get_literal(c) == -1
 
 #include "../../../inc/mx_posix.h"
 #include "../../../libmx/inc/libmx.h"
@@ -35,8 +46,8 @@ typedef struct s_command {
 }              t_command;
 
 int mx_check_input(char *stdin_line, int *index);
-int mx_check_subs_lvls(char *str, int *index);
-int mx_error(int error);
+int mx_check_subs_lvls(char *str, int *index, int prev_lvl);
+int mx_error_handle(int error);
 char *mx_filter_input(char *arg);
 void mx_find_close_quote(char *str, int *i, char c);
 char **mx_get_commands(const char *stdin_line);
@@ -46,5 +57,11 @@ char mx_set_literal(const int literal);
 int mx_skip_literal(char *str, int *index, int literal);
 t_list *mx_split_commands(char *commands, char delim);
 t_command *mx_split_to_struct(char *stdin_line);
+char *mx_replace_chars_by_str(char *str, int i, int itms, char *substr);
+char *mx_substr_to_symbol(char *str, char *symbol);
+char *mx_filter_tilda(char *arg);
+char *mx_get_substitution(char *arg, int *i);
+char *mx_subshell(char *substitution);
+
 
 #endif

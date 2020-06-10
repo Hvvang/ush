@@ -21,10 +21,12 @@ static int check_command_on_exist(char **commands) {
 char **mx_get_commands(const char *stdin_line) {
     char *temp = mx_strdup(stdin_line);
     int result = 0;
+    int error = mx_check_input(temp, &result);
 
-    if (mx_check_input(temp, &result) == -1) {
+    if (error != 1) {
         mx_strdel(&temp);
-        printf("ERROR\n");
+        setenv("status", mx_itoa(error), 1);
+        mx_error_handle(error);
         return NULL;
     }
     else {
@@ -34,6 +36,7 @@ char **mx_get_commands(const char *stdin_line) {
         mx_del_list(&list);
         mx_strdel(&temp);
         if (check_command_on_exist(commands)) {
+            setenv("status", "-1", 1);
             mx_del_strarr(&commands);
             return NULL;
         }

@@ -1,41 +1,51 @@
 #include "../inc/mx_input.h"
 
+static void control(char *line, int len, int *pos, char *key) {
+    if (key[0] == 127 || MX_IS_DEL(key) || MX_IS_BS(key) || MX_IS_VT(key))
+        mx_clear_part_input(line, len, pos, key);
+    else if (MX_IS_LEFT_ARROW(key) || MX_IS_RIGHT_ARROW(key)
+             || MX_IS_END(key) || MX_IS_HOME(key))
+        mx_input_moving(line, pos, key);
+    // else if (MX_IS_UP_ARROW(key) || MX_IS_DOWN_ARROW(key)) {
+        // t_history *history = mx_file_to_struct();
+
+        // line = mx_history_moving(history, key);
+        // mx_clear_input(line, &pos);
+        // printf("%s", history->command);
+        // pos += strlen(history->command);
+    // }
+}
+
 char *mx_ush_read_line() {
-    char c[5];
+    char key[5];
     char *line = mx_strnew(PATH_MAX);
     int pos = 0;
-    bool esc = false;
+    struct termios savetty;
 
-    mx_enable_canon();
-    while (read(STDIN_FILENO, &c, 4)) {
+    // int out = dup(1);
+    // int tty = open("/dev/tty", O_WRONLY);
+    // dup2(tty, 1);
+    savetty = mx_enable_canon();
+    printf(MX_SHELL_PROMPT);
+    fflush (NULL);
+    while (read(STDIN_FILENO, &key, 4)) {
         int len = strlen(line);
-
-        // printf("c[0] = %c c[1] = %c c[2] = %c c[3] = %c c[4] = %c\n", c[0], c[1], c[2], c[3], c[4]);
-        if (c[0] == '\n') {
+        // printf("key[0] = %key key[1] = %key key[2] = %key key[3] = %key key[4] = %key\n", key[0], key[1], key[2], key[3], key[4]);
+        // exit(1);
+        if (key[0] == '\n' || (key[0] == 3 && len == 0)) {
             write(STDOUT_FILENO, "\n", 1);
             break;
         }
-        else if (c[0] == 127 || MX_IS_DEL(c) || MX_IS_BS(c) || MX_IS_VT(c))
-            mx_clear_part_input(line, len, &pos, &c[0]);
-        else if (MX_IS_LEFT_ARROW(c) || MX_IS_RIGHT_ARROW(c)
-                 || MX_IS_END(c) || MX_IS_HOME(c))
-            mx_input_moving(line, &pos, &esc, &c[0]);
-        else if (MX_IS_ESC(c)) {
-            esc = !esc;
-        }
-        else if (MX_IS_UP_ARROW(c) || MX_IS_DOWN_ARROW(c)) {
-            t_history *history = mx_file_to_struct();
-
-            // line = mx_history_moving(history, c);
-            mx_clear_input(line, &pos);
-            printf("%s", history->command);
-            pos += strlen(history->command);
-        }
-        else {
-            mx_print_regular(line, c[0], &pos);
-        }
-        memset(c, '\0', 5);
+        else if (key[0] > 27 && key[0] < 127)
+            mx_print_regular(line, key[0], &pos);
+        else
+            control(line, len, &pos, key);
+        memset(key, '\0', 5);
     }
+    mx_disable_canon(savetty);
+    // dup2(out, 1);
+    // close(out);
+    // close(tty);
     // mx_disable_canon();
     return line;
 }

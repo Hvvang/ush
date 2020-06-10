@@ -1,19 +1,17 @@
 #include "../inc/mx_input.h"
 
-void set_props(void) {
+struct termios mx_enable_canon(void) {
+    struct termios savetty;
     struct termios tty;
 
-    tcgetattr(STDIN_FILENO, &tty);
-    tty.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+    tcgetattr (0, &tty);
+    savetty = tty;
+    tty.c_lflag &= ~(ICANON|ECHO|ISIG|BRKINT|ICRNL
+        |INPCK|ISTRIP|IXON|OPOST|IEXTEN);
+    tty.c_cflag |= (CS8);
     tty.c_cc[VMIN] = 1;
     tty.c_cc[VTIME] = 0;
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &tty);
-}
+    tcsetattr (0, TCSAFLUSH, &tty);
 
-void mx_enable_canon(void) {
-    static struct termios tty;
-
-    tcgetattr(STDIN_FILENO, &tty);
-    setvbuf(stdout, NULL, _IONBF, 0);
-    set_props();
+    return savetty;
 }

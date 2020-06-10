@@ -6,9 +6,11 @@
 #define MX_NOT_AN_IDENTIFIER "export: not an identifier:"
 
 static int validation(char *command, bool *toggle) {
+	setenv("status", "0", 1);
 	if (command) {
 		if ((!strcmp(command, "-") || !strcmp(command, "--")) && *toggle) {
 			*toggle = !(*toggle);
+			setenv("status", "-1", 1);
 			return MX_NOT_A_PARAM;
 		}
 		for (unsigned i = 0; command[i]; i++) {
@@ -16,15 +18,16 @@ static int validation(char *command, bool *toggle) {
 				if (command[i] == '=')
 					return MX_SUCCESS;
 				fprintf(stderr, "%s %s\n", MX_NOT_AN_IDENTIFIER, command);
+				setenv("status", "-1", 1);
 				return MX_NOT_A_PARAM;
 			}
-			return MX_SUCCESS;
 		}
+		return MX_SUCCESS;
 	}
 	return MX_NO_OPTIONS;
 }
 
-static void sort_export(t_hash_table *hash_table, t_export *copy_export) {
+static void sort_var_map(t_hash_table *hash_table, t_var_map *copy_export) {
 	for (unsigned i = 0; i < hash_table->export_size; i++) {
 		copy_export[i].key = mx_strdup(hash_table->export[i].key);
 		if (hash_table->export[i].value)
@@ -48,21 +51,23 @@ static void sort_export(t_hash_table *hash_table, t_export *copy_export) {
 }
 
 static void export_print(t_hash_table *hash_table) {
-	t_export copy_export[hash_table->export_size];
+	t_var_map copy_export[hash_table->export_size];
 
-	sort_export(hash_table, &copy_export[0]);
+	sort_var_map(hash_table, &copy_export[0]);
 	for (unsigned i = 0; i < hash_table->export_size; i++) {
-		printf("%s=", copy_export[i].key);
-		if (!copy_export[i].value || copy_export[i].value[0] == '\0')
-			printf("\'\'");
-		else if (mx_get_char_index(copy_export[i].value, '=') > 0
-				 || mx_get_char_index(copy_export[i].value, ';') > 0)
-			printf("\'%s\'", copy_export[i].value);
-		else
-			printf("%s", copy_export[i].value);
-		printf("\n");
-		mx_strdel(&copy_export[i].key);
-		mx_strdel(&copy_export[i].value);
+		if (copy_export[i].key) {
+			printf("%s=", copy_export[i].key);
+			if (!copy_export[i].value || copy_export[i].value[0] == '\0')
+				printf("\'\'");
+			else if (mx_get_char_index(copy_export[i].value, '=') > 0
+					 || mx_get_char_index(copy_export[i].value, ';') > 0)
+				printf("\'%s\'", copy_export[i].value);
+			else
+				printf("%s", copy_export[i].value);
+			printf("\n");
+			mx_strdel(&copy_export[i].key);
+			mx_strdel(&copy_export[i].value);
+		}
 	}
 }
 
@@ -77,11 +82,12 @@ void mx_export(t_command *command, t_hash_table *hash_table) {
 		if (valid_key != MX_NOT_A_PARAM) {
 			if (valid_key == MX_NO_OPTIONS)
 				export_print(hash_table);
-			else if (mx_create_variable(command->arguments[i], hash_table)) {
-				if (hash_table->export[hash_table->export_size].value)
-					setenv(hash_table->export[hash_table->export_size].key,
-						   hash_table->export[hash_table->export_size].value,
-						   1);
+			else if (mx_create_export(command->arguments[i], hash_table)) {
+				if (hash_table->export[hash_table->export_size - 1].value) {
+					setenv(hash_table->export[hash_table->export_size - 1].key,
+						hash_table->export[hash_table->export_size - 1].value,
+						1);
+				}
 			}
 		}
 	}

@@ -13,6 +13,7 @@ void mx_error_handle(int builtin, const char *command, int d_type) {
                 fprintf(stderr, "u$h: cd: ");
                 perror(command);
             }
+            setenv("status", "-1", 1);
         	// else if (d_type == MX_EFAULT) {
             //     fprintf(stderr, "No such file or directory\n");
             // }
