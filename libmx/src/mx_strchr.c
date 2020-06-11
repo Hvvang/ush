@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char* mx_strchr(char* str, char c) {
 	if (str == NULL)

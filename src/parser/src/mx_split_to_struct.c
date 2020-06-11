@@ -7,13 +7,11 @@ static t_command *create_node(char *command, char **arguments) {
 	node = (t_command*)malloc(sizeof(t_command));
 	if (node == NULL)
 		return NULL;
-    node->command = mx_filter_input(command);
+    node->command = strdup(command);
 	node->arguments = malloc(sizeof(char*) * size + 1);
-	for (int i = 0; i <= size; i++) {
-		node->arguments[i] = arguments[i];
-		if (node->arguments[i])
-			node->arguments[i] = mx_filter_input(node->arguments[i]);
-	}
+	for (int i = 0; i < size; i++)
+		node->arguments[i] = strdup(arguments[i]);
+	node->arguments[size] = NULL;
     node->next = NULL;
     return node;
 }
@@ -37,13 +35,11 @@ t_command *mx_split_to_struct(char *stdin_line) {
 
     if (commands) {
         for (int i = 0; commands[i]; i++) {
-			char *cmd = mx_strtrim(commands[i]);
-            t_list *temp = mx_split_commands(cmd, MX_ARGS_DELIM);
-            char **arr = mx_list_to_arr(temp);
+			char **arr = NULL;
 
+			mx_filter_input(&commands[i]);
+			arr = mx_strsplit(commands[i], MX_ARGS_DELIM);
             push_back(&commd_struct, arr[0], &arr[1]);
-            mx_del_list(&temp);
-			mx_strdel(&cmd);
 			mx_del_strarr(&arr);
         }
 		mx_del_strarr(&commands);

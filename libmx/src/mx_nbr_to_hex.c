@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 static char* math_hex(unsigned long nbr, int len);
 

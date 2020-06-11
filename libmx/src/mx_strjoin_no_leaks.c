@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_strjoin_no_leaks(char *s1, char *s2) {
 	char* res = NULL;

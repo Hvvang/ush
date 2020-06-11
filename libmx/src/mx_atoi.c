@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 static bool is_space(char c){
     if (c == 32) 

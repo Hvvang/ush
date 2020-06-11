@@ -19,10 +19,7 @@ void sigquit_handler(int signo) {
 }
 
 void sigstp_handler(int signo) {
-	printf("p_pid = %d, pid = %d\n", getppid(), getpid());
     printf("Caught SIGTSTP = %d\n", signo);
-	sleep(2);
-	// kill(getpid(), SIGCONT);
 }
 
 void sigcont_handler(int signo) {

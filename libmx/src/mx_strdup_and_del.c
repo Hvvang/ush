@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_strdup_and_del(char **str) {
 	char *s = mx_strdup(*str);

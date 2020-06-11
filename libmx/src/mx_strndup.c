@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_strndup(const char *s1, size_t n) {
     char *buf = mx_strnew(n);

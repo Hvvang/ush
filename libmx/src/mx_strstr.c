@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_strstr(const char *haystack, const char *needle) {
     char* tmphay = NULL;

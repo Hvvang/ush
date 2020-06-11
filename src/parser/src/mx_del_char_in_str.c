@@ -1,4 +1,5 @@
-#include "../inc/libmx.h"
+#include "../inc/mx_parser.h"
+
 
 void mx_del_char_in_str(char *str, int pos) {
     int len = strlen(str);

@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char **mx_str_join_arr(char *str, char **arr) {
     unsigned size = mx_str_arr_size(arr);

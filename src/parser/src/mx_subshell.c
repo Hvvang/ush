@@ -17,13 +17,11 @@ static char *data_from_fd(int *fd) {
     size_t n_read = 0;
     size_t sum_read = 0;
     char buf[BUFSIZ];
-    char *res = mx_strnew(1);
+    char *res = NULL;
 
-    while ((n_read = read(fd[0], buf, BUFSIZ)) > 0) {
-        res = realloc(res, sum_read + n_read + 1);
-        memcpy(&res[sum_read], buf, n_read);
+    while ((n_read = read(fd[0], buf, BUFSIZ)) > 0)
         sum_read += n_read;
-    }
+    res = strdup(buf);
     res[sum_read - 1] = '\0';
     for (unsigned i = 0; res[i]; i++) {
         if (res[i] == '\n')
@@ -60,6 +58,7 @@ char *mx_subshell(char *substitution) {
 	}
 	else {
 		waitpid(pid, &status, WNOHANG | WUNTRACED | WCONTINUED);
+        mx_strdel(&substitution);
         mx_del_strarr(&args);
         close(fd1[0]);
         close(fd2[1]);

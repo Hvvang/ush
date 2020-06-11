@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 static wchar_t check_if_0(wchar_t c, char* out);
 static wchar_t check_if_1(wchar_t c, char* out);

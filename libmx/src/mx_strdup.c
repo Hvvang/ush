@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_strdup(const char *str) {
     char *result = mx_strnew(mx_strlen(str));

@@ -25,8 +25,7 @@ char **mx_get_commands(const char *stdin_line) {
 
     if (error != 1) {
         mx_strdel(&temp);
-        setenv("status", mx_itoa(error), 1);
-        mx_error_handle(error);
+        mx_print_error(error);
         return NULL;
     }
     else {

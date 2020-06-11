@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 static void condition(const char *s1, const char *s2, int i, int j, char *temp);
 

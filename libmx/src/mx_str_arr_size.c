@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 int mx_str_arr_size(char **arr) {
     int i = 0;

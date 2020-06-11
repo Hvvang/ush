@@ -1,6 +1,7 @@
 #include "../inc/mx_parser.h"
 
-int mx_error_handle(int error) {
+int mx_print_error(int error) {
+    setenv("status", mx_itoa(error), 1);
     switch (error) {
         case -1:
             fprintf(stderr,

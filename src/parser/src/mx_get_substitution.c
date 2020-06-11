@@ -1,6 +1,6 @@
 #include "../inc/mx_parser.h"
 
-static int mx_get_sub_lvl(char *arg, int *i) {
+static int get_sub_lvl(char *arg, int *i) {
     int lvl = 0;
     unsigned index;
 
@@ -12,7 +12,7 @@ static int mx_get_sub_lvl(char *arg, int *i) {
 char *mx_get_substitution(char *arg, int *i) {
     bool toggle = true;
     int index;
-    int lvl = mx_get_sub_lvl(arg, i);
+    int lvl = get_sub_lvl(arg, i);
 
     for (index = (lvl) ? lvl * 2 : 1; index; index--)
         mx_del_char_in_str(arg, *i);
@@ -20,7 +20,7 @@ char *mx_get_substitution(char *arg, int *i) {
         if (lvl == 0 && (arg[index - 1] != '\\' && arg[index] == '`'))
             break;
         if (MX_IS_SLASH(arg[index]) && MX_IS_QUOTE(arg[index + 1])) {
-            if (lvl == mx_get_sub_lvl(arg, &index)) {
+            if (lvl == get_sub_lvl(arg, &index)) {
                 toggle = false;
                 break;
             }
@@ -29,5 +29,5 @@ char *mx_get_substitution(char *arg, int *i) {
     }
     for (lvl = (lvl) ? lvl * 2 : 1; lvl; lvl--)
         mx_del_char_in_str(arg, index);
-    return strndup(arg + *i, index - *i);
+    return mx_strndup(arg + *i, index - *i);
 }

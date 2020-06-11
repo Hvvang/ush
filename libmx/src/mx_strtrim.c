@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_strtrim(const char *str) {
     int l_spaces = 0;

@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 void mx_add_buff_to_static(char **static_buff, char **buff) {
 	char *static_tmp = *static_buff;

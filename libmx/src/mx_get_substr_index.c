@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 int mx_get_substr_index(const char *str, const char *sub) {
  	int i = 0;

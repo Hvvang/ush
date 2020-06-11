@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 static char* mreplace(char **res, int i, const char *sub, const char *replace);
 
