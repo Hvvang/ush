@@ -45,6 +45,7 @@ typedef struct s_command {
 	struct s_command *next;
 }              t_command;
 
+int mx_get_substitutions(char **arg);
 int mx_check_input(char *stdin_line, int *index);
 void mx_replace_var(char **arg, char *before, char *after, int *i);
 int mx_check_subs_lvls(char *str, int *index, int prev_lvl);

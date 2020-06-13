@@ -31,7 +31,7 @@ t_list *mx_split_commands(char *commands, char delim) {
         }
         if (commands[i] == delim) {
             char *test = mx_strndup(&commands[index], i - index);
-            // printf("test is = %s\n", test);
+
             mx_push_back(&list, test);
             while (commands[i] == delim) {
                 i++;

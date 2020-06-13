@@ -5,7 +5,7 @@ int mx_launch_process(t_command *command, t_hash_table *hash_table) {
 	int status;
 	pid_t pid = fork();
 
-	hash_table->pids[hash_table->pids_num++] = pid;
+
 	if (pid == 0) {
 		if (execvp(args[0], args) == -1)
 			fprintf(stderr, "u$h: command  not found: %s\n", command->command);
@@ -13,5 +13,9 @@ int mx_launch_process(t_command *command, t_hash_table *hash_table) {
 	}
 	else
 		waitpid(pid, &status, WUNTRACED);
+		if (WIFSTOPPED(status)) {
+			hash_table->pids[hash_table->pids_num++] = pid;
+			printf("pid = %d\n", pid);
+		}
 	return 1;
 }
