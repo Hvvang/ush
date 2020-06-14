@@ -1,16 +1,17 @@
-NAME = history
+NAME = exec
 MODULE = $(NAME).a
 
 SRCD = src
 OBJD = obj
 INCD = inc
 
-INC_PATH = inc/mx_history.h \
+INC_PATH = inc/mx_exec.h
 
 LIB_PATH = ../../libmx/libmx.a
-BUILTINS = ../builtins/builtins.a
+
+LBMXD = ../../libmx
+
 INCLUDE = \
-	-I $(BUILTINS) \
 	-I $(LIB_PATH) \
 	-I $(INCD) \
 
@@ -45,3 +46,9 @@ clean:
 	@printf "\e[34;1mdeleted object files in $(NAME)\e[0m\n"
 
 reinstall: uninstall install
+
+test1:
+	@make all
+	@clang $(CFLAGS) -c test.c -o test.o -I $(INC_PATH)
+	@clang $(CFLAGS) -g test.o $(MODULE) ../parser/parser.a $(LIB_PATH)  -o $(NAME)
+	@rm -rf test.o

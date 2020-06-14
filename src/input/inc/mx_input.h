@@ -34,6 +34,7 @@ void mx_move_right(char *str, int *pos);
 void mx_print_backspace(char *str, int *pos);
 void mx_print_del(char *str, int *pos);
 void mx_print_regular(char *str, char c, int *pos);
+void mx_history_manage(char *line, int *pos, int *len, char *key);
 char *mx_ush_read_line();
 
 #endif

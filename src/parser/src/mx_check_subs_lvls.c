@@ -14,6 +14,6 @@ int mx_check_subs_lvls(char *str, int *index, int prev_lvl) {
         }
     }
     if (pos != *index)
-        *index = *index - 1;
+        *index = *index - 2;
     return lvl;
 }

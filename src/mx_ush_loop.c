@@ -16,11 +16,11 @@ void mx_ush_loop (t_hash_table *hash_table) {
 	char *stdin_line = NULL;
 
 	while (status) {
-		stdin_line = mx_ush_read_line(); //чтение аргументов
-
+		stdin_line = mx_ush_read_line();
 		if (stdin_line[0] != '\0') {
 			t_command *commands = mx_split_to_struct(stdin_line);
 
+			mx_history_file_appending(stdin_line);
 			if (isatty(0)){
 				while (commands) {
 					commands->exit = 0;
@@ -35,7 +35,7 @@ void mx_ush_loop (t_hash_table *hash_table) {
 			}
 		}
 		// mx_strdel(&stdin_line);
-		// system("leaks ush");
 		mx_ush_loop(hash_table);
+
 	}
 }

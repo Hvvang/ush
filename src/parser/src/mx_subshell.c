@@ -25,7 +25,7 @@ static char *data_from_fd(int *fd) {
     res[sum_read - 1] = '\0';
     for (unsigned i = 0; res[i]; i++) {
         if (res[i] == '\n')
-        res[i] = ' ';
+            res[i] = ' ';
     }
     return res;
 }
@@ -57,7 +57,7 @@ char *mx_subshell(char *substitution) {
 		_exit(1);
 	}
 	else {
-		waitpid(pid, &status, WNOHANG | WUNTRACED | WCONTINUED);
+		waitpid(pid, &status, WUNTRACED | WCONTINUED);
         mx_strdel(&substitution);
         mx_del_strarr(&args);
         close(fd1[0]);

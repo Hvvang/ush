@@ -45,7 +45,8 @@ typedef struct s_command {
 	struct s_command *next;
 }              t_command;
 
-int mx_get_substitutions(char **arg);
+int mx_get_substitution_by_quote(char **arg);
+int mx_get_substitution_by_bracket(char **arg);
 int mx_check_input(char *stdin_line, int *index);
 void mx_replace_var(char **arg, char *before, char *after, int *i);
 int mx_check_subs_lvls(char *str, int *index, int prev_lvl);
@@ -63,7 +64,6 @@ char *mx_replace_chars_by_str(char *str, int i, int itms, char *substr);
 char *mx_substr_to_symbol(char *str, char *symbol);
 void mx_filter_tilda(char **arg);
 void mx_filter_parameter(char **arg, int *i);
-char *mx_get_substitution(char *arg, int *i);
 void mx_filter_substitution(char **arg, int *i);
 char *mx_subshell(char *substitution);
 

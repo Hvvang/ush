@@ -16,9 +16,8 @@ void del_struct(t_command **head) {
 void mx_builtin_func(t_command *command, t_hash_table *hash_table) {
 	// for (int i = 0; command->arguments[i]; i++)
 	// 	mx_check_flag(command->arguments[i], command);
-	if (!strcmp(command->command, "env")) {
-        // mx_env(command, hash_table);
-    }
+	if (!strcmp(command->command, "env"))
+		mx_env(command, hash_table);
 	else if (!strcmp(command->command, "cd"))
 		mx_cd(command);
 	else if (!strcmp(command->command, "pwd"))

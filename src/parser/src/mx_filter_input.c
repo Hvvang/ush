@@ -34,7 +34,7 @@ static void filter_dquote(char **arg, int *i) {
 void mx_filter_input(char **arg) {
     mx_filter_tilda(arg);
     for (int i = 0; (*arg)[i]; i++) {
-        if (MX_IS_SLASH((*arg)[i]) && !(MX_IS_QUOTE((*arg)[i + 1])))
+        if (MX_IS_SLASH((*arg)[i]))
             mx_del_char_in_str(*arg, i);
         else if (MX_IS_SQUOTE((*arg)[i]))
             filter_squote(*arg, &i);

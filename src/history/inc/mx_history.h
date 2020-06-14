@@ -2,8 +2,10 @@
 #define MX_HISTORY_H
 
 #include "../../input/inc/mx_input.h"
+#include "../../builtins/inc/mx_builtins.h"
 
-#define MX_HISTORY_PATH "/home/hwang/.ush_history"
+
+#define MX_HISTORY_FILE ".ush_history"
 // #define MX_UP_ARROW "\033[A\0"
 // #define MX_DOWN_ARROW "\033[B\0"
 
@@ -19,6 +21,6 @@ t_history *mx_create_history_node(const char *command);
 t_history *mx_command_to_struct(t_history *history, const char *command);
 t_history *mx_file_to_struct(void);
 t_history *mx_update_history_struct(t_history *history);
-char *mx_history_moving(t_history *history, char *keyCode);
+char *mx_history_moving(t_history **history, char *keyCode);
 
 #endif
