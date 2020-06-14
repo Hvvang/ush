@@ -19,6 +19,8 @@ int mx_is_ush_builtins(char *command) {
         return MX_ECHO;
     if (!strcmp(command, "which"))
         return MX_WHICH;
+    if (!strcmp(command, "history"))
+        return MX_HISTORY;
     else
         return MX_NOT_A_USH_BUILTIN;
     // if (!strcmp(command, "history"))

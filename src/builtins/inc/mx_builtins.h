@@ -4,6 +4,7 @@
 #include "../../../inc/mx_posix.h"
 #include "../../../libmx/inc/libmx.h"
 #include "../../parser/inc/mx_parser.h"
+#include "../../history/inc/mx_history.h"
 
 #define MX_NOT_FOUND -1
 #define MX_CHANGED_VAR 0
@@ -50,6 +51,7 @@ typedef enum e_builtins {
 	MX_PWD,
 	MX_ECHO,
 	MX_WHICH,
+	MX_HISTORY,
 	MX_NOT_A_USH_BUILTIN
 }            t_builtins;
 

@@ -1,8 +1,8 @@
 #include "../inc/ush.h"
 
 static int is_builtin(char *command) {
-	char *built_ins[11] = {"exit", "fg", "unset", "export", "cd",
-	                "pwd", "echo", "which", /*"env",*/ NULL };
+	char *built_ins[12] = {"exit", "fg", "unset", "export", "cd",
+	                "pwd", "echo", "which", "history",  /*"env",*/ NULL };
 
 	for (int i = 0; built_ins[i]; i++) {
 		if (!strcmp(command, built_ins[i]))

@@ -21,6 +21,8 @@ void mx_builtin_func(t_command *command, t_hash_table *hash_table) {
     }
 	else if (!strcmp(command->command, "cd"))
 		mx_cd(command);
+    else if (!strcmp(command->command, "history"))
+		mx_print_history();
 	else if (!strcmp(command->command, "pwd"))
 		mx_pwd(command);
 	else if (!strcmp(command->command, "echo"))
