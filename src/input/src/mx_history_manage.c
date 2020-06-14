@@ -14,5 +14,5 @@ void mx_history_manage(char *line, int *pos, int *len, char *key) {
         }
         read(STDIN_FILENO, key, 4);
     }
-    // mx_clear_history_list(&history);
+    mx_clear_history_list(&history);
 }

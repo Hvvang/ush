@@ -22,5 +22,6 @@ t_history *mx_command_to_struct(t_history *history, const char *command);
 t_history *mx_file_to_struct(void);
 t_history *mx_update_history_struct(t_history *history);
 char *mx_history_moving(t_history **history, char *keyCode);
+void mx_clear_history_list(t_history **history);
 
 #endif
