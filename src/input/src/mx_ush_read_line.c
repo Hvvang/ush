@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 static void control(char *line, int len, int *pos, char *key) {
     if (key[0] == 127 || MX_IS_DEL(key) || MX_IS_BS(key) || MX_IS_VT(key))

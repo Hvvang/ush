@@ -1,4 +1,4 @@
-#include "../inc/mx_shell.h"
+#include "mx_shell.h"
 
 static void increment_shlvl(t_hash_table *hash_table) {
     int new_lvl = 1;

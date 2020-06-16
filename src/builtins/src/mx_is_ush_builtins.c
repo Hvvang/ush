@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 int mx_is_ush_builtins(char *command) {
     if (!strcmp(command, "export"))

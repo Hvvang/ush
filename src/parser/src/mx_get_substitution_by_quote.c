@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 static int get_sub_lvl(char *arg, const int *i) {
     int lvl = 0;

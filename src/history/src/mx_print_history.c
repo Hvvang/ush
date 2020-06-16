@@ -1,4 +1,4 @@
-#include "../inc/mx_history.h"
+#include "mx_history.h"
 
 void mx_print_history(void) {
     t_history *history = mx_file_to_struct();

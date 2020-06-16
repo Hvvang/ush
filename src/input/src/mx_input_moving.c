@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 void mx_input_moving(char *line, int *pos, char *c) {
     if (MX_IS_LEFT_ARROW(c))

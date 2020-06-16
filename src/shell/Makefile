@@ -5,13 +5,13 @@ SRCD = src
 OBJD = obj
 INCD = inc
 
-INC_PATH = inc/mx_shell.h
+INC_PATH = inc/
 LIB_PATH = ../../libmx/libmx.a
 
 # BUILTINS = ../builtins/builtins.a
 INCLUDE = \
 	-I $(LIB_PATH) \
-	-I $(INCD) \
+	-I $(INC_PATH) \
 
 SRCS = $(wildcard $(SRCD)/*.c)
 OBJS = $(addprefix $(OBJD)/, $(SRCS:src/%.c=%.o))

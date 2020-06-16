@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 #define MX_NO_OPTIONS 1
 #define MX_SUCCESS 0

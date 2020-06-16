@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 void mx_history_manage(char *line, int *pos, int *len, char *key) {
     t_history *history = mx_file_to_struct();

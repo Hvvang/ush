@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 int mx_skip_literal(char *str, int *index, int literal) {
     int i = *index;

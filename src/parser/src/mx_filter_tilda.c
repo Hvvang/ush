@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 void mx_filter_tilda(char **arg) {
     for (int i = 0; (*arg)[i]; i++) {

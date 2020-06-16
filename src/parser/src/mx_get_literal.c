@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 int mx_get_literal(const char c) {
     if (c == '`')

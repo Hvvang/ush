@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 char *mx_itoa(int number) {
      int res = 0;

@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 void mx_builtin_usage(int builtin, char error) {
     switch (builtin) {

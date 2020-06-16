@@ -1,4 +1,4 @@
-#include "../inc/mx_shell.h"
+#include "mx_shell.h"
 
 static void create_vars(t_hash_table *hash_table) {
     extern char **environ;

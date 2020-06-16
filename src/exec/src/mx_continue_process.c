@@ -1,4 +1,4 @@
-#include "../inc/mx_exec.h"
+#include "mx_exec.h"
 
 void print_continue(char **args, pid_t pid, int continued_index) {
     printf("[%d]  + %d continued  ", continued_index, pid);
@@ -7,8 +7,7 @@ void print_continue(char **args, pid_t pid, int continued_index) {
     printf("\n");
 }
 
-void mx_continue_process(t_processes **processes,
-                         t_processes *current, pid_t pid) {
+void mx_continue_process(t_processes **processes, t_processes *current, pid_t pid) {
     int status;
 
     if (kill(current->pid, SIGCONT))

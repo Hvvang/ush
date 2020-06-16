@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 void mx_str_reverse(char *s) {
     int len = 0;

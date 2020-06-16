@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 static void swap_str(char **str1, char** str2);
 static void check_str(int *last, int* first, char** arr, char* str3);

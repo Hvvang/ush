@@ -1,4 +1,4 @@
-#include "../inc/mx_history.h"
+#include "mx_history.h"
 
 t_history *mx_command_to_struct(t_history *history, const char *command) {
     t_history *new_item = NULL;

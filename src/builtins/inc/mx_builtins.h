@@ -1,6 +1,7 @@
 #ifndef MX_BUILTINS_H
 #define MX_BUILTINS_H
 
+#include "../../../libmx/inc/libmx.h"
 #include "../../parser/inc/mx_parser.h"
 #include "../../shell/inc/mx_shell.h"
 #include "../../history/inc/mx_history.h"

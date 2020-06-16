@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 int mx_get_type(const char *path) {
 	DIR *dir = opendir(path);

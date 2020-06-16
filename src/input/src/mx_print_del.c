@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 void mx_print_del(char *str, int *pos) {
     mx_del_char_in_str(str, *pos);

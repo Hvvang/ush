@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 char **mx_strsplit(const char *s, char c) {
     int size_arr = mx_count_words(s, c);

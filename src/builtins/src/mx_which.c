@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 #define MX_SHELL_BUILTIN ": shell built-in command"
 

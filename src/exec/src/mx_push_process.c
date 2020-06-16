@@ -1,4 +1,4 @@
-#include "../inc/mx_exec.h"
+#include "mx_exec.h"
 
 /*
 *   Creating new process node and adding

@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 static void change_char_to_unprint(char *str, int i) {
     char c = str[i + 1];

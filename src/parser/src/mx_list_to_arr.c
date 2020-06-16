@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 char **mx_list_to_arr(t_list *list) {
     t_list *temp = list;

@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 static bool m_isalpha(int c);
 static bool m_isdigit(int c);

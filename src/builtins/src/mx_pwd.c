@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 #define MX_FLAG 0
 #define MX_BAD_OPTION -1

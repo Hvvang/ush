@@ -1,4 +1,4 @@
-#include "../inc/mx_history.h"
+#include "mx_history.h"
 
 void mx_clear_history_list(t_history **history) {
     while ((*history)->prev)

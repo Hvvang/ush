@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 struct termios mx_enable_canon(void) {
     struct termios savetty;

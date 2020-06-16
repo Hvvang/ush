@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 void mx_clear_input(char *input, int *pos) {
     int len = strlen(input);

@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 void mx_get_end(char *str, int *pos) {
     int len = strlen(str);

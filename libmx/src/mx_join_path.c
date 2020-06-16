@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 char *mx_join_path(const char *left, const char *right) {
 	char *tmp = mx_strjoin(left, "/");

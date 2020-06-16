@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 void mx_move_right(char *str, int *pos) {
     int len = strlen(str);

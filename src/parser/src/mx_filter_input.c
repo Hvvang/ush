@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 static void filter_squote(char *arg, int *i);
 static void filter_dquote(char **arg, int *i);

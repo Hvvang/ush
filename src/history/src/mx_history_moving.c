@@ -1,4 +1,4 @@
-#include "../inc/mx_history.h"
+#include "mx_history.h"
 
 char *mx_history_moving(t_history **history, char *keyCode) {
     if (*history) {

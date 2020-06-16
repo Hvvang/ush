@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 #define MX_INVALID_NAME "invalid parameter name"
 #define MX_NO_OPTIONS 1

@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 int mx_check_subs_lvls(char *str, int *index, int prev_lvl) {
     int lvl = 0;

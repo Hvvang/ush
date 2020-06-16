@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 void mx_del_list(t_list **head) {
     t_list *tmp;

@@ -5,26 +5,30 @@ SRCD = src
 OBJD = obj
 LIBD = libmx
 
-INC = inc/ush.h
+INC = inc
 
 LIB = libmx/libmx.a
 INPUT = $(SRCD)/input/input.a
-SHELL_PREF = $(SRCD)/shell/shell.a
 PARSER = $(SRCD)/parser/parser.a
 BUILTINS = $(SRCD)/builtins/builtins.a
 HISTORY = $(SRCD)/history/history.a
+EXEC = $(SRCD)/exec/exec.a
+SHELL_PREF = $(SRCD)/shell/shell.a
 
-MODULES = $(INPUT) $(HISTORY) $(PARSER) $(EXEC) $(BUILTINS)  $(LIB) $(SHELL_PREF)
+MODULES = $(INPUT) $(EXEC) $(SHELL_PREF) $(HISTORY) $(PARSER) $(BUILTINS) $(LIB)
 INCLUDE = \
 	-I $(INC) \
+	-I $(EXEC) \
+	-I $(HISTORY) \
+	-I $(INPUT) \
+	-I $(PARSER) \
+	-I $(BUILTINS) \
 
 
 SRCS = $(wildcard $(SRCD)/*.c)
 OBJS = $(addprefix $(OBJD)/, $(SRCS:src/%.c=%.o))
 
-# -g -fsanitize=address
-
-CFLAGS = -std=c11 -v -g -fsanitize=address -Wall -Wextra -Werror -Wpedantic
+CFLAGS = -std=c11 -g -fsanitize=address -Wall -Wextra -Werror -Wpedantic
 
 all: $(NAME)
 
@@ -32,11 +36,11 @@ install: all clean
 
 modules:
 	@make -sC $(LIBD)
-	@make -sC src/shell
-	@make -sC src/input
 	@make -sC src/history
+	@make -sC src/input
 	@make -sC src/parser
 	@make -sC src/exec
+	@make -sC src/shell
 	@make -sC src/builtins
 
 $(NAME): modules $(OBJS)

@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 static int check_dollar(char *str, int *index, int len, int sub_lvl);
 static int check_subquote(char *str, int *index, int len, int sub_lvl);

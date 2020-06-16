@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 int mx_strchr_index(char* str, char c) {
 	if (str == NULL)

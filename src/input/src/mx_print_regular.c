@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 void mx_print_regular(char *str, char c, int *pos) {
     if (pos != 0 && str[*pos] != '\t' && c == '\t')

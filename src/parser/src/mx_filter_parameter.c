@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 static char *get_var(char *arg, int *i) {
     char *temp = NULL;

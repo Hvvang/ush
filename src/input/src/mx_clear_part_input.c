@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 void mx_clear_part_input(char *line, int len, int *pos, char *c) {
     if (c[0] == 127)

@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 #define MX_PWD_DEFAULT 'L'
 #define MX_CD_DEFAULT '0'
 #define MX_ECHO_DEFAULT '0'

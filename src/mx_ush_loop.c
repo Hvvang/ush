@@ -1,4 +1,4 @@
-#include "../inc/ush.h"
+#include "ush.h"
 
 static int is_builtin(char *command) {
 	char *built_ins[12] = {"exit", "fg", "unset", "export", "cd",

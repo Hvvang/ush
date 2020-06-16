@@ -1,4 +1,4 @@
-#include "../inc/mx_exec.h"
+#include "mx_exec.h"
 
 /*
 *   Initialising child process for executing the

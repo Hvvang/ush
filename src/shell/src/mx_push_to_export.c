@@ -1,4 +1,4 @@
-#include "../inc/mx_shell.h"
+#include "mx_shell.h"
 
 #define MX_KEY_NOT_FOUND -1
 #define MX_VAR_EXISTED 0

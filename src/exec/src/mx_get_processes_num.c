@@ -1,4 +1,4 @@
-#include "../inc/mx_exec.h"
+#include "mx_exec.h"
 
 /*
 *   Function returns number of suspended processes

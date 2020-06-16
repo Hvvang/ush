@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 static int lenght_words(const char *str);
 static char* copy_words(const char *str, char** res);

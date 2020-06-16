@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 void mx_filter_substitution(char **arg, int *i) {
     if (MX_IS_BRACKET((*arg)[*i + 1]))

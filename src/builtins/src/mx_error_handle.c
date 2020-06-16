@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 void mx_error_handle(int builtin, const char *command, int d_type) {
     switch (builtin) {

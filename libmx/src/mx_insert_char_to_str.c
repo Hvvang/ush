@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 void mx_insert_char_to_str(char *str, char c, int pos) {
     int len = strlen(str);

@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 void mx_replace_var(char **arg, char *before, char *after, int *i) {
     int size = strlen(*arg) - strlen(before) + strlen(after);

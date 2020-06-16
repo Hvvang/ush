@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 static void get_nested(char **arg, int i, int j) {
     char *sub = strndup(&((*arg)[i + 2]), j - (i + 2));

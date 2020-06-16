@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 char *mx_replace_chars_by_str(char *str, int i, int itms, char *substr) {
     int new_len = mx_strlen(str) - itms + strlen(substr);

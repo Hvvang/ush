@@ -1,4 +1,4 @@
-#include "../inc/mx_history.h"
+#include "mx_history.h"
 
 
 void mx_history_file_appending(const char *command) {

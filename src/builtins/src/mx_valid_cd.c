@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 bool mx_valid_cd(int *toggle, char *arg, char *flag, int *index) {
     if (!strcmp(arg, "--")) {

@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 int mx_bubble_sort(char **arr, int size) {
     char *text;

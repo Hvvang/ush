@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 char *mx_strnew(const int size) {
     char *result = (char *)malloc(sizeof(char) * size + 1);

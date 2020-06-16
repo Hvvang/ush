@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 void mx_find_close_quote(char *str, int *i, char c) {
     if (str[*i] == c) {

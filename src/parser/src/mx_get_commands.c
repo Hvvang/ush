@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 static int check_command_on_exist(char **commands) {
     for (int i = 0; commands[i]; i++) {

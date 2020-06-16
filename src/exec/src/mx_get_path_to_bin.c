@@ -1,4 +1,4 @@
-#include "../inc/mx_exec.h"
+#include "mx_exec.h"
 
 static char **split_PATH(char *programm_name) {
     char *hash_table_path = getenv("PATH");

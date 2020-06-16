@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 static void get_args(char *line, int *i, int literal) {
     for (*i = *i + 1; line[*i]; (*i)++) {

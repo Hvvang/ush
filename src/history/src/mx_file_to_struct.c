@@ -1,4 +1,4 @@
-#include "../inc/mx_history.h"
+#include "mx_history.h"
 
 t_history *mx_file_to_struct(void) {
     char *history_path = mx_join_path(getenv("HOME"), MX_HISTORY_FILE);

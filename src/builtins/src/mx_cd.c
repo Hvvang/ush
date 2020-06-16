@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 static void get_ref_of_dir_up(char *str, int *index) {
 	int len = strlen(str) - 1;

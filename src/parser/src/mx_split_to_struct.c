@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 static t_command *create_node(char *command, char **arguments) {
 	t_command *node = NULL;

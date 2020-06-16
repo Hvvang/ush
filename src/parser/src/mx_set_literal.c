@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 char mx_set_literal(const int literal) {
     if (literal == QUOTE)

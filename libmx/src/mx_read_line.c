@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 static int mx_find_line(char **static_buff, char **buff, char **lineptr, char delim);
 static char *mx_cut_static_buff_before_index(char**static_buff, int index);

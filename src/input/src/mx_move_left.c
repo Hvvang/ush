@@ -1,4 +1,4 @@
-#include "../inc/mx_input.h"
+#include "mx_input.h"
 
 void mx_move_left(int *pos) {
     if ((*pos) > 0) {

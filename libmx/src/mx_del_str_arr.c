@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
 void mx_del_str_arr(char **arr) {
     for (unsigned i = 0; arr[i]; i++) {

@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 #define MX_GENERAL 0
 #define MX_PROCESS_INDEX 1

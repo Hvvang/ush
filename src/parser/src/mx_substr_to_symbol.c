@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 char *mx_substr_to_symbol(char *str, char *symbol) {
     bool toggle = true;

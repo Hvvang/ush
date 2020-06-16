@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 int mx_print_error(int error) {
     char *res = mx_itoa(error);

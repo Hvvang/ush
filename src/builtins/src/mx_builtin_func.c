@@ -1,4 +1,4 @@
-#include "../inc/mx_builtins.h"
+#include "mx_builtins.h"
 
 void del_struct(t_command **head) {
     t_command *tmp;

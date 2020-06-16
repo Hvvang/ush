@@ -1,4 +1,4 @@
-#include "../inc/mx_parser.h"
+#include "mx_parser.h"
 
 static void mx_dup2_fd(int *fd1, int *fd2) {
     if (fd1[0] != STDIN_FILENO) {
