@@ -5,7 +5,6 @@ SRCD = src
 OBJD = obj
 INCD = inc
 
-INC_POSIX = ../../inc/mx_posix.h
 INC_PATH = inc/mx_input.h
 
 LIB_PATH = ../../libmx/libmx.a

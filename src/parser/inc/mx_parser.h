@@ -24,7 +24,6 @@
 
 #include "../../../inc/mx_posix.h"
 #include "../../../libmx/inc/libmx.h"
-#include <string.h>
 
 typedef enum e_literals { // Literal struct
 	QUOTE, // `

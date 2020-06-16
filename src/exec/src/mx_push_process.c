@@ -1,5 +1,9 @@
-#include "../inc/mx_builtins.h"
+#include "../inc/mx_exec.h"
 
+/*
+*   Creating new process node and adding
+*	it to t_processes process structure.
+*/
 
 static t_processes *create_node(char **command, pid_t pid) {
 	t_processes *node = (t_processes *)malloc(sizeof(t_processes));
@@ -8,25 +12,30 @@ static t_processes *create_node(char **command, pid_t pid) {
 	if (node == NULL)
 		return NULL;
 	node->command = (char **)malloc(sizeof(char *) * size + 1);
-	node->command[0] = NULL;
 	for (int i = 0; command[i]; i++) {
 		node->command[i] = strdup(command[i]);
-		node->command[i + 1] = NULL;
 	}
+	node->command[size] = NULL;
 	node->pid = pid;
     node->next = NULL;
     return node;
 }
 
-
 void mx_push_process(t_processes **processes, char **command, pid_t pid) {
     t_processes* head = NULL;
 
-	if (!processes || !command || !pid)
+	if (!processes || !command || !pid) {
 		return ;
+	}
+	if (*processes == NULL) {
+        *processes = create_node(command, pid);
+		(*processes)->index = 1;
+		return;
+    }
     head = create_node(command, pid);
     if (!head)
-    	return ;
+    	return;
     head->next = *processes;
+	head->index = head->next->index + 1;
     *processes = head;
 }

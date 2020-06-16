@@ -1,23 +1,31 @@
-#include "../inc/mx_builtins.h"
+#include "../inc/mx_exec.h"
+
+/*
+*   Clearing node of t_processes process structure
+*   that have finished or terminated by input
+*   signal.
+*/
 
 void mx_clear_process(t_processes **prcs, void *kill) {
     t_processes *temp = *prcs;
-    t_processes *del = NULL;
 
-    if (!temp->next) {
-        mx_del_strarr(&temp->command);
-        // free(temp);
-        return;
+    if ((void *)temp == kill) {
+        // printf("\nfirst node to del\n\n");
+        temp = (*prcs)->next;
+        mx_del_strarr(&(*prcs)->command);
+        free(*prcs);
+        *prcs = temp;
     }
-    while (temp->next) {
-        printf("%p =? %p", (void *)temp, kill);
-        if ((void *)temp->next == kill)
-            break;
-        temp = temp->next;
+    else {
+        while (temp->next) {
+            if ((void *)temp->next == kill)
+                break;
+            temp->index -= 1;
+            temp = temp->next;
+        }
+        *prcs = temp->next;
+        temp->next = (*prcs)->next;
+        mx_del_strarr(&(*prcs)->command);
+        free(*prcs);
     }
-    del = temp->next;
-    temp->next = del->next;
-    mx_del_strarr(&del->command);
-    free(del->next);
-    free(del);
 }

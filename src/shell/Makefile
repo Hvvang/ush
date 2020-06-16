@@ -1,28 +1,22 @@
-NAME = builtins
+NAME = shell
 MODULE = $(NAME).a
 
 SRCD = src
 OBJD = obj
 INCD = inc
 
-INC_PATH = inc/mx_builtins.h
-
+INC_PATH = inc/mx_shell.h
 LIB_PATH = ../../libmx/libmx.a
-EXEC_PATH = ../exec/exec.a
-PARSER_PATH = ../parser/parser.a
-SHELL_PATH = ../shell/shell.a
 
+# BUILTINS = ../builtins/builtins.a
 INCLUDE = \
 	-I $(LIB_PATH) \
-	-I $(SHELL_PATH) \
-	-I $(PARSER_PATH) \
-	-I $(EXEC_PATH) \
 	-I $(INCD) \
 
 SRCS = $(wildcard $(SRCD)/*.c)
 OBJS = $(addprefix $(OBJD)/, $(SRCS:src/%.c=%.o))
 
-CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
+CFLAGS = -std=c11  -Wall -Wextra -Werror -Wpedantic
 
 all: $(NAME)
 
@@ -30,7 +24,7 @@ $(NAME): $(OBJS)
 	@ar crs $(MODULE) $(OBJS)
 	@printf "\e[32;1m$@ module created\e[0m\n"
 
-$(OBJD)/%.o: $(SRCD)/%.c $(INC_PATH) ../exec/inc/mx_exec.h
+$(OBJD)/%.o: $(SRCD)/%.c $(INC_PATH)
 	@clang $(CFLAGS) -c $< -o $@ $(INCLUDE)
 	@printf "\e[32mcompiled: \e[0m[$(<:$(SRCD)/%.c=%.c)]\n"
 
@@ -50,9 +44,3 @@ clean:
 	@printf "\e[34;1mdeleted object files in $(NAME)\e[0m\n"
 
 reinstall: uninstall install
-
-test1:
-	@make all
-	@clang $(CFLAGS) -c test.c -o test.o -I $(INC_PATH)
-	@clang $(CFLAGS) -g test.o $(MODULE) ../parser/parser.a $(LIB_PATH)  -o $(NAME)
-	@rm -rf test.o

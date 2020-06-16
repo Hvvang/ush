@@ -11,6 +11,7 @@ t_history *mx_file_to_struct(void) {
         while ((fgets(line, PATH_MAX, fp)) != NULL) {
             history = mx_command_to_struct(history, line);
         }
+        mx_strdel(&line);
         history = mx_command_to_struct(history, "\0");
         fclose(fp);
         return history;

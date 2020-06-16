@@ -27,8 +27,7 @@ void mx_ush_loop (t_hash_table *hash_table) {
 					if (is_builtin(commands->command))
 						mx_builtin_func(commands, hash_table);
 					else
-						mx_launch_process(commands, hash_table);
-						// если функции надо искать
+						mx_launch_process(commands, &hash_table->processes);
 						// fprintf(stderr, "u$h: command  not found: %s\n", commands->command);
 					pop_front(&commands);
 				}

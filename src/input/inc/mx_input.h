@@ -1,8 +1,10 @@
 #ifndef MX_INPUT_H
 #define MX_INPUT_H
 
-#include "../../../inc/mx_posix.h"
+// #include "../../../inc/mx_posix.h"
 #include "../../history/inc/mx_history.h"
+// #include "../../exec/inc/mx_exec.h"
+#include "../../builtins/inc/mx_builtins.h"
 #include "../../../libmx/inc/libmx.h"
 
 #define MX_SHELL_PROMPT "u$h> "

@@ -1,13 +1,7 @@
 #ifndef MX_EXEC_H
 #define MX_EXEC_H
 
-#include "../../../inc/mx_posix.h"
-#include "../../../libmx/inc/libmx.h"
 #include "../../parser/inc/mx_parser.h"
-
-#define MX_NOT_FOUND -1
-#define MX_CHANGED_VAR 0
-#define MX_NEW_VAR 1
 
 #define MX_W_INT(m) (*(int*) & (m))
 #define MX_WSTOPSIG(m) (MX_W_INT(m) >> 8)
@@ -17,35 +11,25 @@
 #define MX_WAIT_TO_INT(m) (*(int *) & (m))
 #define MX_WEXITSTATUS(x) ((MX_WAIT_TO_INT(x) >> 8) & 0x000000ff)
 
-// export variable map (key[=[value]])
-typedef struct s_var_map {
-	char *key;
-	char *value;
-}			   t_var_map;
-
 typedef struct s_processes {
 	char **command;
 	pid_t pid;
+	int index;
 	struct s_processes *next;
 }			   t_processes;
 
-// shell hash_table for custom export and environment
-typedef struct s_hash_table {
-	char **env; // shell environment (can be changed);
-	unsigned export_size; // number of export variables;
-	int processes_num; // number of suspended processes on exec;
-	struct s_processes *processes; // stoped processes structure;
-	struct s_var_map *export; // export variables structure;
-}			   t_hash_table;
-
-
-void mx_builtin_func(t_command *commands, t_hash_table *hash_table);
-int mx_is_ush_builtins(char *command);
-void mx_hash_table_create(t_hash_table *hash_table);
-
-void mx_create_vars(t_hash_table *hash_table);
-void mx_del_hash_table(t_hash_table *hash_table);
-void mx_push_process(t_processes **processes, char **command, pid_t pid);
+void mx_child_signals(void);
 void mx_clear_process(t_processes **prcs, void *kill);
+void mx_continue_process(t_processes **processes, t_processes *current, pid_t pid);
+char *mx_get_path_to_bin(char *programm_name);
+int mx_get_processes_num(t_processes **process);
+int mx_launch_process(t_command *command, t_processes **processes);
+void mx_parent_signal(void);
+void mx_push_process(t_processes **processes, char **command, pid_t pid);
+void mx_set_term_assoc(pid_t pid);
+void mx_suspend_process(char **args, t_processes **processes, pid_t pid);
+void print_suspended(char **args, pid_t pid, int suspended_index);
 
+
+void print_process(t_processes **processes);
 #endif

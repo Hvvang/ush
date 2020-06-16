@@ -6,6 +6,7 @@ void mx_clear_history_list(t_history **history) {
     while ((*history)->next) {
         *history = (*history)->next;
         mx_strdel(&((*history)->prev->command));
+        // free((*history)->prev);
         // if ((*history)->prev->prev)
         //     free((*history)->prev->prev);
         // if ((*history)->prev->next)

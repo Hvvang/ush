@@ -9,28 +9,22 @@ INC = inc/ush.h
 
 LIB = libmx/libmx.a
 INPUT = $(SRCD)/input/input.a
+SHELL_PREF = $(SRCD)/shell/shell.a
 PARSER = $(SRCD)/parser/parser.a
 BUILTINS = $(SRCD)/builtins/builtins.a
 HISTORY = $(SRCD)/history/history.a
 
-INPUT_INC = $(SRCD)/input/$(INCD)/mx_input.h
-PARSER_INC = $(SRCD)/parser/$(INCD)/mx_parser.h
-BUILTINS_INC = $(SRCD)/builtins/$(INCD)/mx_builtins.h
-BUILTINS_INC = $(SRCD)/history/$(INCD)/mx_history.h
-
-MODULES = $(INPUT) $(HISTORY) $(PARSER) $(BUILTINS) $(LIB)
+MODULES = $(INPUT) $(HISTORY) $(PARSER) $(EXEC) $(BUILTINS)  $(LIB) $(SHELL_PREF)
 INCLUDE = \
 	-I $(INC) \
-	-I $(HISTORY) \
-	-I $(INPUT) \
-	-I $(PARSER) \
-	-I $(BUILTINS) \
 
 
 SRCS = $(wildcard $(SRCD)/*.c)
 OBJS = $(addprefix $(OBJD)/, $(SRCS:src/%.c=%.o))
 
-CFLAGS = -std=c11 -g -Wall -Wextra -Werror -Wpedantic
+# -g -fsanitize=address
+
+CFLAGS = -std=c11 -v -g -fsanitize=address -Wall -Wextra -Werror -Wpedantic
 
 all: $(NAME)
 
@@ -38,9 +32,11 @@ install: all clean
 
 modules:
 	@make -sC $(LIBD)
-	@make -sC src/history
+	@make -sC src/shell
 	@make -sC src/input
+	@make -sC src/history
 	@make -sC src/parser
+	@make -sC src/exec
 	@make -sC src/builtins
 
 $(NAME): modules $(OBJS)
@@ -58,18 +54,24 @@ $(OBJD):
 
 uninstall: clean
 	@make -sC $(LIBD) $@
+	@make -sC src/builtins $@
+	@make -sC src/exec $@
+	@make -sC src/history $@
 	@make -sC src/input $@
 	@make -sC src/parser $@
-	@make -sC src/builtins $@
+	@make -sC src/shell $@
 	@rm -rf $(NAME)
 	@printf "\e[34;1mProject $(NAME) deleted \e[0m\n"
 
 clean:
 	@rm -rf $(OBJD)
 	@make -sC $(LIBD) $@
+	@make -sC src/builtins $@
+	@make -sC src/exec $@
+	@make -sC src/history $@
 	@make -sC src/input $@
 	@make -sC src/parser $@
-	@make -sC src/builtins $@
+	@make -sC src/shell $@
 	@printf "\e[34;1mdeleted object files in $(NAME)\e[0m\n"
 
 reinstall: uninstall install
