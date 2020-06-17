@@ -5,7 +5,7 @@
 *   from parrent process must be ignored.
 *   SIG_IGN - default signal handler option.
 */
-void mx_parent_signal(void) {
+void mx_stop_signals(void) {
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
     signal(SIGTSTP, SIG_IGN);

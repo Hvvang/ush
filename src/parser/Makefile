@@ -11,6 +11,7 @@ INC_PATH = inc/mx_parser.h
 LIB_PATH = ../../libmx/libmx.a
 
 INCLUDE = \
+	-I $(INC_POSIX) \
 	-I $(LIB_PATH) \
 	-I $(INCD) \
 

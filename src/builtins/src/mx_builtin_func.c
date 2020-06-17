@@ -1,19 +1,8 @@
 #include "mx_builtins.h"
 
-void del_struct(t_command **head) {
-    t_command *tmp;
-
-    while (*head) {
-        tmp = *head;
-        *head = (*head)->next;
-        mx_strdel(&tmp->command);
-        mx_del_strarr(&tmp->arguments);
-        free(tmp);
-    }
-}
-
-
 void mx_builtin_func(t_command *command, t_hash_table *hash_table) {
+	// setenv("_", MX_USH_PATH, 1);
+
 	// for (int i = 0; command->arguments[i]; i++)
 	// 	mx_check_flag(command->arguments[i], command);
 	if (!strcmp(command->command, "env")) {

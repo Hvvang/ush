@@ -3,26 +3,11 @@
 
 #include "../../../libmx/inc/libmx.h"
 #include "../../parser/inc/mx_parser.h"
-#include "../../shell/inc/mx_shell.h"
 #include "../../history/inc/mx_history.h"
-#include "../../exec/inc/mx_exec.h"
 
 #define MX_NOT_FOUND -1
 #define MX_CHANGED_VAR 0
 #define MX_NEW_VAR 1
-
-// // export variable map (key[=[value]])
-// typedef struct s_var_map {
-// 	char *key;
-// 	char *value;
-// }			   t_var_map;
-//
-// // shell hash_table for custom export and environment
-// typedef struct s_hash_table {
-// 	unsigned export_size; // number of export variables;
-// 	t_processes *processes; // stoped processes structure;
-// 	struct s_var_map *export; // export variables structure;
-// }			   t_hash_table;
 
 // custom built-ins enum structure
 typedef enum e_builtins {

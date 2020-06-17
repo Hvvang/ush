@@ -47,6 +47,9 @@ int mx_push_to_export(char *command, t_hash_table *hash_table) {
     if (equal > 0) {
         hash_table->export[index].key = mx_strndup(command, equal);
         hash_table->export[index].value = mx_strdup(command + equal + 1);
+        setenv(hash_table->export[index].key,
+               hash_table->export[index].value,
+               1);
     }
     else {
         hash_table->export[index].key = mx_strdup(command);

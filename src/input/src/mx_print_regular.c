@@ -1,14 +1,17 @@
 #include "mx_input.h"
 
-void mx_print_regular(char *str, char c, int *pos) {
-    if (pos != 0 && str[*pos] != '\t' && c == '\t')
-        return;
-    mx_insert_char_to_str(str, c, *pos);
+void mx_print_regular(char *str, char *c, int *pos) {
+    int temp = *pos;
+    char *str_temp = strdup(str);
 
-    printf("%s", str + (*pos));
-    for (unsigned i = 0; i < strlen(str + (*pos)); i++)
-        printf("\b");
-    printf("%c", c);
+    mx_clear_input(str_temp, &temp);
+    mx_strdel(&str_temp);
+    for (int i = strlen(c) - 1; c[i]; i--)
+        mx_insert_char_to_str(str, c[i], *pos);
+    printf("%s", str);
     fflush(stdout);
-    *pos = (*pos) + 1;
+    for (unsigned i = *pos + strlen(c); i < strlen(str); i++)
+        printf("\b");
+    fflush(stdout);
+    *pos = (*pos) + strlen(c);
 }

@@ -1,6 +1,9 @@
 #ifndef MX_PARSER_H
 #define MX_PARSER_H
 
+#include "../../../inc/mx_posix.h"
+#include "../../../libmx/inc/libmx.h"
+
 #define MX_SHELL_NAME "ush"
 #define MX_COMMAND_DELIM ';'
 #define MX_ARGS_DELIM ' '
@@ -22,8 +25,6 @@
 #define MX_IS_DOLLAR(c) mx_get_literal(c) == DOLLAR
 #define MX_IS_REGULAR(c) mx_get_literal(c) == -1
 
-#include "../../../inc/mx_posix.h"
-#include "../../../libmx/inc/libmx.h"
 
 typedef enum e_literals { // Literal struct
 	QUOTE, // `
@@ -40,9 +41,11 @@ typedef enum e_literals { // Literal struct
 typedef struct s_command {
 	char *command;
 	char **arguments;
-	int exit;
-	struct s_command *next;
 }              t_command;
+
+#include "../../shell/inc/mx_shell.h"
+#include "../../exec/inc/mx_exec.h"
+#include "../../builtins/inc/mx_builtins.h"
 
 int mx_get_substitution_by_quote(char **arg);
 int mx_get_substitution_by_bracket(char **arg);
@@ -58,7 +61,7 @@ char **mx_list_to_arr(t_list *list);
 char mx_set_literal(const int literal);
 int mx_skip_literal(char *str, int *index, int literal);
 t_list *mx_split_commands(char *commands, char delim);
-t_command *mx_split_to_struct(char *stdin_line);
+void mx_split_to_struct(char *stdin_line, t_hash_table *hash_table);
 char *mx_replace_chars_by_str(char *str, int i, int itms, char *substr);
 char *mx_substr_to_symbol(char *str, char *symbol);
 void mx_filter_tilda(char **arg);

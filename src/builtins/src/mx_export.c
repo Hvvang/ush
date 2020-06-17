@@ -82,13 +82,7 @@ void mx_export(t_command *command, t_hash_table *hash_table) {
 		if (valid_key != MX_NOT_A_PARAM) {
 			if (valid_key == MX_NO_OPTIONS)
 				export_print(hash_table);
-			else if (mx_push_to_export(command->arguments[i], hash_table)) {
-				if (hash_table->export[hash_table->export_size - 1].value) {
-					setenv(hash_table->export[hash_table->export_size - 1].key,
-						hash_table->export[hash_table->export_size - 1].value,
-						1);
-				}
-			}
+			mx_push_to_export(command->arguments[i], hash_table);
 		}
 	}
 }

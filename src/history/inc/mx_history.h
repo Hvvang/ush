@@ -2,13 +2,8 @@
 #define MX_HISTORY_H
 
 #include "../../input/inc/mx_input.h"
-// #include "../../builtins/inc/mx_builtins.h"
-
 
 #define MX_HISTORY_FILE ".ush_history"
-// #define MX_UP_ARROW "\033[A\0"
-// #define MX_DOWN_ARROW "\033[B\0"
-
 
 typedef struct s_history {
     char *command;

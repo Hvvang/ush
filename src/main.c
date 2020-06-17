@@ -1,50 +1,48 @@
 #include "ush.h"
 
+static struct termios *mx_get_tty(void) {
+    static struct termios tty;
 
-t_hash_table *create_hash_table(void) {
-	t_hash_table *hash_table = (t_hash_table*)malloc(sizeof(t_hash_table));
-
-	// free(hash_table->processes);
-	hash_table->processes = (t_processes*)malloc(sizeof(t_processes));
-	hash_table->processes = NULL;
-	hash_table->export = (t_var_map*)malloc(sizeof(t_var_map));
-	hash_table->export_size = 0;
-	return hash_table;
+    return &tty;
 }
 
-void sigint_handler(int signo) {
-	signo = +signo;
-	// printf("Caught SIGINT = %d\n", signo);
-}
+static bool check_stdin(t_hash_table *hash_table) {
+    char *buff = NULL;
+    size_t linecap = 0;
+    ssize_t linelen = 0;
 
-void sigquit_handler(int signo) {
-	signo = +signo;
-    // printf("Caught SIGQUIT = %d\n", signo);
-}
-
-void sigstp_handler(int signo) {
-	signo = +signo;
-    // printf("Caught SIGTSTP = %d\n", signo);
-}
-
-void sigcont_handler(int signo) {
-	signo = +signo;
-    // printf("Caught SIGCONT = %d\n", signo);
+    if (isatty(STDIN_FILENO))
+        return false;
+    buff = mx_strnew(ARG_MAX + 1);
+    while ((linelen = getline(&buff, &linecap, stdin)) > 0) {
+        buff[linelen] = '\0';
+        if (buff[linelen - 1] == '\n')
+            buff[linelen - 1] = '\0';
+        mx_handle_command(buff, hash_table);
+    }
+    mx_strdel(&buff);
+    return true;
 }
 
 int main(int argc, char **argv) {
-	argc += 0;
-	argv[0] = argv[1];
+	t_hash_table *hash_table = mx_init_env();
 
-	t_hash_table *hash_table = create_hash_table();
-	// t_hash_table *hash_table = mx_init_env();
+	if (argc > 1) {
+		fprintf(stderr, "%s: illegal option -- %s\n", MX_SHELL_NAME, argv[1]);
+		fprintf(stderr, "usage: %s ./ush\n", MX_SHELL_NAME);
+		return 1;
+	}
+	if (check_stdin(hash_table)) {
+		tcsetattr(STDIN_FILENO, TCSADRAIN, mx_get_tty());
+		exit(1);
+	}
+	// t_hash_table *hash_table = create_hash_table();
 	// exit(1);
-	signal(SIGINT, sigint_handler);
-	signal(SIGCONT, sigcont_handler);
-	signal(SIGQUIT, sigquit_handler);
-	signal(SIGTSTP, sigstp_handler);
+	// signal(SIGINT, sigint_handler);
+	// signal(SIGCONT, sigcont_handler);
+	// signal(SIGQUIT, sigquit_handler);
+	// signal(SIGTSTP, sigstp_handler);
 	// mx_create_vars(hash_table);
 	mx_ush_loop(hash_table);
-
 	// system("leaks ush");
 }

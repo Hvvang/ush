@@ -5,7 +5,7 @@
 *   must be handled.
 *   SIG_DFL - default signal handler option.
 */
-void mx_child_signals(void) {
+void mx_activate_signals(void) {
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
     signal(SIGTSTP, SIG_DFL);
