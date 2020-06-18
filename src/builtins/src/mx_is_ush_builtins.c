@@ -7,8 +7,8 @@ int mx_is_ush_builtins(char *command) {
         return MX_UNSET;
     if (!strcmp(command, "exit"))
         return MX_EXIT;
-    // if (!strcmp(command, "env"))
-    //     return MX_ENV;
+    if (!strcmp(command, "env"))
+        return MX_ENV;
     if (!strcmp(command, "cd"))
         return MX_CD;
     if (!strcmp(command, "fg"))
@@ -23,5 +23,4 @@ int mx_is_ush_builtins(char *command) {
         return MX_HISTORY;
     else
         return MX_NOT_A_USH_BUILTIN;
-    // if (!strcmp(command, "history"))
 }

@@ -56,7 +56,7 @@ static void change_dir_and_hash_table(t_command *command, int index, char flag) 
 
 	if (d_type == MX_LINK && flag == 's')
 		mx_error_handle(MX_CD, command->arguments[index], d_type);
-	else if (errno)
+	else if (errno && errno != 25)
 		mx_error_handle(MX_CD, command->arguments[index], MX_EFAULT);
 	else {
 		char *path = create_path(command->arguments[index], flag);
@@ -83,7 +83,7 @@ void mx_cd(t_command *command) {
 		}
 		if (!strcmp(command->arguments[index], "--")) {
 			free(command->arguments[index]);
-			command->arguments[index] = strdup(getenv("HOME"));
+			command->arguments[index] = mx_strdup(getenv("HOME"));
 		}
 		else if (!strcmp(command->arguments[index], "-")) {
 			free(command->arguments[index]);

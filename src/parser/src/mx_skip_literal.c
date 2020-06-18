@@ -19,9 +19,6 @@ int mx_skip_literal(char *str, int *index, int literal) {
         }
         else if (literal == 3 && mx_get_literal(str[*index]) == CQBRACKET)
             break;
-        // else if (literal == SLASH && mx_get_literal(str[*index]) == SLASH
-        //          && mx_get_literal(str[*index]) == SLASH)
-        //     break;
     }
     return (i != *index) ? mx_get_literal(str[*index]) : -1;
 }

@@ -1,5 +1,9 @@
 #include "mx_parser.h"
 
+#define MX_TERMINATING_CHAR "%s: syntax error: missing terminating character\n"
+#define MX_SUBST_CHAR "%s: syntax error: missing subsitution character\n"
+#define MX_BRACE_CHAR "%s: syntax error: missing brace character\n"
+
 int mx_print_error(int error) {
     char *res = mx_itoa(error);
 
@@ -7,29 +11,17 @@ int mx_print_error(int error) {
     mx_strdel(&res);
     switch (error) {
         case -1:
-            fprintf(stderr,
-                    "%s: syntax error: missing terminating character\n",
-                    MX_SHELL_NAME);
+            fprintf(stderr, MX_TERMINATING_CHAR, MX_SHELL_NAME);
             break;
         case -2:
-            fprintf(stderr,
-                    "%s: syntax error: missing terminating character\n",
-                    MX_SHELL_NAME);
+            fprintf(stderr, MX_TERMINATING_CHAR, MX_SHELL_NAME);
             break;
         case -3:
-            fprintf(stderr,
-                    "%s: syntax error: missing subsitution character\n",
-                    MX_SHELL_NAME);
+            fprintf(stderr, MX_SUBST_CHAR, MX_SHELL_NAME);
             break;
         case -4:
-            fprintf(stderr,
-                    "%s: syntax error: missing brace character\n",
-                    MX_SHELL_NAME);
+            fprintf(stderr, MX_BRACE_CHAR, MX_SHELL_NAME);
             break;
-        // case 4:
-        //     fprintf(stderr,
-        //             "%s: command contain forbidden character\n",
-        //             MX_SHELL_NAME);
     }
     return 0;
 }

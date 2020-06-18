@@ -16,39 +16,48 @@ static t_command *create_node(char *command, char **arguments) {
 }
 
 void del_command_struct(t_command **head) {
-    mx_strdel(&((*head)->command));
-    mx_del_strarr(&((*head)->arguments));
+	if ((*head)->command)
+    	mx_strdel(&((*head)->command));
+	if ((*head)->arguments)
+    	mx_del_strarr(&((*head)->arguments));
     free(*head);
     *head = NULL;
 }
 
-void mx_split_to_struct(char *stdin_line, t_hash_table *hash_table) {
+
+void mx_exec_command(t_command *command, t_hash_table *hash_table, int *status) {
+	if (command) {
+		if (mx_is_ush_builtins(command->command) != MX_NOT_A_USH_BUILTIN)
+			mx_builtin_func(command, hash_table, status);
+		else {
+			char *path = mx_get_path_to_bin(command->command);
+			extern char **environ;
+
+			mx_launch_process(command, &hash_table->processes, path, environ);
+			mx_strdel(&path);
+		}
+	}
+}
+
+int mx_split_to_struct(char *stdin_line, t_hash_table *hash_table) {
     char **commands = mx_get_commands(stdin_line);
+	int status = 0;
 
     if (commands) {
-        for (int i = 0; commands[i]; i++) {
+        for (int i = 0; commands[i] && status != 666; i++) {
 			t_command *commd_struct = NULL;
 			char **arr = NULL;
 
-			mx_filter_input(&commands[i]);
-			arr = mx_strsplit(commands[i], MX_ARGS_DELIM);
-			commd_struct = create_node(arr[0], &arr[1]);
-			if (commd_struct) {
-				// printf("exec\n");
-	            if (mx_is_ush_builtins(commd_struct->command) != MX_NOT_A_USH_BUILTIN) {
-					// printf("builtin\n");
-					// printf("command = %s\t", commd_struct->command);
-					// mx_print_strarr(commd_struct->arguments, " ");
-					// printf("\n");
-					mx_builtin_func(commd_struct, hash_table);
-				}
-	            else {
-					// printf("external prog\n");
-					mx_launch_process(commd_struct, &hash_table->processes);
-				}
-				del_command_struct(&commd_struct);
-	        }
+			mx_filter_input(&commands[i], &status);
+			if (!status) {
+				arr = mx_strsplit(commands[i], MX_ARGS_DELIM);
+				commd_struct = create_node(arr[0], &arr[1]);
+				mx_exec_command(commd_struct, hash_table, &status);
+				if (commd_struct)
+					del_command_struct(&commd_struct);
+			}
         }
 		mx_del_strarr(&commands);
     }
+	return status;
 }

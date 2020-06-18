@@ -8,12 +8,14 @@
 *   be associated with its session.
 */
 void mx_set_term_assoc(pid_t pid) {
-    if (tcsetpgrp(STDIN_FILENO, pid) < 0) {
-        mx_printstr(strerror(errno));
-        mx_printstr(" tcsetpgrp\n");
-    }
-    if (tcsetpgrp(STDOUT_FILENO, pid) < 0) {
-        mx_printstr(strerror(errno));
-        mx_printstr(" tcsetpgrp\n");
-    }
+    tcsetpgrp(STDIN_FILENO, pid);
+    tcsetpgrp(STDOUT_FILENO, pid);
+    // if (tcsetpgrp(STDIN_FILENO, pid) < 0) {
+    //     mx_printstr(strerror(errno));
+    //     mx_printstr(" tcsetpgrp\n");
+    // }
+    // if (tcsetpgrp(STDOUT_FILENO, pid) < 0) {
+    //     mx_printstr(strerror(errno));
+    //     mx_printstr(" tcsetpgrp\n");
+    // }
 }

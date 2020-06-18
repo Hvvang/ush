@@ -24,8 +24,8 @@ typedef enum e_builtins {
 	MX_NOT_A_USH_BUILTIN
 }            t_builtins;
 
-void mx_builtin_func(t_command *commands, t_hash_table *hash_table);
-void mx_builtin_usage(int builtin, char error);
+void mx_builtin_func(t_command *commands, t_hash_table *hash_table, int *status);
+void mx_builtin_usage(int builtin, char *command, char error);
 void mx_cd(t_command *commands);
 char mx_check_flags(int builtin, int *index, t_command *command, bool(*valid)(int *, char *, char *, int *));
 void mx_echo(t_command *command);
@@ -39,5 +39,11 @@ bool mx_valid_cd(int *toggle, char *arg, char *flag, int *index);
 bool mx_valid_echo(int *toggle, char *arg, char *flag, int *index);
 bool mx_valid_which(int *toggle, char *arg, char *flag, int *index);
 void mx_which(t_command *command);
+void mx_env(t_command *command, t_hash_table *hash_table);
+bool mx_valid_env(int *toggle, char *arg, char *flag, int *index);
+char **mx_copy_env(void);
+void mx_clear_env(void);
+void mx_set_env(char **env);
+void mx_exit(t_command *command, int *status);
 
 #endif

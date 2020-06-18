@@ -14,7 +14,7 @@ static int get_sub_lvl(char *arg, const int *i) {
     return lvl;
 }
 
-static void get_nested(char **arg, int i, int j, int lvl_prev) {
+static void get_nested(char **arg, int i, int j, int lvl_prev, int *status) {
     char *sub = strndup(&((*arg)[i + lvl_prev]),
                         j - (i + lvl_prev));
     char *res = NULL;
@@ -24,16 +24,18 @@ static void get_nested(char **arg, int i, int j, int lvl_prev) {
         mx_del_char_in_str(*arg, i);
         j--;
     }
-    mx_filter_input(&sub);
-    res = mx_subshell(sub);
-    size = strlen(*arg) + strlen(res);
+    mx_filter_input(&sub, status);
+    if (*status)
+        return;
+    res = mx_subshell(sub, status);
+    size = strlen(*arg) + strlen(res) + 1;
     *arg = realloc(*arg, size);
     for (int k = 0; res[k]; k++)
         mx_insert_char_to_str(*arg, res[k], i++);
     mx_strdel(&res);
 }
 
-int mx_get_substitution_by_quote(char **arg) {
+int mx_get_substitution_by_quote(char **arg, int *status) {
     int i;
     int j;
 
@@ -46,7 +48,7 @@ int mx_get_substitution_by_quote(char **arg) {
                     break;
             }
             if (lvl_prev == get_sub_lvl(*arg, &j)) {
-                get_nested(arg, i, j, lvl_prev);
+                get_nested(arg, i, j, lvl_prev, status);
                 return 1;
             }
         }

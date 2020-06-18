@@ -2,7 +2,7 @@
 
 char *mx_history_moving(t_history **history, char *keyCode) {
     if (*history) {
-        if (MX_IS_UP_ARROW(keyCode)) {
+        if (MX_IS_UP_ARROW(keyCode) || MX_IS_DLE(keyCode)) {
             if ((*history)->next)
                 *history = (*history)->next;
             else

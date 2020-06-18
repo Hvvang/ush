@@ -42,9 +42,8 @@ static void write_to_fd(int *fd1, int *fd2, char *substitution) {
     close(fd1[1]);
 }
 
-char *mx_subshell(char *substitution) {
+char *mx_subshell(char *substitution, int *status) {
 	char **args = mx_strsplit(substitution, ' ');
-	int status;
 	int fd1[2];
 	int fd2[2];
     pid_t pid;
@@ -53,11 +52,13 @@ char *mx_subshell(char *substitution) {
 	if ((pid = fork()) == 0) {
 		mx_dup2_fd(fd1, fd2);
 		if (execvp(args[0], args) == -1)
-			fprintf(stderr, "u$h: command  not found: %s\n", substitution);
+            fprintf(stderr, "u$h: command not found: %s\n", substitution);
 		_exit(1);
 	}
 	else {
-		waitpid(pid, &status, WUNTRACED | WCONTINUED);
+		waitpid(pid, status, WUNTRACED | WCONTINUED);
+        if (*status != 1)
+            setenv("status", "1", 1);
         mx_strdel(&substitution);
         mx_del_strarr(&args);
         close(fd1[0]);

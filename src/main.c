@@ -1,11 +1,5 @@
 #include "ush.h"
 
-static struct termios *mx_get_tty(void) {
-    static struct termios tty;
-
-    return &tty;
-}
-
 static bool check_stdin(t_hash_table *hash_table) {
     char *buff = NULL;
     size_t linecap = 0;
@@ -25,7 +19,7 @@ static bool check_stdin(t_hash_table *hash_table) {
 }
 
 int main(int argc, char **argv) {
-	t_hash_table *hash_table = mx_init_env();
+    t_hash_table *hash_table = mx_init_env();
 
 	if (argc > 1) {
 		fprintf(stderr, "%s: illegal option -- %s\n", MX_SHELL_NAME, argv[1]);
@@ -33,16 +27,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 	if (check_stdin(hash_table)) {
-		tcsetattr(STDIN_FILENO, TCSADRAIN, mx_get_tty());
-		exit(1);
+		mx_clear_all(hash_table);
 	}
-	// t_hash_table *hash_table = create_hash_table();
-	// exit(1);
-	// signal(SIGINT, sigint_handler);
-	// signal(SIGCONT, sigcont_handler);
-	// signal(SIGQUIT, sigquit_handler);
-	// signal(SIGTSTP, sigstp_handler);
-	// mx_create_vars(hash_table);
 	mx_ush_loop(hash_table);
-	// system("leaks ush");
 }
