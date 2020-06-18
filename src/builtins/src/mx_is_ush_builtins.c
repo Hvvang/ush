@@ -3,24 +3,26 @@
 int mx_is_ush_builtins(char *command) {
     if (!strcmp(command, "export"))
         return MX_EXPORT;
-    if (!strcmp(command, "unset"))
+    else if (!strcmp(command, "unset"))
         return MX_UNSET;
-    if (!strcmp(command, "exit"))
+    else if (!strcmp(command, "exit"))
         return MX_EXIT;
-    if (!strcmp(command, "env"))
+    else if (!strcmp(command, "env"))
         return MX_ENV;
-    if (!strcmp(command, "cd"))
+    else if (!strcmp(command, "cd"))
         return MX_CD;
-    if (!strcmp(command, "fg"))
+    else if (!strcmp(command, "fg"))
         return MX_FG;
-    if (!strcmp(command, "pwd"))
+    else if (!strcmp(command, "pwd"))
         return MX_PWD;
-    if (!strcmp(command, "echo"))
+    else if (!strcmp(command, "echo"))
         return MX_ECHO;
-    if (!strcmp(command, "which"))
+    else if (!strcmp(command, "jobs"))
+        return MX_JOBS;
+    else if (!strcmp(command, "which"))
         return MX_WHICH;
-    if (!strcmp(command, "history"))
+    else if (!strcmp(command, "history"))
         return MX_HISTORY;
     else
-        return MX_NOT_A_USH_BUILTIN;
+        return -1;
 }

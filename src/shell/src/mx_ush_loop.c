@@ -1,4 +1,4 @@
-#include "ush.h"
+#include "mx_shell.h"
 
 static void print_prompt(void) {
 	printf(MX_SHELL_PROMPT);

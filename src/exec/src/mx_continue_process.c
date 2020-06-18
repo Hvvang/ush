@@ -18,5 +18,11 @@ void mx_continue_process(t_processes **processes, t_processes *current, pid_t pi
             mx_clear_process(processes, (void *)current);
         else if (MX_WIFSTOPPED(status))
             print_suspended(current->command, current->pid, current->index);
+        if (status) {
+    		char *res = mx_itoa(status);
+
+    		setenv("status", res, 1);
+    		mx_strdel(&res);
+    	}
     }
 }

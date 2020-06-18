@@ -26,7 +26,8 @@ void mx_push_process(t_processes **processes, char **command, pid_t pid);
 void mx_set_term_assoc(pid_t pid);
 void mx_suspend_process(char **args, t_processes **processes, pid_t pid);
 void print_suspended(char **args, pid_t pid, int suspended_index);
+void mx_print_processes(t_processes *processes);
 
-void print_process(t_processes **processes);
+// void print_process(t_processes **processes);
 
 #endif

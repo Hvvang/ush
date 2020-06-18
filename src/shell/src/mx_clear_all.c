@@ -4,6 +4,7 @@ void clear_processes(t_hash_table *hash_table) {
     t_processes *temp = hash_table->processes;
 
     while (temp->next) {
+        kill(temp->pid, SIGKILL);
         mx_clear_process(&temp, (void *)temp);
     }
 }
@@ -25,8 +26,6 @@ void mx_clear_all(t_hash_table *hash_table) {
         clear_processes(hash_table);
     if (hash_table->export)
         clear_export(hash_table);
-    if (hash_table->processes)
-        free(hash_table->processes);
     if (hash_table->export)
         free(hash_table->export);
     exit(exit_code);

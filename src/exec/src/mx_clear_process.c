@@ -8,9 +8,9 @@
 
 void mx_clear_process(t_processes **prcs, void *kill) {
     t_processes *temp = *prcs;
+    t_processes *head = *prcs;
 
     if ((void *)temp == kill) {
-        // printf("\nfirst node to del\n\n");
         temp = (*prcs)->next;
         mx_del_strarr(&(*prcs)->command);
         free(*prcs);
@@ -18,14 +18,15 @@ void mx_clear_process(t_processes **prcs, void *kill) {
     }
     else {
         while (temp->next) {
+            temp->index -= 1;
             if ((void *)temp->next == kill)
                 break;
-            temp->index -= 1;
             temp = temp->next;
         }
         *prcs = temp->next;
         temp->next = (*prcs)->next;
         mx_del_strarr(&(*prcs)->command);
         free(*prcs);
+        *prcs = head;
     }
 }

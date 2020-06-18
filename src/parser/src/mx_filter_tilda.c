@@ -5,8 +5,6 @@
 #define MX_SUCCESS 0
 
 static void filter_to_pwd(char **arg, int i) {
-    if ((*arg)[i + 2] == '/')
-        mx_del_char_in_str(*arg, i + 1);
     if ((*arg)[i + 1] == '+')
         mx_replace_var(arg, "~+", getenv("PWD"), &i);
     else if ((*arg)[i + 1] == '-')
@@ -34,11 +32,8 @@ void mx_filter_tilda(char **arg, int *status) {
         if ((*arg)[i] == '~') {
             if (i > 0 && (*arg)[i - 1] != ' ')
                 continue;
-            if ((*arg)[i + 1] == '/' || (*arg)[i + 1] == ' ' || !(*arg)[i + 1]) {
-                if ((*arg)[i + 1] == '/')
-                    mx_del_char_in_str(*arg, i + 1);
+            if ((*arg)[i + 1] == '/' || (*arg)[i + 1] == ' ' || !(*arg)[i + 1])
                 mx_replace_var(arg, "~", getenv("HOME"), &i);
-            }
             else if ((*arg)[i + 2] == '/' || (*arg)[i + 2] == ' ' || !(*arg)[i + 2])
                 filter_to_pwd(arg, i);
             else if ((*arg)[i + 1] != '+' && (*arg)[i + 1] != '-'

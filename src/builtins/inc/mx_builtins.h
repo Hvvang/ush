@@ -11,17 +11,18 @@
 
 // custom built-ins enum structure
 typedef enum e_builtins {
-	MX_EXPORT,
-	MX_UNSET,
-	MX_EXIT,
-	MX_ENV,
-	MX_CD,
-	MX_FG,
-	MX_PWD,
-	MX_ECHO,
-	MX_WHICH,
-	MX_HISTORY,
-	MX_NOT_A_USH_BUILTIN
+	MX_NOT_A_USH_BUILTIN = -1,
+	MX_EXPORT = 0,
+	MX_UNSET = 1,
+	MX_EXIT = 2,
+	MX_ENV = 3,
+	MX_CD = 4,
+	MX_FG = 5,
+	MX_PWD = 6,
+	MX_ECHO = 7,
+	MX_JOBS = 8,
+	MX_WHICH = 9,
+	MX_HISTORY = 10,
 }            t_builtins;
 
 void mx_builtin_func(t_command *commands, t_hash_table *hash_table, int *status);

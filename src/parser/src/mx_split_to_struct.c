@@ -27,7 +27,7 @@ void del_command_struct(t_command **head) {
 
 void mx_exec_command(t_command *command, t_hash_table *hash_table, int *status) {
 	if (command) {
-		if (mx_is_ush_builtins(command->command) != MX_NOT_A_USH_BUILTIN)
+		if (mx_is_ush_builtins(command->command) != -1)
 			mx_builtin_func(command, hash_table, status);
 		else {
 			char *path = mx_get_path_to_bin(command->command);

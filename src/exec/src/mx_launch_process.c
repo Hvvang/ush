@@ -11,13 +11,17 @@
 static void parent_exec(char **args, t_processes **processes,
 						pid_t pid) {
 	int status;
+	char *res = NULL;
 
 	if (waitpid(pid, &status, WUNTRACED) < 0) {
 		mx_printstr(strerror(errno));
 		mx_printstr("\n");
 	}
-	if (status != 1)
-		setenv("status", "127", 1);
+	if (status) {
+		res = mx_itoa(status);
+		setenv("status", res, 1);
+		mx_strdel(&res);
+	}
 	mx_set_term_assoc(getpid());
 	if (WIFSTOPPED(status))
 		mx_suspend_process(args, processes, pid);

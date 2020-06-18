@@ -19,6 +19,8 @@ void mx_builtin_func(t_command *command,
 		mx_unset(command, hash_table);
 	else if (!strcmp(command->command, "which"))
 		mx_which(command);
+	else if (!strcmp(command->command, "jobs"))
+		mx_print_processes(hash_table->processes);
     else if (!strcmp(command->command, "fg"))
         mx_fg(&hash_table->processes, command->arguments);
 	else if (!strcmp(command->command, "exit"))

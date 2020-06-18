@@ -4,9 +4,8 @@ int mx_get_type(const char *path) {
 	DIR *dir = opendir(path);
 	struct stat stat;
 
+	errno = 0;
 	lstat(path, &stat);
-	// if (S_ISSOCK(stat.st_mode))
-	// 	return MX_SOCKET;
 	if (dir)
 		closedir(dir);
 	if (S_ISLNK(stat.st_mode))

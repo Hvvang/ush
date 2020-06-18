@@ -26,18 +26,18 @@ static char **get_true_path(char *programm_name) {
     char **true_path = (char **)malloc(sizeof(char *) * size + 1);
     int index = 0;
 
-    if (mx_is_ush_builtins(programm_name) != MX_NOT_A_USH_BUILTIN ||
+    if (mx_is_ush_builtins(programm_name) != -1 ||
         mx_get_type(programm_name) < 2) {
-        true_path[index] = (mx_get_type(programm_name) < 2) ?
-                                   mx_strdup(programm_name) :
-                                   mx_strjoin(programm_name, MX_SHELL_BUILTIN);
+        true_path[index++] = (mx_get_type(programm_name) < 2) ?
+                            mx_strdup(programm_name) :
+                            mx_strjoin(programm_name, MX_SHELL_BUILTIN);
     }
     for (unsigned i = 0; all_paths[i]; i++) {
         if (mx_get_type(all_paths[i]) < 2)
-            true_path[index] = mx_strdup(all_paths[i]);
+            true_path[index++] = mx_strdup(all_paths[i]);
     }
-    mx_del_strarr(&all_paths);
     true_path[index] = NULL;
+    mx_del_strarr(&all_paths);
     return true_path;
 }
 

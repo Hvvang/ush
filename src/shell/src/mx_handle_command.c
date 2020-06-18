@@ -1,4 +1,4 @@
-#include "ush.h"
+#include "mx_shell.h"
 
 int mx_handle_command(char *stdin_line, t_hash_table *hash_table) {
     if (stdin_line[0] != '\0') {
