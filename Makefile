@@ -28,7 +28,7 @@ INCLUDE = \
 SRCS = $(wildcard $(SRCD)/*.c)
 OBJS = $(addprefix $(OBJD)/, $(SRCS:src/%.c=%.o))
 
-CFLAGS = -std=c11 -g -fsanitize=address -Wall -Wextra -Werror -Wpedantic
+CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
 all: $(NAME)
 
