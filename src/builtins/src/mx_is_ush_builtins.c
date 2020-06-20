@@ -7,8 +7,8 @@ int mx_is_ush_builtins(char *command) {
         return MX_UNSET;
     else if (!strcmp(command, "exit"))
         return MX_EXIT;
-    else if (!strcmp(command, "env"))
-        return MX_ENV;
+    // else if (!strcmp(command, "env"))
+    //     return MX_ENV;
     else if (!strcmp(command, "cd"))
         return MX_CD;
     else if (!strcmp(command, "fg"))

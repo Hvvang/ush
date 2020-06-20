@@ -2,43 +2,25 @@
 
 #define MX_SHELL_BUILTIN ": shell built-in command"
 
-static char **split_PATH(char *programm_name) {
-    char *hash_table_path = getenv("PATH");
-
-    if (hash_table_path) {
-        char **paths = mx_strsplit(hash_table_path, ':');
-
-        for (unsigned i = 0; paths[i]; i++) {
-            char *temp = strdup(paths[i]);
-
-            free(paths[i]);
-            paths[i] = mx_join_path(temp, programm_name);
-            mx_strdel(&temp);
-        }
-        return paths;
-    }
-    return NULL;
-}
 
 static char **get_true_path(char *programm_name) {
-    char **all_paths = split_PATH(programm_name);
-    int size = mx_str_arr_size(all_paths) + 1;
-    char **true_path = (char **)malloc(sizeof(char *) * size + 1);
-    int index = 0;
+    char **all_paths = get_paths(programm_name);
 
     if (mx_is_ush_builtins(programm_name) != -1 ||
         mx_get_type(programm_name) < 2) {
-        true_path[index++] = (mx_get_type(programm_name) < 2) ?
-                            mx_strdup(programm_name) :
-                            mx_strjoin(programm_name, MX_SHELL_BUILTIN);
+        int size = mx_str_arr_size(all_paths) + 2;
+
+        all_paths = realloc(all_paths, sizeof(all_paths) + sizeof(char*) + 1);
+        for (int i = size - 2; i > 0; i--){
+            all_paths[i] = strdup(all_paths[i - 1]);
+            free(all_paths[i - 1]);
+        }
+        all_paths[0] = (mx_get_type(programm_name) < 2) ?
+                        strdup(programm_name) :
+                        mx_strjoin(programm_name, MX_SHELL_BUILTIN);
+        all_paths[size - 1] = NULL;
     }
-    for (unsigned i = 0; all_paths[i]; i++) {
-        if (mx_get_type(all_paths[i]) < 2)
-            true_path[index++] = mx_strdup(all_paths[i]);
-    }
-    true_path[index] = NULL;
-    mx_del_strarr(&all_paths);
-    return true_path;
+    return all_paths;
 }
 
 static void print_paths(t_command *command, int index, char flag) {
@@ -61,12 +43,12 @@ void mx_which(t_command *command) {
     int index = 0;
     char flag = mx_check_flags(MX_WHICH, &index, command, mx_valid_which);
 
-    if (!atoi(getenv("status"))) {
-        if (flag != 's') {
-            while (command->arguments[index]) {
-                print_paths(command, index, flag);
-                index++;
-            }
+    if (!command->arguments[index])
+        setenv("status", "1", 1);
+    else if (!atoi(getenv("status"))) {
+        while (command->arguments[index]) {
+            print_paths(command, index, flag);
+            index++;
         }
     }
 }

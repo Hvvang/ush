@@ -3,9 +3,7 @@
 void mx_builtin_func(t_command *command,
 	                 t_hash_table *hash_table,
 					 int *status) {
-	if (!strcmp(command->command, "env"))
-        mx_env(command, hash_table);
-	else if (!strcmp(command->command, "cd"))
+	if (!strcmp(command->command, "cd"))
 		mx_cd(command);
     else if (!strcmp(command->command, "history"))
 		mx_print_history();

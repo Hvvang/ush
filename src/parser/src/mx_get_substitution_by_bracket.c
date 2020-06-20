@@ -5,7 +5,7 @@ static void get_nested(char **arg, int i, int j, int *status) {
     char *res = NULL;
     int size;
 
-    while (j + 2 != i) {
+    while (j + 1 != i) {
         mx_del_char_in_str(*arg, i);
         j--;
     }

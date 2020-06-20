@@ -107,7 +107,7 @@ int mx_check_input(char *stdin_line, int *index) {
             error = mx_skip_literal(stdin_line, &i, SQUOTE);
         else if (currLiteral == DQUOTE)
             error = check_dquote(stdin_line, &i, len, 0);
-        else if (currLiteral == DOLLAR)
+        else if (!(MX_IS_SLASH(stdin_line[i -1])) && currLiteral == DOLLAR)
             error = check_dollar(stdin_line, &i, len, 0);
     }
     return error;

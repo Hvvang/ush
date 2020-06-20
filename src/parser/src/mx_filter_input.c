@@ -17,15 +17,13 @@ static void filter_dquote(char **arg, int *i, int *status) {
             mx_del_char_in_str(*arg, *i);
             break;
         }
-        else if (MX_IS_SLASH((*arg)[*i]) && !(MX_IS_REGULAR((*arg)[*i])))
-            mx_del_char_in_str(*arg, *i);
         else if (MX_IS_QUOTE((*arg)[*i]))
             mx_filter_substitution(arg, i, status);
         else if (MX_IS_DOLLAR((*arg)[*i])) {
             if (MX_IS_BRACKET((*arg)[*i + 1]))
                 mx_filter_substitution(arg, i, status);
-            else
-                mx_filter_parameter(arg, i);
+            // else
+            //     mx_filter_parameter(arg, i);
         }
     }
     *i -= 1;
@@ -33,6 +31,7 @@ static void filter_dquote(char **arg, int *i, int *status) {
 
 void mx_filter_input(char **arg, int *status) {
     mx_filter_tilda(arg, status);
+    mx_filter_parameter(arg);
     for (int i = 0; (*arg)[i]; i++) {
         if (*status)
             return;
@@ -45,11 +44,8 @@ void mx_filter_input(char **arg, int *status) {
         else if (MX_IS_QUOTE((*arg)[i])
                  || ( MX_IS_SLASH((*arg)[i]) && MX_IS_QUOTE((*arg)[i + 1])))
             mx_filter_substitution(arg, &i, status);
-        else if (MX_IS_DOLLAR((*arg)[i])) {
+        else if (MX_IS_DOLLAR((*arg)[i]))
             if (MX_IS_BRACKET((*arg)[i + 1]))
                 mx_filter_substitution(arg, &i, status);
-            else
-                mx_filter_parameter(arg, &i);
-        }
     }
 }

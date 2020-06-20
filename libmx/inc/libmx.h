@@ -17,6 +17,7 @@ typedef enum e_types { // Types stuct
 	MX_CHAR,
 	MX_FIFO,
 	MX_ANY,
+	MX_EXEC,
 	MX_EFAULT
 }            t_types;
 

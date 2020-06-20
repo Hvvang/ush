@@ -1,6 +1,6 @@
 #include "mx_parser.h"
 
-static void get_args(char *line, int *i, int literal) {
+void get_args(char *line, int *i, int literal) {
     for (*i = *i + 1; line[*i]; (*i)++) {
         int ch = mx_get_literal(line[*i]);
 
@@ -28,6 +28,12 @@ t_list *mx_split_commands(char *commands, char delim) {
     t_list *list = NULL;
     int index = 0; // index of last literal exicting
 
+    if (!strcmp(commands, ";") || !strcmp(commands, "; ;"))
+        return NULL;
+    if (!strcmp(commands, ";;")) {
+        fprintf(stderr, "u$h: parse error near `;;'\n");
+        return NULL;
+    }
     for (int i = 0; commands[i]; i++) {
         if (!(MX_IS_REGULAR(commands[i])) && mx_get_literal(commands[i]) < 3) {
             if (MX_IS_DOLLAR(commands[i]) && !(MX_IS_BRACKET(commands[i + 1])

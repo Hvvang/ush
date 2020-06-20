@@ -3,7 +3,7 @@
 void clear_processes(t_hash_table *hash_table) {
     t_processes *temp = hash_table->processes;
 
-    while (temp->next) {
+    while (temp) {
         kill(temp->pid, SIGKILL);
         mx_clear_process(&temp, (void *)temp);
     }
@@ -22,6 +22,7 @@ void clear_export(t_hash_table *hash_table) {
 void mx_clear_all(t_hash_table *hash_table) {
     int exit_code = atoi(getenv("status"));
 
+    exit_code = exit_code % 256;
     if (hash_table->processes)
         clear_processes(hash_table);
     if (hash_table->export)

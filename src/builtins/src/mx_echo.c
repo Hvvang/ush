@@ -22,6 +22,12 @@ static void change_char_to_unprint(char *str, int i) {
         str[i] = '\r';
 }
 
+
+/*  Echo flags
+*   -n - flag[0];
+*   -e - flag[1]; default flag
+*   -E - flag[2];
+*/
 static void get_echo_flags(int *flags, char **args, int index) {
     for (int i = 0; i < index; i++) {
         for (int j = 1; args[i][j]; j++) {
@@ -41,7 +47,7 @@ static void get_echo_flags(int *flags, char **args, int index) {
 
 void mx_echo(t_command *command) {
     int index = 0;
-    int flags[3] = {0, 0, 0};
+    int flags[3] = {0, 1, 0};
 
     mx_check_flags(MX_ECHO, &index, command, mx_valid_echo);
     get_echo_flags(flags, command->arguments, index);

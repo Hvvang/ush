@@ -1,7 +1,7 @@
 #include "mx_builtins.h"
 
 #define MX_IS_ENV(command) !strcmp(command, "env")
-
+#define MX_NO_SUCH_FILE "env: %s: No such file or directory\n"
 static void env_print(void) {
     extern char **environ;
 
@@ -29,12 +29,18 @@ static void exec_from_env(t_command *command,
                           t_hash_table *hash_table,
                           int index) {
     extern char **environ;
-    char *path = mx_join_path(command->arguments[index],
-                              command->arguments[index + 1]);
+    char *path = check_path(command->arguments[index + 1],
+                            command->arguments[index]);
 
-    swap_command(command, "ls", index + 2);
-    mx_launch_process(command, &hash_table->processes, path, environ);
-    mx_strdel(&path);
+    if (path) {
+        swap_command(command, command->arguments[index + 1], index + 2);
+        mx_launch_process(command, &hash_table->processes, path, environ);
+        mx_strdel(&path);
+    }
+    else if (command->arguments[index + 1]) {
+        setenv("status", "1", 1);
+        fprintf(stderr, MX_NO_SUCH_FILE, command->arguments[index + 1]);
+    }
 }
 
 
@@ -47,9 +53,9 @@ void mx_env(t_command *command, t_hash_table *hash_table) {
         exec_from_env(command, hash_table, index);
         return;
     }
-    else if (flag == 'u')
+    else if (flag == 'u') {
         swap_command(command, "unset", index);
-    else
+    }
         swap_command(command, NULL, index + 1);
     if (!command->arguments[index] && MX_IS_ENV(command->command))
 		env_print();

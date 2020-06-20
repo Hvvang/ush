@@ -26,6 +26,7 @@
 #define MX_IS_REGULAR(c) mx_get_literal(c) == -1
 
 
+
 typedef enum e_literals { // Literal struct
 	QUOTE, // `
 	SQUOTE, // '
@@ -57,17 +58,19 @@ int mx_get_literal(const char c);
 char **mx_list_to_arr(t_list *list);
 char mx_set_literal(const int literal);
 int mx_skip_literal(char *str, int *index, int literal);
-t_list *mx_split_commands(char *commands, char delim);
+t_list *mx_split_commands(char *command, char delim);
 int mx_split_to_struct(char *stdin_line, t_hash_table *hash_table);
 char *mx_replace_chars_by_str(char *str, int i, int itms, char *substr);
 char *mx_substr_to_symbol(char *str, char *symbol);
 void mx_filter_input(char **arg, int *status);
 void mx_filter_tilda(char **arg, int *status);
-void mx_filter_parameter(char **arg, int *i);
+void mx_filter_parameter(char **arg);
 void mx_filter_substitution(char **arg, int *i, int *status);
 int mx_get_substitution_by_quote(char **arg, int *status);
 int mx_get_substitution_by_bracket(char **arg, int *status);
 char *mx_subshell(char *substitution, int *status);
 void mx_exec_command(t_command *command, t_hash_table *hash_table, int *status);
+void del_command_struct(t_command **head);
+void get_args(char *line, int *i, int literal);
 
 #endif

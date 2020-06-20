@@ -3,24 +3,19 @@
 #define MX_GENERAL 0
 #define MX_PROCESS_INDEX 1
 #define MX_PROCESS_NAME 2
-#define MX_FG "fg: "
-#define MX_NO_SUCH_JOB "no such job"
-#define MX_JOB_NOT_FOUND "job not found: "
-#define MX_NO_JOBS "no current job"
+#define MX_NO_SUCH_JOB "fg: %s: no such job\n"
+#define MX_JOB_NOT_FOUND "fg: job not found: %s\n"
+#define MX_NO_JOBS "fg: no current job\n"
 
 static char *get_param(char *arg, int *type) {
-    if (!arg)
+    if (!arg || !strcmp(arg, "--"))
         *type = MX_GENERAL;
     else {
         if (arg[0] == '%') {
-            for (unsigned i = 1; arg[i]; i++) {
-                if (isdigit(arg[i]))
-                    *type = MX_PROCESS_INDEX;
-                else {
-                    *type = MX_PROCESS_NAME;
-                    break;
-                }
-            }
+            if (mx_match(&arg[1], "[0-9]"))
+                *type = MX_PROCESS_INDEX;
+            else
+                *type = MX_PROCESS_NAME;
             return &arg[1];
         }
         else
@@ -29,74 +24,75 @@ static char *get_param(char *arg, int *type) {
     return arg;
 }
 
-static t_processes *get_pid(t_processes **prcs, char *arg,
-                            char *param, int type) {
-    if (type == MX_GENERAL) {
-        // if (*prcs) {
-            // printf("excisted\n");
-            // printf("pid = %d\n", (*prcs)->pid);
-        // }
-        if (!(*prcs))
-            fprintf(stderr, "%s%s\n", MX_FG, MX_NO_JOBS);
-        return *prcs;
+static t_processes *get_by_index(t_processes **prcs, char *arg, char *param) {
+    if (atoi(param) > mx_get_processes_num(prcs)) {
+        setenv("status", "127", 1);
+        fprintf(stderr, MX_NO_SUCH_JOB, arg);
+        return NULL;
     }
-    else if (type == MX_PROCESS_INDEX) {
-        if (atoi(param) > mx_get_processes_num(prcs))
-            fprintf(stderr, "%s%s: %s\n", MX_FG, arg, MX_NO_SUCH_JOB);
-        else {
-            t_processes *temp = *prcs;
-
-            while (temp->index != atoi(param))
-                temp = temp->next;
-            return temp;
-        }
-    }
-    else if (type == MX_PROCESS_NAME) {
+    else {
         t_processes *temp = *prcs;
 
-        while (temp) {
-            if (!strcmp(temp->command[0], param))
-                return temp;
+        while (temp->index != atoi(param))
             temp = temp->next;
-        }
-        fprintf(stderr, "%s%s%s\n", MX_FG, MX_JOB_NOT_FOUND, param);
+        return temp;
     }
+}
+
+static t_processes *get_by_name(t_processes **prcs, char *param) {
+    t_processes *temp = *prcs;
+
+    while (temp) {
+        if (!strcmp(temp->command[0], param))
+            return temp;
+        for (int i = 0; temp->command[0][i] && param[i]; i++) {
+            if (temp->command[0][i] != param[i])
+                break;
+            if (!param[i + 1])
+                return temp;
+        }
+        temp = temp->next;
+    }
+    setenv("status", "127", 1);
+    fprintf(stderr, MX_JOB_NOT_FOUND, param);
     return NULL;
 }
 
-
-void print_process(t_processes **processes) {
-    t_processes *temp = *processes;
-
-    printf("address of first node is %p\n", (void *)(*processes));
-    while (temp) {
-        printf("command = ");
-        fflush(stdout);
-        mx_print_strarr(temp->command, " ");
-        printf(",\tpid = %d, index = %d\n", temp->pid, temp->index);
-        temp = temp->next;
+static t_processes *get_pid(t_processes **prcs, char *arg,
+                            char *param, int type) {
+    if (type == MX_GENERAL) {
+        if (!(*prcs)) {
+            setenv("status", "1", 1);
+            fprintf(stderr, MX_NO_JOBS);
+        }
     }
+    else if (type == MX_PROCESS_INDEX)
+        return get_by_index(prcs, arg, param);
+    else if (type == MX_PROCESS_NAME)
+        return get_by_name(prcs, param);
+    return *prcs;
 }
 
 void mx_fg(t_processes **processes, char **args) {
-    for (unsigned i = 0; ; i++) {
-        int type;
-        // printf("1\n");
-        char *param = get_param(args[i], &type);
-        // printf("2\n");
-        // print_process(processes);
+    t_processes *local = NULL;
 
-        t_processes *local = get_pid(processes, args[i], param, type);
-        // printf("3\n");
+    if (args[0]) {
+        for (unsigned i = 0; args[i]; i++) {
+            int type;
+            char *param = get_param(args[i], &type);
 
-
-        if (local) {
-            // printf("local->pid = %d\n", local->pid);
+            if ((local = get_pid(processes, args[i], param, type))) {
+                tcsetpgrp(STDIN_FILENO, local->pid);
+                mx_continue_process(processes, local, local->pid);
+                tcsetpgrp(STDIN_FILENO, getpgrp());
+            }
+        }
+    }
+    else {
+        if ((local = get_pid(processes, NULL, NULL, MX_GENERAL))) {
             tcsetpgrp(STDIN_FILENO, local->pid);
             mx_continue_process(processes, local, local->pid);
             tcsetpgrp(STDIN_FILENO, getpgrp());
         }
-        if (!args[i + 1])
-            break;
     }
 }

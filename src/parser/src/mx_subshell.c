@@ -22,7 +22,7 @@ static char *data_from_fd(int *fd) {
     while ((n_read = read(fd[0], buf, BUFSIZ)) > 0)
         sum_read += n_read;
     res = strdup(buf);
-    res[sum_read - 1] = '\0';
+    res[sum_read] = '\0';
     for (unsigned i = 0; res[i]; i++) {
         if (res[i] == '\n')
             res[i] = ' ';

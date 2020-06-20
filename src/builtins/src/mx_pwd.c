@@ -3,7 +3,7 @@
 #define MX_FLAG 0
 #define MX_BAD_OPTION -1
 #define MX_MANY_ARGS -2
-#define MX_PWD_DEFAULT 'P'
+#define MX_PWD_DEFAULT 'L'
 
 static int validation(char **args, char *flag) {
 	int toggle = 1;
@@ -38,7 +38,7 @@ static char get_flag(t_command *command) {
 			fprintf(stderr, "pwd: too many arguments\n");
 		else if (error == MX_BAD_OPTION)
 			fprintf(stderr, "pwd: bad option: -%c\n", flag);
-			setenv("status", "-1", 1);
+		setenv("status", "1", 1);
 	}
 	return flag;
 }

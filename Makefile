@@ -28,6 +28,8 @@ INCLUDE = \
 SRCS = $(wildcard $(SRCD)/*.c)
 OBJS = $(addprefix $(OBJD)/, $(SRCS:src/%.c=%.o))
 
+# SANITIZE = -g -fsanitize=address
+
 CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
 all: $(NAME)

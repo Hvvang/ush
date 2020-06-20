@@ -74,16 +74,18 @@ void mx_cd(t_command *command) {
 	int index = 0;
 	char flag = mx_check_flags(MX_CD, &index, command, mx_valid_cd);
 
+	// mx_print_strarr(command->arguments, "   ");
+	// printf("\narg[i] = %s arg[i+1] = %s\n", command->arguments[index], command->arguments[index + 1]);
 	if (command->arguments[index] && command->arguments[index + 1])
 		mx_error_handle(MX_CD, NULL, MX_ANY);
 	else if (!atoi(getenv("status"))) {
 		if (!command->arguments[index]) {
-			command->arguments[index] = mx_strdup(getenv("HOME"));
+			command->arguments[index] = strdup(getenv("HOME"));
 			command->arguments[index + 1] = NULL;
 		}
 		if (!strcmp(command->arguments[index], "--")) {
 			free(command->arguments[index]);
-			command->arguments[index] = mx_strdup(getenv("HOME"));
+			command->arguments[index] = strdup(getenv("HOME"));
 		}
 		else if (!strcmp(command->arguments[index], "-")) {
 			free(command->arguments[index]);

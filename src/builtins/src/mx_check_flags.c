@@ -37,7 +37,7 @@ char mx_check_flags(int builtin, int *index, t_command *command,
     for (int i = 0; toggle && args[i]; i++) {
         if (!(*valid)(&toggle, args[i], &flag, index)) {
             mx_builtin_usage(builtin, command->command, flag);
-            setenv("status", "-1", 1);
+            setenv("status", "1", 1);
             flag = '\0';
             break;
         }

@@ -50,9 +50,3 @@ clean:
 	@printf "\e[34;1mdeleted object files in $(NAME)\e[0m\n"
 
 reinstall: uninstall install
-
-test1:
-	@make all
-	@clang $(CFLAGS) -c test.c -o test.o -I $(INC_PATH)
-	@clang $(CFLAGS) -g test.o $(MODULE) ../parser/parser.a $(LIB_PATH)  -o $(NAME)
-	@rm -rf test.o

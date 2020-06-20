@@ -18,6 +18,7 @@
 void mx_activate_signals(void);
 void mx_clear_process(t_processes **prcs, void *kill);
 void mx_continue_process(t_processes **processes, t_processes *current, pid_t pid);
+char **get_paths(char *programm_name);
 char *mx_get_path_to_bin(char *programm_name);
 int mx_get_processes_num(t_processes **process);
 int mx_launch_process(t_command *command, t_processes **processes, char *path, char **env);
@@ -27,7 +28,6 @@ void mx_set_term_assoc(pid_t pid);
 void mx_suspend_process(char **args, t_processes **processes, pid_t pid);
 void print_suspended(char **args, pid_t pid, int suspended_index);
 void mx_print_processes(t_processes *processes);
-
-// void print_process(t_processes **processes);
+char *check_path(char *programm_name, char *path);
 
 #endif

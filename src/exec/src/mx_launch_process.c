@@ -11,20 +11,22 @@
 static void parent_exec(char **args, t_processes **processes,
 						pid_t pid) {
 	int status;
-	char *res = NULL;
 
 	if (waitpid(pid, &status, WUNTRACED) < 0) {
 		mx_printstr(strerror(errno));
 		mx_printstr("\n");
 	}
-	if (status) {
-		res = mx_itoa(status);
-		setenv("status", res, 1);
-		mx_strdel(&res);
-	}
 	mx_set_term_assoc(getpid());
-	if (WIFSTOPPED(status))
+	if (!WIFSTOPPED(status)) {
+		if (!WEXITSTATUS(status))
+			setenv("status", "0", 1);
+		else
+			setenv("status", "127", 1);
+	}
+	else if (WIFSTOPPED(status)) {
+		setenv("status", "146", 1);
 		mx_suspend_process(args, processes, pid);
+	}
 	mx_del_strarr(&args);
 }
 
