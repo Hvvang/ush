@@ -26,15 +26,19 @@ static int check_user(char *arg) {
 }
 
 void mx_filter_tilda(char **arg, int *status) {
+    mx_init_pwd(NULL);
+	mx_init_home(NULL);
     for (int i = 0; (*arg)[i]; i++) {
         if (!(MX_IS_REGULAR((*arg)[i])))
             mx_skip_literal(*arg, &i, mx_get_literal((*arg)[i]));
         if ((*arg)[i] == '~') {
             if (i > 0 && (*arg)[i - 1] != ' ')
                 continue;
-            if ((*arg)[i + 1] == '/' || (*arg)[i + 1] == ' ' || !(*arg)[i + 1])
+            if ((*arg)[i + 1] == '/' || (*arg)[i + 1] == ' '
+                || !(*arg)[i + 1])
                 mx_replace_var(arg, "~", getenv("HOME"), &i);
-            else if ((*arg)[i + 2] == '/' || (*arg)[i + 2] == ' ' || !(*arg)[i + 2])
+            else if ((*arg)[i + 2] == '/' || (*arg)[i + 2] == ' '
+                    || !(*arg)[i + 2])
                 filter_to_pwd(arg, i);
             else if ((*arg)[i + 1] != '+' && (*arg)[i + 1] != '-'
                      && (*arg)[i + 1] != '/')

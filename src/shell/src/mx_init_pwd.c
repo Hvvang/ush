@@ -19,8 +19,14 @@ void mx_init_pwd(t_hash_table *hash_table) {
         char *pwd = mx_strjoin("PWD=", getcwd(path, PATH_MAX));
         char *oldpwd = mx_strjoin("OLDPWD=", getcwd(path, PATH_MAX));
 
-        mx_push_to_export(pwd, hash_table);
-        mx_push_to_export(oldpwd, hash_table);
+        if (hash_table) {
+            mx_push_to_export(pwd, hash_table);
+            mx_push_to_export(oldpwd, hash_table);
+        }
+        else {
+            setenv("PWD", path, 1);
+            setenv("OLDPWD", path, 1);
+        }
         mx_strdel(&pwd);
         mx_strdel(&oldpwd);
     }

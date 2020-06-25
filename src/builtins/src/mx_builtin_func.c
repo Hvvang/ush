@@ -3,7 +3,6 @@
 static void main_builtins(t_command *command,
 	                 	  t_hash_table *hash_table,
 					 	  int *status) {
-	mx_init_pwd(hash_table);
 	if (!strcmp(command->command, "cd"))
 		mx_cd(command);
 	else if (!strcmp(command->command, "pwd"))
@@ -40,6 +39,19 @@ static void extended_builtins(t_command *command) {
 void mx_builtin_func(t_command *command,
 	                 t_hash_table *hash_table,
 					 int *status) {
+	bool pwd = true;
+	bool home = true;
+
+	if (!getenv("PWD"))
+		pwd = false;
+	if (!getenv("HOME"))
+		home = false;
+	mx_init_pwd(hash_table);
+	mx_init_home(hash_table);
 	main_builtins(command, hash_table, status);
 	extended_builtins(command);
+	if (!pwd)
+		unsetenv("PWD");
+	if (!home)
+		unsetenv("HOME");
 }
