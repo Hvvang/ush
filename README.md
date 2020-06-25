@@ -31,6 +31,10 @@ Zsh-like shell It's a command-line interpreter
 | which   | locate a command and display its pathname or alias     |
 | echo    | write arguments to standard output                     |
 | env     | set the environment for command invocation             |
+| true    | set value of exit status equal 0                       |
+| false   | set value of exit status equal 1                       |
+| bye     | same as exit                                           |
+| color   | change foreground and background color.                |
 | exit    | cause the shell to exit                                |
 
 ### Tested systems:
