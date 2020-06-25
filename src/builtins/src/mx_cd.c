@@ -13,21 +13,21 @@ static void get_ref_of_dir_up(char *str, int *index) {
 }
 
 static char *path_to_canonical(char *str) {
-	char *buff = mx_strnew(strlen(str));
+	char *buf = mx_strnew(strlen(str));
 	int index = 0;
 
 	for (int i = 0; str[i]; i++) {
 		if (str[i] == '.' && str[i + 1] == '.'
 			&& (str[i + 2] == '/' || !str[i + 2])) {
-			get_ref_of_dir_up(buff, &index);
+			get_ref_of_dir_up(buf, &index);
 			i += 1;
 		}
-		else if (!(str[i] == '.' || (str[i] == '/' && buff[index - 1] == '/')))
-			buff[index++] = str[i];
+        else if (!(str[i] == '.' || (str[i] == '/' && buf[index - 1] == '/')))
+			buf[index++] = str[i];
 	}
-	if (buff[index - 1] == '/' && strcmp(buff, "/"))
-		buff[index - 1] = '\0';
-	return buff;
+	if (buf[index - 1] == '/' && strcmp(buf, "/"))
+		buf[index - 1] = '\0';
+	return buf;
 }
 
 static char *create_path(char *command, char flag) {

@@ -1,10 +1,16 @@
 #include "mx_shell.h"
 
 static bool check_pwd(void) {
+    char *real_path = realpath(getenv("PWD"), NULL);
     char temp[PATH_MAX];
+    int res;
 
-	getcwd(temp, PATH_MAX);
-    return strcmp(realpath(getenv("PWD"), NULL), temp);
+    getcwd(temp, PATH_MAX);
+    if (getenv("PWD") && real_path)
+        res = strcmp(real_path, temp);
+    else
+        res = 1;
+    return res;
 }
 
 void mx_init_pwd(t_hash_table *hash_table) {

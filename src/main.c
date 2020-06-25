@@ -14,7 +14,6 @@ static bool check_stdin(t_hash_table *hash_table) {
             buff[linelen - 1] = '\0';
         mx_handle_command(buff, hash_table);
     }
-    mx_strdel(&buff);
     return true;
 }
 

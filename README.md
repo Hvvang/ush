@@ -22,7 +22,7 @@ Implementation of basic command-line interpreter (based on ```zsh``` and ```bash
 - `make` or `make all` compilation of binary executable
 - `make install` do `make all` and `make clean` compilation of binary executable
 - `make clean` delete all .o files
-- `make uninstall` do `make clean` and delete all modules (\*.a) files created during instaling and also executeble file ./ush
+- `make uninstall` do `make clean` and delete all modules (\*.a) files created during installing and also executable file ./ush
 - `make reinstall` do `make uninstall` and `make`
 
 ## Implemented functionality
@@ -60,7 +60,7 @@ Tilde expansions ~ with the following tilde-prefixes:
 
 ### Parameter expansions
   - only basic form - `${parameter}` or `$parameter`
- 
+
 ### Command substitutions of next forms
   - `command`
   - `$(command)`
@@ -68,10 +68,10 @@ Nested command substitutions also supported.
 
 ## Additional functionality
 
-  - job control system (only for foregraund jobs and processes);
+  - job control system (only for foreground jobs and processes);
   - command history using `Arrow keys` or `Pg Up/Pg Dn`;
   - command editing, cursor motion using `Arrow keys`;
-  - prompt customization using `§` key;
+  - prompt changing using `§` key;
   - the `;` command line separator;
   - errors management;
   - user environment management.
