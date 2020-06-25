@@ -1,21 +1,31 @@
 # ush
 Zsh-like shell It's a command-line interpreter
 
-### Installation:
+## Content
+
+- [Installation](#installation)
+- [Description](#description)
+- [Implemented functionality](#implemented-functionality)
+- [Additional functionality](#additional-functionality)
+- [Tested systems](#tested-systems)
+- [License]($license)
+
+## Description:
+Implementation of basic command-line interpreter (based on ```zsh``` and ```bash```), using the C programming language.
+
+## Installation:
 >**1. git clone https://github.com/Hvvang/ush**  
 >**2. make**  
 >**3. ./ush**
 
-### Description:
-**Implementation of unix shell that is student's project of uCode ITAcademy**
-
-### Rules of Makefile
+### Rules of Makefile:
 - `make` or `make all` compilation of binary executable
 - `make install` do `make all` and `make clean` compilation of binary executable
 - `make clean` delete all .o files
 - `make uninstall` do `make clean` and delete all modules (\*.a) files created during instaling and also executeble file ./ush
 - `make reinstall` do `make uninstall` and `make`
 
+## Implemented functionality
 
 ### Builtins-table:
 
@@ -49,14 +59,15 @@ Tilde expansions ~ with the following tilde-prefixes:
   - `~-/dir_name`.
 
 ### Parameter expansions
-  - only basic form - ${parameter} or $parameter
+  - only basic form - `${parameter}` or `$parameter`
  
 ### Command substitutions of next forms
   - `command`
   - `$(command)`
 Nested command substitutions also supported.
 
-### Additional functionality
+## Additional functionality
+
   - job control system (only for foregraund jobs and processes);
   - command history using `Arrow keys` or `Pg Up/Pg Dn`;
   - command editing, cursor motion using `Arrow keys`;
@@ -65,9 +76,9 @@ Nested command substitutions also supported.
   - errors management;
   - user environment management.
 
-### Tested systems:
+## Tested systems:
   - MacOS
   - Ubuntu
 
-### License
-Collision is an open-sourced software licensed under the MIT license.
+## License
+Collision is an open-sourced software licensed under the [MIT license](LICENSE).
