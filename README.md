@@ -3,22 +3,22 @@ Zsh-like shell It's a command-line interpreter
 
 ## Content
 
-- [Installation](#installation)
 - [Description](#description)
+- [Installation](#installation)
 - [Implemented functionality](#implemented-functionality)
 - [Additional functionality](#additional-functionality)
 - [Tested systems](#tested-systems)
 - [License]($license)
 
-## Description:
+## Description
 Implementation of basic command-line interpreter (based on ```zsh``` and ```bash```), using the C programming language.
 
-## Installation:
+## Installation
 >**1. git clone https://github.com/Hvvang/ush**  
 >**2. make**  
 >**3. ./ush**
 
-### Rules of Makefile:
+### Rules of Makefile
 - `make` or `make all` compilation of binary executable
 - `make install` do `make all` and `make clean` compilation of binary executable
 - `make clean` delete all .o files
@@ -27,7 +27,7 @@ Implementation of basic command-line interpreter (based on ```zsh``` and ```bash
 
 ## Implemented functionality
 
-### Builtins-table:
+### Builtins-table
 
 | Builtin |                       Description                      |
 |:-------:|:------------------------------------------------------:|
@@ -76,7 +76,7 @@ Nested command substitutions also supported.
   - errors management;
   - user environment management.
 
-## Tested systems:
+## Tested systems
   - MacOS
   - Ubuntu
 
