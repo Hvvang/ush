@@ -37,7 +37,37 @@ Zsh-like shell It's a command-line interpreter
 | color   | change foreground and background color.                |
 | exit    | cause the shell to exit                                |
 
+### Characters escaping
+Next characters can be escaped to be used literally: `space`, `'`, `"`, `$`, `(`, `)`, `\`, ``` ` ```, `{`, `}`.
+
+### Tilde expansions
+Tilde expansions ~ with the following tilde-prefixes:
+  - `~`;
+  - `~/dir_name`;
+  - `~username/dir_name`;
+  - `~+/dir_name`;
+  - `~-/dir_name`.
+
+### Parameter expansions
+  - only basic form - ${parameter} or $parameter
+ 
+### Command substitutions of next forms
+  - `command`
+  - `$(command)`
+Nested command substitutions also supported.
+
+### Additional functionality
+  - job control system (only for foregraund jobs and processes);
+  - command history using `Arrow keys` or `Pg Up/Pg Dn`;
+  - command editing, cursor motion using `Arrow keys`;
+  - prompt customization using `§` key;
+  - the `;` command line separator;
+  - errors management;
+  - user environment management.
+
 ### Tested systems:
   - MacOS
   - Ubuntu
 
+### License
+Collision is an open-sourced software licensed under the MIT license.
