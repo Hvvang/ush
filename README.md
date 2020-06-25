@@ -3,8 +3,8 @@ Zsh-like shell It's a command-line interpreter
 
 ## Content
 
-- [Installation](#installation)
 - [Description](#description)
+- [Installation](#installation)
 - [Implemented functionality](#implemented-functionality)
 - [Additional functionality](#additional-functionality)
 - [Tested systems](#tested-systems)
