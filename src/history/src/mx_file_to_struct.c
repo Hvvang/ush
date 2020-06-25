@@ -1,11 +1,20 @@
 #include "mx_history.h"
 
+static char *get_real_home(void) {
+    struct passwd *pw = getpwuid(getuid());
+    char *home = strdup(pw->pw_dir);
+
+    return home;
+}
+
 t_history *mx_file_to_struct(void) {
-    char *history_path = mx_join_path(getenv("HOME"), MX_HISTORY_FILE);
+    char *home = get_real_home();
+    char *history_path = mx_join_path(home, MX_HISTORY_FILE);
     FILE * fp = fopen(history_path, "r");
     char *line = mx_strnew(PATH_MAX);
     t_history *history = NULL;
 
+    mx_strdel(&home);
     if (fp) {
         mx_strdel(&history_path);
         while ((fgets(line, PATH_MAX, fp)) != NULL) {

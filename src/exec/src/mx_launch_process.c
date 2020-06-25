@@ -42,7 +42,7 @@ int mx_launch_process(t_command *command, t_processes **processes,
 	        perror("setpgid");
 	    mx_set_term_assoc(getpid());
 	    if (execve(path, args, env) == -1)
-	        fprintf(stderr, "u$h: command not found: %s\n", args[0]);
+	        fprintf(stderr, "ush: command not found: %s\n", args[0]);
 	    _exit(1);
 	}
 	else

@@ -5,25 +5,23 @@
 #define MX_ECHO_DEFAULT '0'
 #define MX_WHICH_DEFAULT '0'
 #define MX_ENV_DEFAULT '0'
+#define MX_COLOR_DEFAULT 'f'
 
 static char set_default(int builtin) {
     char flag;
 
-    if (builtin == MX_PWD) {
+    if (builtin == MX_PWD)
         flag = MX_PWD_DEFAULT;
-    }
-    if (builtin == MX_CD) {
+    if (builtin == MX_CD)
         flag = MX_CD_DEFAULT;
-    }
-    if (builtin == MX_ECHO) {
+    if (builtin == MX_ECHO)
         flag = MX_ECHO_DEFAULT;
-    }
-    if (builtin == MX_WHICH) {
+    if (builtin == MX_WHICH)
         flag = MX_WHICH_DEFAULT;
-    }
-    if (builtin == MX_ENV) {
+    if (builtin == MX_ENV)
         flag = MX_ENV_DEFAULT;
-    }
+    if (builtin == MX_COLOR)
+        flag = MX_COLOR_DEFAULT;
     return flag;
 }
 

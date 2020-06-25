@@ -15,7 +15,10 @@ static char *get_var(char *arg, int *i) {
 
 void mx_filter_parameter(char **arg) {
     for (int i = 0; (*arg)[i]; i++) {
-        if (MX_IS_DOLLAR((*arg)[i]) && !(MX_IS_BRACKET((*arg)[i + 1]))) {
+        if (MX_IS_SQUOTE((*arg)[i]) && !(MX_IS_SLASH((*arg)[i - 1])))
+            mx_skip_literal(*arg, &i, SQUOTE);
+        if (MX_IS_DOLLAR((*arg)[i]) && !(MX_IS_BRACKET((*arg)[i + 1]))
+            && !(MX_IS_SLASH((*arg)[i - 1]))) {
             char *temp = NULL;
             char *res = NULL;
 
@@ -27,10 +30,10 @@ void mx_filter_parameter(char **arg) {
             }
             else {
                 for (unsigned j = strlen(temp); j; j--)
-                mx_del_char_in_str(*arg, i);
+                    mx_del_char_in_str(*arg, i);
             }
             mx_strdel(&temp);
-            i -= - 1;
+            i -= 1;
         }
     }
 }

@@ -31,7 +31,7 @@ static void get_nested(char **arg, int i, int j, int lvl_prev, int *status) {
     size = strlen(*arg) + strlen(res) + 1;
     *arg = realloc(*arg, size);
     for (int k = 0; res[k]; k++)
-        mx_insert_char_to_str(*arg, res[k], i++);
+        mx_insert_char_to_str(arg, res[k], i++);
     mx_strdel(&res);
 }
 

@@ -1,37 +1,35 @@
 #include "libmx.h"
 
-static char* return_my_line(char **buff, char **res);
+static int mx_file_len(const char *file) {
+    short f = open(file, O_RDONLY);
+    short sz = 0;
+    int len = 0;
+    char buf;
 
-char *mx_file_to_str(const char *file) {
-    int size = 0;
-    char* res = NULL;
-    char* buff = mx_strnew(1);
-    int fd = open(file, O_RDONLY);
-
-    if (read(fd, NULL, 0) == -1)
-    {
-        close(fd);
-        mx_strdel(&buff);
-        return NULL;
+    sz = read(f, &buf, 1);
+    while (sz > 0) {
+        sz = read(f, &buf, 1);
+	len++;
     }
-    while ((size = read(fd, buff, 1) > 0)) {
-        char* tmp = mx_strdup(res);
-        mx_strdel(&res);
-        res = mx_strjoin(tmp, buff);
-        mx_strdel(&tmp);
-     }
-     close(fd);
-     return return_my_line(&buff, &res);
+    close(f);
+    return len;
 }
 
-static char* return_my_line(char **buff, char **res) {
-    if (*res == NULL) {
-        mx_strdel(buff);
+char *mx_file_to_str(const char *file) {
+    int f = open(file, O_RDONLY);
+    char *newstr = NULL;
+    int sz = 0;
+    int size;
+
+    if (f == -1) {
+        close(f);
         return NULL;
     }
-    else {
-        mx_strdel(buff);
-        return *res;
-    }
-    return *res;
+    size = mx_file_len(file);
+    if (size == 0)
+        return NULL;
+    newstr = mx_strnew(size);
+    sz = read(f, newstr, size);
+    close(f);
+    return newstr;
 }

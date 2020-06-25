@@ -25,7 +25,9 @@
 #define MX_IS_DOLLAR(c) mx_get_literal(c) == DOLLAR
 #define MX_IS_REGULAR(c) mx_get_literal(c) == -1
 
-
+#define MX_NEST_COMMAND(c) (!(MX_IS_REGULAR(c)) &&\
+                            (MX_IS_QUOTE(c) || MX_IS_SQUOTE(c) ||\
+                            MX_IS_DQUOTE(c) || MX_IS_DOLLAR(c)))
 
 typedef enum e_literals { // Literal struct
 	QUOTE, // `
@@ -48,17 +50,17 @@ typedef struct s_command {
 #include "../../exec/inc/mx_exec.h"
 #include "../../builtins/inc/mx_builtins.h"
 
-int mx_check_input(char *stdin_line, int *index);
+int mx_check_input(char *stdin_line);
 void mx_replace_var(char **arg, char *before, char *after, int *i);
 int mx_check_subs_lvls(char *str, int *index, int prev_lvl);
-int mx_print_error(int error);
+void mx_print_error(int error);
 void mx_find_close_quote(char *str, int *i, char c);
-char **mx_get_commands(const char *stdin_line);
+char **mx_get_commands(char *stdin_line, char delim);
+t_list *mx_split_commands(char *line, char delim);
 int mx_get_literal(const char c);
 char **mx_list_to_arr(t_list *list);
 char mx_set_literal(const int literal);
 int mx_skip_literal(char *str, int *index, int literal);
-t_list *mx_split_commands(char *command, char delim);
 int mx_split_to_struct(char *stdin_line, t_hash_table *hash_table);
 char *mx_replace_chars_by_str(char *str, int i, int itms, char *substr);
 char *mx_substr_to_symbol(char *str, char *symbol);
@@ -71,6 +73,5 @@ int mx_get_substitution_by_bracket(char **arg, int *status);
 char *mx_subshell(char *substitution, int *status);
 void mx_exec_command(t_command *command, t_hash_table *hash_table, int *status);
 void del_command_struct(t_command **head);
-void get_args(char *line, int *i, int literal);
 
 #endif

@@ -99,6 +99,8 @@ char *mx_ush_read_line(char *line, int *status) {
     while (*status != 666 && (read(STDIN_FILENO, &key, PATH_MAX))) {
         int len = strlen(line);
 
+        if (!strcmp(key, "§"))
+            mx_change_prompt_mode(line, pos);
         if ((MX_IS_UP_ARROW(key) && pos == 0) || MX_IS_DLE(key))
             mx_history_manage(line, &pos, &len, key);
         if ((mx_match(key, "^[!-~]")) || MX_IS_EM(key))

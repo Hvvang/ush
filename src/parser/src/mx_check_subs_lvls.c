@@ -9,7 +9,7 @@ int mx_check_subs_lvls(char *str, int *index, int prev_lvl) {
             lvl++;
         else {
             if (str[*index - 1] == '\\' && str[*index] == '`')
-                mx_insert_char_to_str(str, ' ', *index + 1);
+                mx_insert_char_to_str(&str, ' ', *index + 1);
             break;
         }
     }

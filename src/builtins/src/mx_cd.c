@@ -32,7 +32,6 @@ static char *path_to_canonical(char *str) {
 
 static char *create_path(char *command, char flag) {
 	char *path = NULL;
-    char buff[PATH_MAX + 1];
 
     if (flag == '0' || flag == 's') {
         if (command[0] != '/') {
@@ -44,10 +43,8 @@ static char *create_path(char *command, char flag) {
 		else
 			path = path_to_canonical(command);
     }
-    else {
-		chdir(command);
-		path = path_to_canonical(getcwd(buff, PATH_MAX));
-    }
+    else
+		path = strdup(realpath(command, NULL));
     return path;
 }
 
@@ -74,8 +71,6 @@ void mx_cd(t_command *command) {
 	int index = 0;
 	char flag = mx_check_flags(MX_CD, &index, command, mx_valid_cd);
 
-	// mx_print_strarr(command->arguments, "   ");
-	// printf("\narg[i] = %s arg[i+1] = %s\n", command->arguments[index], command->arguments[index + 1]);
 	if (command->arguments[index] && command->arguments[index + 1])
 		mx_error_handle(MX_CD, NULL, MX_ANY);
 	else if (!atoi(getenv("status"))) {
@@ -89,7 +84,7 @@ void mx_cd(t_command *command) {
 		}
 		else if (!strcmp(command->arguments[index], "-")) {
 			free(command->arguments[index]);
-			command->arguments[index] = mx_strdup(getenv("OLDPWD"));
+			command->arguments[index] = strdup(getenv("OLDPWD"));
 			mx_cd(command);
 			if (!atoi(getenv("status")))
 				printf("%s\n", getenv("PWD"));

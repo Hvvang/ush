@@ -27,14 +27,17 @@ static void print_paths(t_command *command, int index, char flag) {
     char **paths = get_true_path(command->arguments[index]);
 
     if (paths[0]) {
-        printf("%s\n", paths[0]);
-        if (flag == 'a')
-            for (unsigned i = 1; paths[i]; i++)
-                printf("%s\n", paths[i]);
+        if (flag != 's') {
+            printf("%s\n", paths[0]);
+            if (flag == 'a')
+                for (unsigned i = 1; paths[i]; i++)
+                    printf("%s\n", paths[i]);
+        }
         mx_del_strarr(&paths);
     }
     else {
-        fprintf(stderr, "%s not found\n", command->arguments[index]);
+        if (flag != 's')
+            fprintf(stderr, "%s not found\n", command->arguments[index]);
         setenv("status", "1", 1);
     }
 }

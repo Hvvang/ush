@@ -1,55 +1,57 @@
 #include "mx_parser.h"
 
-void get_args(char *line, int *i, int literal) {
-    for (*i = *i + 1; line[*i]; (*i)++) {
-        int ch = mx_get_literal(line[*i]);
+static bool check_closing(const char *line, int i, int literal) {
+    if ((literal == SQUOTE || literal == DQUOTE) &&
+        (MX_IS_SQUOTE(line[i]) ||
+        (MX_IS_DQUOTE(line[i]) && !(MX_IS_SLASH(line[i - 1]))))) {
+        return true;
+    }
+    else if (literal == QUOTE &&
+            (MX_IS_QUOTE(line[i]) && !(MX_IS_SLASH(line[i - 1])))) {
+            return true;
+    }
+    else if ((literal == BRACKET || literal == QBRACKET) &&
+            (mx_get_literal(line[i]) == literal + 2))
+            return true;
+    return false;
+}
 
-        if (literal == QUOTE && ch == QUOTE) {
-            if (!(MX_IS_SLASH(line[*i - 1])))
+static void skip_nesting(const char *line, int *i, int literal) {
+    if (!(MX_IS_SLASH(line[*i - 1]))) {
+        if (literal == DOLLAR) {
+            (*i) += 1;
+            if (!(MX_IS_BRACKET(line[*i])) && !(MX_IS_QBRACKET(line[*i])))
                 return;
-            *i += 1;
+            literal = mx_get_literal(line[*i]);
         }
-        else if ((literal == SQUOTE || literal == DQUOTE)
-             && !(MX_IS_SLASH(line[*i - 1]))) {
-            mx_skip_literal(line, i, literal);
-            return;
+        for (*i = *i + 1; line[*i]; (*i)++) {
+            if (check_closing(line, *i, literal))
+                return;
+            if (MX_NEST_COMMAND(line[*i])) {
+                skip_nesting(line, i, mx_get_literal(line[*i]));
+            }
         }
-        else if ((literal == BRACKET || literal == QBRACKET)
-                  && ch == literal + 2)
-            return;
-        else if (!(MX_IS_SLASH(line[*i - 1])) && ch == DOLLAR
-                 && (MX_IS_BRACKET(line[*i + 1])
-                 || MX_IS_QBRACKET(line[*i + 1])))
-            get_args(line, i, mx_get_literal(line[*i + 1]));
     }
 }
 
-t_list *mx_split_commands(char *commands, char delim) {
-    t_list *list = NULL;
-    int index = 0; // index of last literal exicting
+t_list *mx_split_commands(char *line, char delim) {
+    t_list *commands = NULL;
+    int index = 0;
 
-    if (!strcmp(commands, ";") || !strcmp(commands, "; ;"))
-        return NULL;
-    if (!strcmp(commands, ";;")) {
-        fprintf(stderr, "u$h: parse error near `;;'\n");
-        return NULL;
-    }
-    for (int i = 0; commands[i]; i++) {
-        if (!(MX_IS_REGULAR(commands[i])) && mx_get_literal(commands[i]) < 3) {
-            if (MX_IS_DOLLAR(commands[i]) && !(MX_IS_BRACKET(commands[i + 1])
-                || MX_IS_QBRACKET(commands[i + 1])))
-                continue;
-            get_args(commands, &i, mx_get_literal(commands[i + 1]));
+    for (int i = 0; line[i]; i++) {
+        if (MX_NEST_COMMAND(line[i]))
+            skip_nesting(line, &i, mx_get_literal(line[i]));
+        if (line[i] == delim && !(MX_IS_SLASH(line[i - 1]))) {
+            char *temp = strndup(&line[index], i - index);
+            char *res = mx_strtrim(temp);
+
+            if (strlen(res))
+                mx_push_back(&commands, res);
+            else
+                mx_strdel(&res);
+            mx_strdel(&temp);
+            index = i + 1;
         }
-        if (commands[i] == delim) {
-            mx_push_back(&list, mx_strndup(&commands[index], i - index));
-            while (commands[i] == delim)
-                i++;
-            index = i;
-            i--;
-        }
-        else if (!commands[i + 1])
-            mx_push_back(&list, mx_strndup(&commands[index], i - index + 1));
     }
-    return list;
+    return commands;
 }

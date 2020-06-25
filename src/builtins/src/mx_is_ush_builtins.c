@@ -1,14 +1,26 @@
 #include "mx_builtins.h"
 
-int mx_is_ush_builtins(char *command) {
+static int extended_builtins(char *command) {
+    if (!strcmp(command, "history"))
+        return MX_HISTORY;
+    else if (!strcmp(command, "true"))
+        return MX_TRUE;
+    else if (!strcmp(command, "false"))
+        return MX_FALSE;
+    else if (!strcmp(command, "color"))
+        return MX_COLOR;
+    else if (!strcmp(command, "bye"))
+        return MX_BYE;
+    return -1;
+}
+
+static int main_builtins(char *command) {
     if (!strcmp(command, "export"))
         return MX_EXPORT;
     else if (!strcmp(command, "unset"))
         return MX_UNSET;
     else if (!strcmp(command, "exit"))
         return MX_EXIT;
-    // else if (!strcmp(command, "env"))
-    //     return MX_ENV;
     else if (!strcmp(command, "cd"))
         return MX_CD;
     else if (!strcmp(command, "fg"))
@@ -21,8 +33,10 @@ int mx_is_ush_builtins(char *command) {
         return MX_JOBS;
     else if (!strcmp(command, "which"))
         return MX_WHICH;
-    else if (!strcmp(command, "history"))
-        return MX_HISTORY;
-    else
-        return -1;
+    return extended_builtins(command);
+}
+
+
+int mx_is_ush_builtins(char *commands) {
+    return main_builtins(commands);
 }

@@ -23,6 +23,10 @@ typedef enum e_builtins {
 	MX_JOBS = 8,
 	MX_WHICH = 9,
 	MX_HISTORY = 10,
+	MX_TRUE = 11,
+	MX_FALSE = 12,
+	MX_COLOR = 13,
+	MX_BYE = 14,
 }            t_builtins;
 
 void mx_builtin_func(t_command *commands, t_hash_table *hash_table, int *status);
@@ -46,5 +50,9 @@ char **mx_copy_env(void);
 void mx_clear_env(void);
 void mx_set_env(char **env);
 void mx_exit(t_command *command, int *status);
+void mx_true(void);
+void mx_false(void);
+void mx_color(t_command *command);
+bool mx_valid_color(int *toggle, char *arg, char *flag, int *index);
 
 #endif

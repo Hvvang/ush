@@ -22,8 +22,6 @@ static void filter_dquote(char **arg, int *i, int *status) {
         else if (MX_IS_DOLLAR((*arg)[*i])) {
             if (MX_IS_BRACKET((*arg)[*i + 1]))
                 mx_filter_substitution(arg, i, status);
-            // else
-            //     mx_filter_parameter(arg, i);
         }
     }
     *i -= 1;

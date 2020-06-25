@@ -12,5 +12,8 @@ void mx_builtin_usage(int builtin, char *command, char error) {
         case MX_ENV:
             fprintf(stderr, "env: usage: env [-i] [-P utilpath] [-u name]\n");
             break;
+        case MX_COLOR:
+            fprintf(stderr, MX_INVALID_OPTION, command, error);
+            break;
     }
 }

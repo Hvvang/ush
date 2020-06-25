@@ -52,7 +52,7 @@ char *mx_subshell(char *substitution, int *status) {
 	if ((pid = fork()) == 0) {
 		mx_dup2_fd(fd1, fd2);
 		if (execvp(args[0], args) == -1)
-            fprintf(stderr, "u$h: command not found: %s\n", substitution);
+            fprintf(stderr, "ush: command not found: %s\n", substitution);
 		_exit(1);
 	}
 	else {

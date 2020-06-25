@@ -1,7 +1,9 @@
 #include "mx_shell.h"
 
 static void print_prompt(void) {
-	printf(MX_SHELL_PROMPT);
+	char **prompt = mx_get_prompt_mode();
+
+	printf("%s", *prompt);
 	fflush(stdout);
 }
 
